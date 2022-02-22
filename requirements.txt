@@ -1,4 +1,5 @@
 cs50
+dotenv
 Flask
 Flask-Session
 requests

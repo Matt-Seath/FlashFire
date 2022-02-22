@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from cs50 import SQL
 from flask import Flask
 from flask_session import Session
@@ -9,10 +10,15 @@ from app.models import apology, usd
 
   
 # Configure application
-app = Flask(__name__)
+app = Flask(__name__)  
 
 # Configure Library to use SQLite database
 db = SQL("sqlite:///app/database.db")
+
+# Make sure API key is set
+load_dotenv()
+if not os.environ.get("API_KEY"):
+    raise RuntimeError("API_KEY not set")
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -34,10 +40,6 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# Make sure API key is set 
-if not os.environ.get("API_KEY"):
-    raise RuntimeError("API_KEY not set")
-
 def errorhandler(e):
     """Handle error"""
     if not isinstance(e, HTTPException):
@@ -50,6 +52,3 @@ for code in default_exceptions:
   
 # Insert the Routes.py file
 from app import routes
-  
-
-
