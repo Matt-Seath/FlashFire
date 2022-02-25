@@ -6,6 +6,13 @@ from flask import redirect, render_template, session
 from functools import wraps
 
 
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+    
+
 def apology(message, code=400):
     """Render message as an apology to user."""
     def escape(s):

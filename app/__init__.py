@@ -1,22 +1,30 @@
 import os
+import sqlite3
 from dotenv import load_dotenv
-from cs50 import SQL
 from flask import Flask
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 
-from app.models import apology, usd
+from app.models import apology, usd, dict_factory
 
   
 # Configure application
 app = Flask(__name__)  
 
-# Configure Library to use SQLite database
-db = SQL("sqlite:///app/database.db")
+# Load user environment variables
+load_dotenv()
+
+# Connect to sqlite3 database
+con = sqlite3.connect('app/database.db', check_same_thread=False)
+
+# Configure row_factory attribute to return dict objects
+con.row_factory = dict_factory
+
+# Create a cursor instance for the database
+c = con.cursor()   
 
 # Make sure API key is set
-load_dotenv()
 if not os.environ.get("API_KEY"):
     raise RuntimeError("API_KEY not set")
 
