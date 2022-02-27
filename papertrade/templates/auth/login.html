@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Log In{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+
+    {{ form.username.label }}
+    {{ form.username() }}<br>
+
+    {{ form.password.label }}
+    {{ form.password() }}<br>
+
+    {{ form.submit() }}
+  </form>
+{% endblock %}

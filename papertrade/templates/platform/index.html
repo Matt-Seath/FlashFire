@@ -1,10 +1,10 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 
-{% block title %}
+{% block header %}
     Portfolio
 {% endblock %}
 
-{% block main %}
+{% block content %}
     <table class='table table-striped'>
         <thead>
             <tr>
@@ -21,8 +21,8 @@
                 <td>{{ i['symbol'] }}</td>
                 <td>{{ i['stock'] }}</td>
                 <td>{{ i['total_shares'] }}</td>
-                <td>{{ usd(i['price']) }}</td>
-                <td>{{ usd(i['total_shares'] * i['price']) }}</td>
+                <td>{{ i['price'] }}</td>
+                <td>{{ i['total_shares'] * i['price'] }}</td>
             </tr>
             {% endfor %}
             <tr>
@@ -32,7 +32,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>{{ usd(cash) }}</td>
+                <td>{{ cash }}</td>
             </tr>
         </tbody>
         <tfooter>
@@ -40,7 +40,7 @@
             <td></td>
             <td></td>
             <td></td>
-            <td><b>{{ usd(equity) }}</b></td>
+            <td><b>{{ equity }}</b></td>
         </tfooter>
     </table>
 {% endblock %}

@@ -1,4 +1,0 @@
-dotenv
-Flask
-Flask-Session
-requests
