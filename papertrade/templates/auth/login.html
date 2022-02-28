@@ -5,14 +5,19 @@
 {% endblock %}
 
 {% block content %}
-  <form method="post">
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
 
     {{ form.username.label }}
-    {{ form.username() }}<br>
+    {{ form.username(class="form-group") }}<br>
 
     {{ form.password.label }}
-    {{ form.password() }}<br>
+    {{ form.password(class="form-group")  }}<br>
 
-    {{ form.submit() }}
-  </form>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+
+
+  
 {% endblock %}

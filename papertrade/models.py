@@ -13,6 +13,11 @@ class db_query():
                         [username], one=True)
         return user
 
+    def get_user_data(user_id):
+        user_data = query_db('SELECT * FROM users WHERE id = ?',
+                        [user_id], one=True)
+        return user_data
+
     def get_cash(user_id):
         cash = query_db('SELECT cash FROM users WHERE id = ?',
                         [user_id], one=True)
@@ -25,9 +30,13 @@ class db_query():
 
     def register_user(username, password, email):
         db = get_db()
-        db.execute("INSERT INTO users (username, hash) VALUES (?, ?)",
-                        (username, generate_password_hash(password)),
-        db.commit())
+        try:
+            db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)",
+                        (username, email, generate_password_hash(password)),
+            db.commit())
+            return True
+        except db.IntegrityError:
+            return False
 
 
 

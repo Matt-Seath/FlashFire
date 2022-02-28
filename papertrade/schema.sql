@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS watchlist;
 CREATE TABLE users (
     id INTEGER, 
     username TEXT NOT NULL, 
+    email TEXT NOT NULL,
     hash TEXT NOT NULL, 
     cash NUMERIC NOT NULL DEFAULT 10000.00, 
     PRIMARY KEY(id)
