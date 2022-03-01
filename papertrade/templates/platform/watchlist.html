@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block header %}
+    Watchlist
+{% endblock %}
+
+{% block content %}
+    <table class='table table-striped'>
+        <thead>
+            <tr>
+                {% for i in data %}
+                    {% if i %}
+                        <th>{{ i }}</th>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for stocks in range(data['symbol']|length) %}
+                <tr>
+                    {% for row in data %}
+                        {% if row %}
+                            <td>{{ data[row][stocks] }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -8,25 +8,30 @@ from wtforms.validators import DataRequired, InputRequired, EqualTo, Email, Leng
 
 class registerForm(FlaskForm):
     username = StringField("username:", validators=[DataRequired("Username field is empty"),
-                Length(min=3, message="Username must be at least 3 characters long")])
+                Length(min=3, max=30, message="Username must be between 3 and 30 characters long")])
     password = PasswordField("password:", validators=[DataRequired("Password field is empty"),
-                Length(min=8, message="Password must be at least 8 characters long")])
+                Length(min=8, max=30, message="Password must be between 8 and 30 characters long")])
     confirmPassword = PasswordField("confirm password:", validators=[InputRequired("Confirm password field is empty"),
                         EqualTo('password', message='Passwords must match')])
-    email = EmailField("email:") 
+    email = EmailField("email:", validators= [InputRequired("Email field is empty"), Email(message="Invalid email"),
+                        Length(max=40, message="Email must be less than 40 characters long")])
     submit = SubmitField("register")
+
+
+class changePasswordForm(FlaskForm):
+    oldPassword = PasswordField("old password:", validators=[DataRequired("Old password field is empty")])
+    newPassword = PasswordField("new password:", validators=[DataRequired("New password field is empty"),
+                Length(min=8, max=30, message="New password must be between 8 and 30 characters long")])
+    confirmPassword = PasswordField("confirm new:", validators=[InputRequired("Confirm password field is empty"),
+                        EqualTo('newPassword', message='Passwords must match')])
+    submit = SubmitField("change")
+
 
 class loginForm(FlaskForm):
     username = StringField("username:", validators=[DataRequired("Username field is empty")])
     password = PasswordField("password:", validators=[DataRequired("Password field is empty")])
     submit = SubmitField("login")
-    
-class changePasswordForm(FlaskForm):
-    oldPassword = PasswordField("old password:", validators=[DataRequired()])
-    newPassword = PasswordField('New Password', validators=[InputRequired(),
-                    EqualTo('confirm', message='Passwords must match')])
-    confirm  = PasswordField('Confirm Password')
-    submit = SubmitField("change")
+
 
 class searchBar(FlaskForm):
     userInput = StringField("Search: ", validators=[DataRequired()])

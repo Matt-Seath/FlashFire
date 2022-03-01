@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS portfolio;
 DROP TABLE IF EXISTS watchlist;
+DROP TABLE IF EXISTS dataKeys;
 
 CREATE TABLE users (
     id INTEGER, 
@@ -14,7 +15,6 @@ CREATE TABLE users (
 CREATE TABLE portfolio (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
-    stock TEXT NOT NULL,
     symbol TEXT NOT NULL,
     shares INTEGER NOT NULL,
     price NUMERIC NOT NULL,
@@ -24,10 +24,18 @@ CREATE TABLE portfolio (
 );
 
 CREATE TABLE watchlist (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     symbol TEXT NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
+CREATE TABLE dataKeys (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    keys INTEGER NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
 CREATE UNIQUE INDEX username_idx ON users (username);
+CREATE UNIQUE INDEX keys_idx ON dataKeys (keys);

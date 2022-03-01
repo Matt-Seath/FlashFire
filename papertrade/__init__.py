@@ -2,12 +2,16 @@ import os
 from dotenv import load_dotenv
 from flask import Flask
 
+
+
 # Load user environment variables
 load_dotenv()
+
 
 # Make sure API key is set
 if not os.environ.get("API_KEY"):
     raise RuntimeError("API_KEY not set")
+ 
  
 # Configure application
 def create_app(test_config=None):
@@ -24,7 +28,7 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-    
+
     from . import db
     db.init_app(app)
 

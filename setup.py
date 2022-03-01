@@ -32,6 +32,7 @@ setuptools.setup(
         'flask-session',
         'flask-wtf',
         'requests',
-        'dotenv'
+        'dotenv',
+        'email_validator'
     ],
 )

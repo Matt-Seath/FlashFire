@@ -10,7 +10,7 @@
         <!-- Link local Bootstrap version 4.5.3 CSS -->  
         <link rel="stylesheet" href="../static/css/bootstrap.min.css">         
         <!-- Seath Papertrade icon -->
-        <link href="../static/plane.ico" rel="icon"> 
+        <link href="../static/icons/plane.ico" rel="icon"> 
         <!-- Link Custom Stylesheet-->
         <link href="../static/css/styles.css" rel="stylesheet">
         <!-- Link local JQuery version 3.6.0 production slim-->
@@ -25,20 +25,22 @@
     <body>
 
         <nav class="navbar navbar-expand-md navbar-light bg-light border">
-            <a class="navbar-brand" href="/"><span class="green">SEATH</span> <span class="blue"> Papertrade</span></a>
+            <a class="navbar-brand" href="{{ url_for('platform.index') }}"><span class="green">SEATH</span> <span class="blue"> Papertrade</span></a>
             <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbar">
                 {% if g.user %}
                     <ul class="navbar-nav mr-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="/quote">Quote</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/buy">Buy</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/sell">Sell</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/history">History</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('platform.index') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('platform.portfolio') }}">Portfolio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('platform.watchlist') }}">Watchlist</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('platform.quotes') }}">Quotes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('platform.trading') }}">Trading</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('platform.settings') }}">Settings</a></li>
                     </ul>
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="/password">Change Password</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.change_password') }}">Change Password</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
                     </ul>
                 {% else %}

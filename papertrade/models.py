@@ -1,46 +1,126 @@
 import os
 import requests
 import urllib.parse
-from papertrade.db import get_db, query_db
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import generate_password_hash
 
+from papertrade.db import get_db, query_db
 
 
 class db_query():
+
 
     def get_user(username):
         user = query_db('SELECT * FROM users WHERE username = ?',
                         [username], one=True)
         return user
 
+
     def get_user_data(user_id):
         user_data = query_db('SELECT * FROM users WHERE id = ?',
                         [user_id], one=True)
         return user_data
+
 
     def get_cash(user_id):
         cash = query_db('SELECT cash FROM users WHERE id = ?',
                         [user_id], one=True)
         return cash
 
+
     def get_portfolio(user_id):
-        portfolio = query_db('SELECT stock, symbol, SUM(shares) as total_shares, price FROM portfolio WHERE user_id = ? GROUP BY symbol',
+        portfolio = query_db('SELECT symbol, SUM(shares) as total_shares, price FROM portfolio WHERE user_id = ? GROUP BY symbol',
                         [user_id])
         return portfolio
+
 
     def register_user(username, password, email):
         db = get_db()
         try:
-            db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)",
-                        (username, email, generate_password_hash(password)),
-            db.commit())
+            db.execute('INSERT INTO users (username, email, hash) VALUES (?, ?, ?)',
+                        [username, email, generate_password_hash(password)]),
+            db.commit()
             return True
         except db.IntegrityError:
             return False
 
 
+    def change_password(user_id, password):
+        db = get_db()
+        try:
+            db.execute('UPDATE users SET hash = ? WHERE id = ?', [generate_password_hash(password), user_id])
+            db.commit()
+            return True
+        except:
+            return False
+
 
 class iex_cloud():
+
+
+    def get_data(stocks):
+        data = {}
+        for stock in stocks:
+            url = f"https://cloud.iexapis.com/stable/stock/{stock}/quote?token=pk_6d5e433f49a84bb9a407fe86048b023e"
+            response = requests.get(url)
+            response.raise_for_status()
+            stock_data = response.json()
+
+            for item in stock_data:
+                data.setdefault(item, [])
+                data[item].append(stock_data.get(item))
+        return data
+
+
+    data_keys = [
+        'companyName',
+        'symbol',
+        'avgTotalVolume',
+        'calculationPrice',
+        'change',
+        'changePercent',
+        'close',
+        'closeTime',
+        'delayedPrice',
+        'extendedChange',
+        'extendedChangePercent',
+        'extendedPrice',
+        'high',
+        'highTime',
+        'iexAskPrice',
+        'iexAskSize',
+        'iexBidPrice',
+        'iexBidSize',
+        'iexClose',
+        'iexCloseTime',
+        'iexLastUpdated',
+        'iexMarketPercent',
+        'iexOpen',
+        'iexOpenTime',
+        'iexRealtimePrice',
+        'iexRealtimeSize',
+        'iexVolume',
+        'lastTradeTime',
+        'latestPrice',
+        'latestSource',
+        'latestTime',
+        'latestUpdate',
+        'latestVolume',
+        'low',
+        'lowTime',
+        'marketCap',
+        'oddLotDelayedPrice',
+        'oddLotDelayedPriceTime',
+        'open',
+        'peRatio',
+        'previousClose',
+        'previousVolume',
+        'volume',
+        'week52High',
+        'week52Low',
+        'ytdChange',
+        'isUSMarketOpen',
+    ]
+
 
     def lookup(symbol):
         """Look up quote for symbol."""
@@ -52,7 +132,6 @@ class iex_cloud():
             response.raise_for_status()
         except requests.RequestException:
             return None
-
         # Parse response
         try:
             quote = response.json()
