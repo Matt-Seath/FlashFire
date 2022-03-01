@@ -6,15 +6,23 @@
 
 {% block content %}
 
-<form method="POST" novalidate>
+
+<img src="../static/images/logo.png" alt="Seath Logo"> 
+
+
+
+<form method="POST" novalidate centre>
+
     {{ form.hidden_tag() }}
 
-    {{ form.username.label }}
-    {{ form.username(class="form-group") }}<br>
-
-    {{ form.password.label }}
-    {{ form.password(class="form-group")  }}<br>
-
+    <div class="form-group">
+      {{ form.username.label }}
+      {{ form.username(class="form-control") }}<br>
+    </div>
+    <div class="form-group">
+      {{ form.password.label }}
+      {{ form.password(class="form-control")  }}<br>
+    </div>
     {{ form.submit(class="btn btn-primary") }}
 </form>
 
