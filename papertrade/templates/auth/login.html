@@ -4,10 +4,15 @@
   <h1>{% block title %}Log In{% endblock %}</h1>
 {% endblock %}
 
-{% block content %}
+{% block authContent %}
+<br>
+<br>
+<br>
+<img src="../static/images/letterheadDark.svg" height="60px"> 
+<br>
+<br>
 
-
-<img src="../static/images/logo.png" alt="Seath Logo"> 
+<br>
 
 
 
@@ -16,16 +21,19 @@
     {{ form.hidden_tag() }}
 
     <div class="form-group">
-      {{ form.username.label }}
-      {{ form.username(class="form-control") }}<br>
+      {{ form.username(class="form-control", placeholder="Username") }}<br>
     </div>
     <div class="form-group">
-      {{ form.password.label }}
-      {{ form.password(class="form-control")  }}<br>
+      {{ form.password(class="form-control", placeholder="Password")  }}<br>
     </div>
-    {{ form.submit(class="btn btn-primary") }}
+    {{ form.submit(class="btn btn-lg btn-secondary") }}
 </form>
-
+<br>
+<br>
+<p class="lead">Don't have an account yet?</p>
+<p class="lead">
+    <a href="{{ url_for('auth.register') }}" class="btn btn-lg btn-secondary">Create an Account</a>
+</p>
 
   
 {% endblock %}

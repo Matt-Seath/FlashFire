@@ -4,26 +4,39 @@
   <h1>{% block title %}Register{% endblock %}</h1>
 {% endblock %}
 
-{% block content %}
+{% block authContent %}
+<br>
+<br>
+<br>
+<img src="../static/images/letterheadDark.svg" height="60px"> 
+<br>
+<br>
+
+<br>
+
 
 <form method="POST" novalidate>
     {{ form.hidden_tag() }}
+    <div class="form-group">
+    {{ form.username(class="form-control", placeholder="Username") }}<br>
+    </div>
+    <div class="form-group">
+    {{ form.email(class="form-control", placeholder="Email") }}<br>
+    </div>
+    <div class="form-group">
+    {{ form.password(class="form-control", placeholder="Password")  }}<br>
+    </div>
+    <div class="form-group">
+    {{ form.confirmPassword(class="form-control", placeholder="Confirm")  }}<br>
+    </div>
 
-    {{ form.username.label }}
-    {{ form.username(class="form-group") }}<br>
-
-    {{ form.email.label }}
-    {{ form.email(class="form-group") }}<br>
-
-    {{ form.password.label }}
-    {{ form.password(class="form-group")  }}<br>
-
-    {{ form.confirmPassword.label }}
-    {{ form.confirmPassword(class="form-group")  }}<br>
-
-    {{ form.submit(class="btn btn-primary") }}
+    {{ form.submit(class="btn btn-lg btn-secondary") }}
 </form>
 
+<p class="lead">Already have an account?</p>
+<p class="lead">
+    <a href="{{ url_for('auth.login') }}" class="btn btn-lg btn-secondary">Sign In</a>
+</p>
 
   
 {% endblock %}
