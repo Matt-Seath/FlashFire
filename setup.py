@@ -9,7 +9,7 @@ setuptools.setup(
     version="1.0.0",
     author="Matthew Seath",
     author_email="seath.dev@gmail.com",
-    description="Papertrade is a trading simulator."
+    description="Papertrade is a trading simulator.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/pypa/sampleproject",

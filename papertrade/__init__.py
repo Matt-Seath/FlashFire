@@ -8,9 +8,11 @@ from flask import Flask
 load_dotenv()
 
 
-# Make sure API key is set
-if not os.environ.get("API_KEY"):
-    raise RuntimeError("API_KEY not set")
+# Make sure API keys are set
+if not os.environ.get("IEX_KEY"):
+    raise RuntimeError("IEX_KEY is not set!")
+if not os.environ.get("POLYGON_KEY"):
+    raise RuntimeError("POLYGON_KEY is not set!")
  
  
 # Configure application

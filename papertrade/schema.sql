@@ -1,11 +1,4 @@
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS portfolio;
-DROP TABLE IF EXISTS stocks;
-DROP TABLE IF EXISTS watchlist;
-DROP TABLE IF EXISTS stockHistory;
-DROP TABLE IF EXISTS dataKeys;
-
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS  users (
     id INTEGER, 
     username TEXT NOT NULL, 
     email TEXT NOT NULL,
@@ -14,7 +7,7 @@ CREATE TABLE users (
     PRIMARY KEY(id)
 );
 
-CREATE TABLE portfolio (
+CREATE TABLE IF NOT EXISTS portfolio (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     symbol TEXT NOT NULL,
@@ -25,20 +18,20 @@ CREATE TABLE portfolio (
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
-CREATE TABLE stocks (
+CREATE TABLE IF NOT EXISTS stocks (
     id INTEGER PRIMARY KEY,
     symbol TEXT NOT NULL UNIQUE,
     company TEXT NOT NULL
 );
 
-CREATE TABLE watchlist (
+CREATE TABLE IF NOT EXISTS watchlist (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     symbol TEXT NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
-CREATE TABLE stockHistory (
+CREATE TABLE IF NOT EXISTS stockHistory (
     id INTEGER PRIMARY KEY,
     stock_id INTEGER,
     date NOT NULL,
@@ -51,7 +44,7 @@ CREATE TABLE stockHistory (
     FOREIGN KEY (stock_id) REFERENCES stocks (id)
 );
 
-CREATE TABLE dataKeys (
+CREATE TABLE IF NOT EXISTS dataKeys (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     keys INTEGER NOT NULL,
