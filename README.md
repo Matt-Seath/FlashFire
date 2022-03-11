@@ -14,8 +14,13 @@ Package dependencies:
 Usage:
     -Install dependencies into the environment
     -Set required API_KEYs to an .env file
-    -Initialize the database by running the following cli command in the root directory:   $ flask init-db
-    -Run flask with:    $ flask run
+    -Initialize the database by running the following cli command in the root directory:
+    
+        $ flask init-db
+    
+    -Run flask with:
+    
+        $ flask run
 
 ------------------PACKAGE TREE--------------------------
 
