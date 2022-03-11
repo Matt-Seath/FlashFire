@@ -1,5 +1,6 @@
 import sqlite3
 import click
+import requests
 from flask import current_app, g
 from flask.cli import with_appcontext
 
@@ -33,6 +34,21 @@ def get_db():
         )
         g.db.row_factory = sqlite3.Row
     return g.db
+
+
+def populate_db():
+    url = f"https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/2020-10-14?adjusted=true&apiKey={POLYGON_KEY}"
+    response = requests.get(url)
+    response.raise_for_status()
+    stock_data = response.json()
+    db = get_db()
+    try:
+        for row in stock_data["results"]:
+            db.execute('INSERT INTO stocks (symbol) VALUES (?)', row['T'])
+        db.commit()
+        return "Tickers successfully populated"
+    except db.IntegrityError:
+        return "Unable to populate database"
 
 
 def query_db(query, args=(), one=False):
