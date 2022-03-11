@@ -5,11 +5,11 @@ Papertrade is a web application that reproduces behavior and features of a stock
 Created in Python, using the Flask framework.
 
 Package dependencies:
-    flask
-    flask-session
-    flask-wtf
-    requests
-    python-dotenv
+    flask,
+    flask-session,
+    flask-wtf,
+    requests,
+    python-dotenv,
 
 Usage:
     -Install dependencies into the environment
