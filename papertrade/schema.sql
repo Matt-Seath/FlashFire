@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS portfolio (
 CREATE TABLE IF NOT EXISTS stocks (
     id INTEGER PRIMARY KEY,
     symbol TEXT NOT NULL UNIQUE,
+    company TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS watchlist (
@@ -50,7 +51,7 @@ CREATE TABLE IF NOT EXISTS dataKeys (
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
-CREATE UNIQUE INDEX username_idx ON users (username);
-CREATE UNIQUE INDEX stocks_idx ON stocks (symbol);
-CREATE UNIQUE INDEX stockHistory_idx ON stockHistory (stock_id);
-CREATE UNIQUE INDEX keys_idx ON dataKeys (keys);
+-- CREATE UNIQUE INDEX username_idx ON users (username);
+-- CREATE UNIQUE INDEX stocks_idx ON stocks (symbol);
+-- CREATE UNIQUE INDEX stockHistory_idx ON stockHistory (stock_id);
+-- CREATE UNIQUE INDEX keys_idx ON dataKeys (keys);

@@ -1,7 +1,7 @@
 import functools
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash
-
+from papertrade import db
 from papertrade.forms import registerForm, loginForm, changePasswordForm
 from papertrade.models import db_query
 
@@ -57,6 +57,7 @@ def register():
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
+    db.populate_db()
     username = None
     password = None
     form = loginForm()
