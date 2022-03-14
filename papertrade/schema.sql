@@ -39,7 +39,6 @@ CREATE TABLE IF NOT EXISTS stockHistory (
     high NOT NULL,
     low NOT NULL,
     close NOT NULL,
-    adj_close NOT NULL,
     volume NOT NULL,
     FOREIGN KEY (stock_id) REFERENCES stocks (id)
 );
