@@ -5,42 +5,14 @@
 {% endblock %}
 
 {% block content %}
-    <table class='table table-striped'>
-        <thead>
-            <tr>
-                <th>Symbol</th>
-                <th>Stock</th>
-                <th>Shares</th>
-                <th>Price</th>
-                <th>TOTAL</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in portfolio %}
-            <tr>
-                <td>{{ i['symbol'] }}</td>
-                <td>{{ i['stock'] }}</td>
-                <td>{{ i['total_shares'] }}</td>
-                <td>{{ i['price'] }}</td>
-                <td>{{ i['total_shares'] * i['price'] }}</td>
-            </tr>
-            {% endfor %}
-            <tr>
-                <td>
-                    CASH
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>{{ cash }}</td>
-            </tr>
-        </tbody>
-        <tfooter>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><b>{{ equity }}</b></td>
-        </tfooter>
-    </table>
+    <form method="GET">
+        <select name="filter">
+            <option value="">All Stocks</option>
+            <option value="new_intraday_highs">New Intraday Highs</option>
+            <option value="new_closing_highs">New Closing Highs</option>
+            <option value="new_intraday_lows">New Intraday Lows</option>
+            <option value="new_closing_lows">New Closing Lows</option>
+        </select>
+        <input type="submit"/>
+    </form>
 {% endblock %}

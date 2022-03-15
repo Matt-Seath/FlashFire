@@ -33,6 +33,8 @@ setuptools.setup(
         'flask-wtf',
         'requests',
         'dotenv',
-        'email_validator'
+        'email_validator',
+        'alpaca-trade-api',
+        'datetime'
     ],
 )

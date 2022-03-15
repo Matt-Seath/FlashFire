@@ -26,6 +26,7 @@
                     <tr>
                         <th>Symbol</th>
                         <th>Name</th>
+                        <th>Exchange</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,6 +34,7 @@
                         <tr>
                             <td><a href="/quote/{{ stock.symbol }}">{{ stock.symbol }}</a></td>
                             <td><a href="/quote/{{ stock.symbol }}">{{ stock.company }}</a></td>                         
+                            <td>{{ stock.exchange }}</td>                         
                             <th class="text-right"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></th>
                         </tr>
                     {% endfor %}

@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, g, redirect, session, render_template, request, url_for
+from flask import Blueprint, session, render_template
 
 from papertrade.auth import login_required
 from papertrade.queries import db_query
@@ -69,17 +69,8 @@ def quote_symbol(symbol):
 @bp.route('/trading', methods=('GET', 'POST'))
 @login_required
 def trading():
-    """Show portfolio of stocks"""
-    user_id = session.get('user_id')
-    cash = db_query.get_cash(user_id)[0]
-    portfolio = db_query.get_portfolio(user_id)
-    equity = cash
-    for i in portfolio:
-        equity += i['price'] * i['total_shares']
-    return render_template('platform/index.html', 
-                            equity=equity,
-                            portfolio=portfolio,
-                            cash=cash)
+    """Show portfolio of stocks""" 
+    return render_template('platform/trading.html')
 
 
 @bp.route('/settings', methods=('GET', 'POST'))

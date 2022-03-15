@@ -1,12 +1,11 @@
 import sqlite3
 import click
-import os
-import requests
 from flask import current_app, g
 from flask.cli import with_appcontext
 
 
-
+# accept command to inialial database locally
+# USAGE: CLI command:  $ flask init-db
 @click.command('init-db')
 @with_appcontext
 def init_db_command():
@@ -14,19 +13,18 @@ def init_db_command():
     init_db()
     click.echo('Initialized the database.')
 
-
+# Configure database for each app individually
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
 
-
+# Initialize the database if it doesn't yet exist in the instance/ directory.
 def init_db():
     db = get_db()
-
     with current_app.open_resource('schema.sql') as f:
         db.executescript(f.read().decode('utf8'))
 
-
+# Connects to local database, configures a cursor and returns the cursor object.
 def get_db():
     if 'db' not in g:
         g.db = sqlite3.connect(
@@ -36,30 +34,14 @@ def get_db():
         g.db.row_factory = sqlite3.Row
     return g.db
 
-
-def populate_db():
-    api_key = os.environ.get('POLYGON_KEY')
-    url = f"https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/2020-10-14?adjusted=true&apiKey={api_key}"
-    response = requests.get(url)
-    response.raise_for_status()
-    stock_data = response.json()
-    db = get_db()
-    try:
-        for row in stock_data["results"]:
-            db.execute('INSERT INTO stocks (symbol) VALUES (?)', [row['T']])
-        db.commit()
-        return "Tickers successfully populated"
-    except db.IntegrityError:
-        return "Unable to populate database"
-
-
+# A simple framework function that makes querying the database less tedious
 def query_db(query, args=(), one=False):
     cur = get_db().execute(query, args)
     rv = cur.fetchall()
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
-
+# Close the database for g.user
 def close_db(e=None):
     db = g.pop('db', None)
     if db is not None:
