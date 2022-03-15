@@ -13,7 +13,9 @@ class db_query():
         return result
 
     def get_watchlist(user_id):
-        result = query_db('select watchlist.id, symbol, company from stocks JOIN watchlist on watchlist.stock_id = stocks.id WHERE user_id = ? ORDER BY symbol', [user_id])
+        result = query_db("""select watchlist.id, symbol, company from stocks
+                             JOIN watchlist on watchlist.stock_id = stocks.id
+                             WHERE user_id = ? ORDER BY symbol""", [user_id])
         return result
 
     def get_user(username):
@@ -32,9 +34,15 @@ class db_query():
         return cash
 
     def get_portfolio(user_id):
-        portfolio = query_db('SELECT symbol, SUM(shares) as total_shares, price FROM portfolio WHERE user_id = ? GROUP BY symbol',
-                        [user_id])
+        portfolio = query_db("""SELECT symbol, SUM(shares) as total_shares, price FROM portfolio
+                                WHERE user_id = ? GROUP BY symbol""", [user_id])
         return portfolio
+
+    def get_quote(symbol):
+        quote = query_db("""SELECT date, symbol, company, exchange, open, close, high, low, volume FROM stocks 
+                            JOIN stockHistory on stockHistory.stock_id = stocks.id 
+                            WHERE symbol = ? ORDER BY date DESC""", [symbol])
+        return quote
 
     def register_user(username, password, email):
         db = get_db()

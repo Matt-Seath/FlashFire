@@ -7,7 +7,7 @@
 {% block content %}
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Watchlist</h1>
+        <h3 class="h3">Watchlist</h3>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
                 <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -31,8 +31,8 @@
                 <tbody>
                     {% for stock in stocks %}
                         <tr>
-                            <td><a href="/quotes/{{ stock.symbol }}">{{ stock.symbol }}</a></td>
-                            <td><a href="/quotes/{{ stock.symbol }}">{{ stock.company }}</a></td>                         
+                            <td><a href="/quote/{{ stock.symbol }}">{{ stock.symbol }}</a></td>
+                            <td><a href="/quote/{{ stock.symbol }}">{{ stock.company }}</a></td>                         
                             <th class="text-right"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></th>
                         </tr>
                     {% endfor %}

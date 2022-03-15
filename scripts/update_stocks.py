@@ -29,9 +29,9 @@ data = api.list_assets()
 for ticker in data: #     Iterate over each ticker and add to database if its active,
     try:            #     tradable, and not currently in the database, else throw exception.
         if ticker.status == 'active' and ticker.tradable and ticker.symbol not in symbols:
-            print(f'{dt} Stock added ({ticker.symbol}):  {ticker.name}')
-            db.execute('INSERT INTO stocks (symbol, company) VALUES (?, ?)',
-                        (ticker.symbol, ticker.name))
+            print(f'{dt}  {ticker.exchange} stock added ({ticker.symbol}):  {ticker.name}')
+            db.execute('INSERT INTO stocks (symbol, company, exchange) VALUES (?, ?, ?)',
+                        (ticker.symbol, ticker.name, ticker.exchange))
     except Exception:
         print(ticker.name)
         print(Exception)

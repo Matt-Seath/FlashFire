@@ -102,9 +102,3 @@ body {
     box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
   }
   
-  .footer {
-    position:sticky;
-    bottom: 0;
-    height: 200px;
-    width: 100%;
-  }    

@@ -3,7 +3,7 @@ from flask import Blueprint, flash, g, redirect, render_template, request, sessi
 from werkzeug.security import check_password_hash
 from papertrade import db
 from papertrade.forms import registerForm, loginForm, changePasswordForm
-from papertrade.models import db_query
+from papertrade.queries import db_query
 
 
 

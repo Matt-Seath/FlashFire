@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, g, redirect, session, render_template, request, url_for
 
 from papertrade.auth import login_required
-from papertrade.models import db_query
+from papertrade.queries import db_query
 
 
 bp = Blueprint('platform', __name__)
@@ -49,14 +49,21 @@ def portfolio():
                             cash=cash)
 
 
+@bp.route('/quote', methods=('GET', 'POST'))
+@login_required
+def quote():
+    """Provide interface for user to retrieve quotes for stocks"""
+    return render_template('platform/quote.html')
+
+
+
 @bp.route('/quote/<symbol>', methods=('GET', 'POST'))
 @login_required
-def quotes(symbol):
-    """Provide information about a Stock"""
-    user_id = session.get('user_id')
-    stocks = db_query.get_watchlist(user_id)
-    return render_template('platform/watchlist.html', 
-                            stocks=stocks)
+def quote_symbol(symbol):
+    """Quote a particular Stock"""
+    rows = db_query.get_quote(symbol)
+    return render_template('platform/quote.html', 
+                            rows = rows)
 
 
 @bp.route('/trading', methods=('GET', 'POST'))

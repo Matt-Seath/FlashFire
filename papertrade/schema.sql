@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS portfolio (
 CREATE TABLE IF NOT EXISTS stocks (
     id INTEGER PRIMARY KEY,
     symbol TEXT NOT NULL UNIQUE,
-    company TEXT NOT NULL
+    company TEXT NOT NULL,
+    exchange TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS watchlist (

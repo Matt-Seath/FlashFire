@@ -48,13 +48,15 @@
         {% if g.user %}
 
             <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-                <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="{{ url_for('platform.index') }}"><img src="../static/images/letterheadDark.svg" height="40px"></a>
-                <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="{{ url_for('platform.index') }}">
+                    <img src="../static/images/letterheadDark.svg" height="40px"></a>
+                <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
+                idata-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <input class="form-control form-control-dark w-50" type="text" placeholder="Search" aria-label="Search">
                 <ul class="navbar-nav px-30">
-                    <li class="nav-item text-nowrap"><a class="nav-link" href="{{ url_for('auth.logout') }}">Sign out</a></li>
+                    <li class="nav-item text-nowrap"><a class="nav-link" href="{{ url_for('auth.logout') }}">Sign out &nbsp; &nbsp; </a></li>
                 </ul>         
             </nav>
             <div class="container-fluid">
@@ -170,8 +172,8 @@
                         {% block authContent %}{% endblock %} 
 
                     </main>            
-                    <footer class="mastfoot mt-auto">
-                        <div class="inner">
+                    <footer>
+                        <div>
                             <p>Data provided for free by <a href="https://iextrading.com/developer">IEX</a>. View <a href="https://iextrading.com/api-exhibit-a/">IEX’s Terms of Use.</a>.</p>
                         </div>
                     </footer>
