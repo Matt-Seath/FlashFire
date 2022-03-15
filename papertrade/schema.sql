@@ -27,8 +27,9 @@ CREATE TABLE IF NOT EXISTS stocks (
 CREATE TABLE IF NOT EXISTS watchlist (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
-    symbol TEXT NOT NULL,
+    stock_id TEXT NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id)
+    FOREIGN KEY(stock_id) REFERENCES stocks(id)
 );
 
 CREATE TABLE IF NOT EXISTS stockHistory (

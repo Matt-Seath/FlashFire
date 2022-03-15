@@ -9,7 +9,11 @@ from papertrade.db import get_db, query_db
 class db_query():
 
     def get_stocklist():
-        result = query_db('SELECT symbol FROM stocks')
+        result = query_db('SELECT id, symbol, company FROM stocks')
+        return result
+
+    def get_watchlist(user_id):
+        result = query_db('select watchlist.id, symbol, company from stocks JOIN watchlist on watchlist.stock_id = stocks.id WHERE user_id = ? ORDER BY symbol', [user_id])
         return result
 
     def get_user(username):

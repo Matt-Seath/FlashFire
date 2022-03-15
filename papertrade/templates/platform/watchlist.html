@@ -19,29 +19,25 @@
             </button>
         </div>
     </div>
-
-    <div class="table-responsive">
-        <table class='table table-striped table-sm'>
-            <thead>
-                <tr>
-                    {% for i in data %}
-                        {% if i %}
-                            <th>{{ i }}</th>
-                        {% endif %}
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for stocks in range(data['symbol']|length) %}
+    <div class="container-fluid">
+        <div class="table-responsive">
+            <table class='table table-striped table-sm'>
+                <thead>
                     <tr>
-                        {% for row in data %}
-                            {% if row %}
-                                <td>{{ data[row][stocks] }}</td>
-                            {% endif %}
-                        {% endfor %}
+                        <th>Symbol</th>
+                        <th>Name</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for stock in stocks %}
+                        <tr>
+                            <td><a href="/quotes/{{ stock.symbol }}">{{ stock.symbol }}</a></td>
+                            <td><a href="/quotes/{{ stock.symbol }}">{{ stock.company }}</a></td>                         
+                            <th class="text-right"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}
