@@ -1,7 +1,7 @@
 from flask import Blueprint, session, render_template
 
-from papertrade.auth import login_required
-from papertrade.queries import db_query
+from flashfire.auth import login_required
+from flashfire.queries import db_query
 
 
 bp = Blueprint('platform', __name__)

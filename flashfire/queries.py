@@ -3,7 +3,7 @@ import requests
 import urllib.parse
 from werkzeug.security import generate_password_hash
 
-from papertrade.db import get_db, query_db
+from flashfire.db import get_db, query_db
 
 
 class db_query():

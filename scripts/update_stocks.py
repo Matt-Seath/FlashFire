@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 #   THE SCRIPT RETRIEVES AN UPDATED LIST OF AVAILABLE STOCKS ON THE MARKET AND INSERTS NEW
 #   STOCKS INTO THE DATABASE. INSERTIONS ARE LOGGED AT: logs/stocks.log
 
-# Connect to papertrade database and create cursor object
-conn = sqlite3.connect('instance/papertrade.sqlite')
+# Connect to flashfire database and create cursor object
+conn = sqlite3.connect('instance/flashfire.sqlite')
 conn.row_factory = sqlite3.Row
 db = conn.cursor()
 dt = datetime.now()
