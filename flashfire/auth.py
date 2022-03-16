@@ -1,9 +1,9 @@
 import functools
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash
-from papertrade import db
-from papertrade.forms import registerForm, loginForm, changePasswordForm
-from papertrade.queries import db_query
+from flashfire import db
+from flashfire.forms import registerForm, loginForm, changePasswordForm
+from flashfire.queries import db_query
 
 
 

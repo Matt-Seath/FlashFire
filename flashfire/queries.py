@@ -66,18 +66,11 @@ class db_query():
 
 class polygon():
 
-    def get_history():
+    data = {""}
+
+    def get_history(data):
         api_key = os.environ.get("POLYGON_KEY")
         stocks = db_query.get_stocklist()
-        for stock in stocks:
-            url = f"https://cloud.iexapis.com/stable/stock/{stock}/quote?token={api_key}"
-            response = requests.get(url)
-            response.raise_for_status()
-            stock_data = response.json()
-
-            for item in stock_data:
-                data.setdefault(item, [])
-                data[item].append(stock_data.get(item))
         return data        
 
 

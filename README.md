@@ -13,6 +13,7 @@ Package dependencies:
     requests,
     python-dotenv,
     alpaca-trade-api,
+    email_validator,
     datetime
 
 Usage:
