@@ -10,7 +10,7 @@
         <!-- Link local Bootstrap version 4.5.3 CSS -->  
         <link rel="stylesheet" href="../static/css/bootstrap.min.css">         
         <!-- Seath Flashfire icon -->
-        <link href="../static/images/plane.ico" rel="icon"> 
+        <link href="../static/images/flashfire.ico" rel="icon"> 
         <!-- Link local JQuery version 3.6.0 production slim-->
         <script src="../static/js/jquery-3.6.0.min.js"></script> 
         <!-- Link local Bootstrap version 4.5.3 JS -->
@@ -24,7 +24,7 @@
             <link href="../static/css/auth.css" rel="stylesheet">
         {% endif %}
 
-        <title>FlashFire | {% block title %}{% endblock %}</title> 
+        <title>{% block title %}{% endblock %}</title> 
 
         <style>
             .bd-placeholder-img {
@@ -49,7 +49,7 @@
 
             <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
                 <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="{{ url_for('platform.index') }}">
-                    <img src="../static/images/letterheadDark.svg" height="40px"></a>
+                    <img src="../static/images/Letterhead-01.svg" height="40px"></a>
                 <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
                 idata-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
