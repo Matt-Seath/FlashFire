@@ -4,12 +4,12 @@ from datetime import datetime
 import sqlite3
 import os
 
-#   THIS IS A SCRIPT THAT SHOULD BE RUN AFTER THE DATABASE IS FIRST INITIALIZED.
-#   THE SCRIPT RETRIEVES THE LAST 100 TRADING DAYS OF HISTORICAL DATA FOR EACH STOCK
+#   THIS IS A SCRIPT THAT SHOULD BE RUN AFTER THE DATABASE IS FIRST INITIALIZED AND update_stocks.py
+#   HAS BEEN EXECUTED. THE SCRIPT RETRIEVES THE LAST 100 TRADING DAYS OF HISTORICAL DATA FOR EACH STOCK
 #   IN THE DATABASE. DATA IS THEN STORED IN THE 'stockHistory' TABLE. INSERTIONS ARE LOGGED AT: logs/history.log
 
-# Connect to papertrade database and create cursor object
-conn = sqlite3.connect('instance/papertrade.sqlite')
+# Connect to FlashFire database and create cursor object
+conn = sqlite3.connect('instance/flashfire.sqlite')
 conn.row_factory = sqlite3.Row
 db = conn.cursor()
 dt = datetime.now()
@@ -29,7 +29,7 @@ for row in rows:
 load_dotenv()
 
 # Configure Alpaca API using sercet API keys
-api = ata.REST(os.environ.get('ALPACA_LIVE_KEY'), os.environ.get('ALPACA_LIVE_SECRET'), 
+api = ata.REST(os.environ.get('ALPACA_KEY'), os.environ.get('ALPACA_SECRET'), 
       base_url=os.environ.get('PAPER_URL'))
 
 # Iterate over stocks in chunks of size chunk_size, to avoid an error from Alpaca api

@@ -5,11 +5,11 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="papertrade",
+    name="FlashFire",
     version="1.0.0",
     author="Matthew Seath",
     author_email="seath.dev@gmail.com",
-    description="Papertrade is a trading simulator.",
+    description="FlashFire is a web application that functions as a trading platfrom.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/pypa/sampleproject",

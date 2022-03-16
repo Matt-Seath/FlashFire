@@ -1,2 +1,2 @@
-FLASK_APP=papertrade
+FLASK_APP=flashfire
 FLASK_ENV=development

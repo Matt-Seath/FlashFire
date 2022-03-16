@@ -57,7 +57,6 @@ def register():
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
-    db.populate_db()
     username = None
     password = None
     form = loginForm()
