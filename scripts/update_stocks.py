@@ -22,7 +22,7 @@ symbols = [row['symbol'] for row in rows]
 # Validate Alpaca API using secret api keys
 load_dotenv()
 api = ata.REST(os.environ.get('ALPACA_KEY'), os.environ.get('ALPACA_SECRET'), 
-      base_url=os.environ.get('LIVE_URL'))
+      api_version='v2')
 
 # Get list of assets from Alpaca database
 data = api.list_assets()

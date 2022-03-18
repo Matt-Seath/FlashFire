@@ -18,7 +18,6 @@ Created in Python, using the Flask framework.                                   
     alpaca-trade-api,             
     email_validator,              
     datetime,
-    timeframe
     
 <br>    
 
@@ -39,10 +38,6 @@ __------------------PACKAGE TREE--------------------------__
 
     FLASHFIRE
     ├───env
-    ├───scripts
-    │   ├───update_latest.py
-    │   ├───update_prices.py
-    │   └───update_stocks.py
     ├───flashfire
     │   ├───static
     │   │   ├───css
@@ -72,6 +67,11 @@ __------------------PACKAGE TREE--------------------------__
     │   ├───queries.py
     │   ├───platform.py
     │   └───schema.sql
+    ├───scripts
+    │   ├───update_db.py
+    │   ├───update_latest.py
+    │   ├───update_prices.py
+    │   └───update_stocks.py
     ├───.flaskenv
     ├───.gitignore
     ├───MANIFEST.in

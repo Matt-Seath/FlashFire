@@ -38,14 +38,14 @@ for i in range(0, len(symbols), chunk_size):
     symbol_chunk = symbols[i:i + chunk_size]
 
     # Retrieve historical data for current stock from Alpaca database
-bar_sets = api.get_bars(['TSLA', 'AAPL'], "1Hour", limit=100)
-for symbol in bar_sets:
-    print(f'{dt} processing symbol ({symbol})')
-#         for bar in bar_sets[symbol]:
-#             stock_id = stock_dict[symbol]
+    bar_sets = api.get_barset(symbol_chunk, 'day')
+    for symbol in bar_sets:
+        print(f'{dt} processing symbol ({symbol})')
+        for bar in bar_sets[symbol]:
+            stock_id = stock_dict[symbol]
 
-#             # Insert data into local database
-#             db.execute('INSERT INTO stockHistory (stock_id, date, open, high, low, close, volume) VALUES (?, ?, ?, ?, ?, ?, ?)',
-#                         (stock_id, bar.t.date(), bar.o, bar.h, bar.l, bar.c, bar.v))
-# conn.commit() # Commit insertions when finished
-# print ('stockHistory has been successfully populated.')
+            # Insert data into local database
+            db.execute('INSERT INTO stockHistory (stock_id, date, open, high, low, close, volume) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                        (stock_id, bar.t.date(), bar.o, bar.h, bar.l, bar.c, bar.v))
+conn.commit() # Commit insertions when finished
+print ('stockHistory has been successfully populated.')
