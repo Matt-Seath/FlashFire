@@ -56,51 +56,27 @@ CREATE TABLE IF NOT EXISTS stockHistory (
     low NUMERIC NOT NULL,
     close NUMERIC NOT NULL,
     volume INTEGER NOT NULL,
+    no_trades INTEGER NOT NULL,
     FOREIGN KEY (stock_id) REFERENCES stocks (id)
 );
 
-CREATE TABLE IF NOT EXISTS stockLatest (
+CREATE TABLE IF NOT EXISTS latestTrade (
     id INTEGER PRIMARY KEY,
     stock_id INTEGER NOT NULL,
-    avgTotalVolume NUMERIC NOT NULL,
-    change NUMERIC NOT NULL,
-    changePercent NUMERIC NOT NULL,
-    close NUMERIC NOT NULL,
-    delayedPrice NUMERIC NOT NULL,
-    extendedChangePercent NUMERIC NOT NULL,
-    extendedPrice NUMERIC NOT NULL,
-    high NUMERIC NOT NULL,
-    highTime NUMERIC NOT NULL,
-    iexAskPrice NUMERIC NOT NULL,
-    iexAskSize NUMERIC NOT NULL,
-    iexBidPrice NUMERIC NOT NULL,
-    iexBidSize NUMERIC NOT NULL,
-    iexClose NUMERIC NOT NULL,
-    iexCloseTime NUMERIC NOT NULL,
-    iexLastUpdated NUMERIC NOT NULL,
-    iexMarketPercent NUMERIC NOT NULL,
-    iexOpen TEXT NOT NULL,
-    iexOpenTime NUMERIC NOT NULL,
-    iexNUMERICtimePrice NUMERIC NOT NULL,
-    iexNUMERICtimeSize NUMERIC NOT NULL,
-    iexVolume NUMERIC NOT NULL,
-    lastTradeTime NUMERIC NOT NULL,
-    latestPrice NUMERIC NOT NULL,
-    latestSource TEXT NOT NULL,
-    latestTime NUMERIC NOT NULL,
-    latestUpdate NUMERIC NOT NULL,
-    latestVolume NUMERIC NOT NULL,
-    low NUMERIC NOT NULL,
-    lowTime NUMERIC NOT NULL,
-    open NUMERIC NOT NULL,
-    peRatio NUMERIC NOT NULL,
-    previousClose NUMERIC NOT NULL,
-    previousVolume NUMERIC NOT NULL,
-    volume NUMERIC NOT NULL,
-    week52High NUMERIC NOT NULL,
-    week52Low NUMERIC NOT NULL,
-    ytdChange NUMERIC NOT NULL,
-    isUSMarketOpen TEXT NOT NULL,
+    time TEXT NOT NULL,
+    price NUMERIC NOT NULL,
+    size NUMERIC NOT NULL,
+    FOREIGN KEY (stock_id) REFERENCES stocks (id)
+);
+
+CREATE TABLE IF NOT EXISTS latestQuote (
+    id INTEGER PRIMARY KEY,
+    stock_id INTEGER NOT NULL,
+    time TEXT NOT NULL,
+    askPrice NUMERIC NOT NULL,
+    askSize NUMERIC,
+    bidPrice NUMERIC NOT NULL,
+    bidSize NUMERIC NOT NULL,
     FOREIGN KEY (stock_id) REFERENCES stocks (id)
 );
 

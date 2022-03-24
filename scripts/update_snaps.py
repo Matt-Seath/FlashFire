@@ -1,6 +1,6 @@
 import alpaca_trade_api as ata
 from dotenv import load_dotenv
-from datetime import datetime
+import datetime
 import sqlite3
 import os
 
@@ -12,7 +12,9 @@ import os
 conn = sqlite3.connect('instance/flashfire.sqlite')
 conn.row_factory = sqlite3.Row
 db = conn.cursor()
-dt = datetime.now()
+
+# Timestamp variable
+now = datetime.datetime.now()
 
 # Get dictionary of existing tickers from database
 db.execute('SELECT id, symbol, company FROM stocks')
@@ -33,19 +35,21 @@ api = ata.REST(os.environ.get('ALPACA_KEY'), os.environ.get('ALPACA_SECRET'),
       base_url=os.environ.get('PAPER_URL'))
 
 # Iterate over stocks in chunks of size chunk_size, to avoid an error from Alpaca api
-chunk_size = 200
+chunk_size = 1000
 for i in range(0, len(symbols), chunk_size):
     symbol_chunk = symbols[i:i + chunk_size]
 
     # Retrieve historical data for current stock from Alpaca database
-    bar_sets = api.get_barset(symbol_chunk, 'day')
-    for symbol in bar_sets:
-        print(f'{dt} processing symbol ({symbol})')
-        for bar in bar_sets[symbol]:
-            stock_id = stock_dict[symbol]
-
-            # Insert data into local database
-            db.execute('INSERT INTO stockHistory (stock_id, date, open, high, low, close, volume) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                        (stock_id, bar.t.date(), bar.o, bar.h, bar.l, bar.c, bar.v))
+    snaps = api.get_snapshots(symbol_chunk)
+    for symbol in snaps:
+        print(f'{now} updating snapshots ({symbol})')
+        # Insert data into local database
+        try: 
+            db.execute('INSERT INTO latestTrade (stock_id, time, price, size) VALUES (?, ?, ?, ?)',
+                         (stock_dict[symbol], 12, snaps[symbol].latest_trade.p, snaps[symbol].latest_trade.s))
+            db.execute('INSERT INTO latestQuote (stock_id, time, askPrice, bidPrice, bidSize) VALUES (?, ?, ?, ?, ?)',
+                    (stock_dict[symbol], 12, snaps[symbol].latest_quote.ap, snaps[symbol].latest_quote.bp, snaps[symbol].latest_quote.bs))
+        except:
+            print(f'Failed to get {symbol}')
 conn.commit() # Commit insertions when finished
 print ('stockHistory has been successfully populated.')
