@@ -46,33 +46,36 @@ def main():
     rows = db.fetchall()
     latest_quote_db = [row['stock_id'] for row in rows]
 
+    #sy = ['TSLA', 'AAPL']
 
-    print(latest_quote_db, latest_trade_db)
+    # Iterate over stocks in chunks of size chunk_size, to avoid an error from Alpaca api
+    chunk_size = 1000
+    for i in range(0, len(symbols), chunk_size):
+        symbol_chunk = symbols[i:i + chunk_size]
 
+        for i in range(0, len(symbols), chunk_size):
+            symbol_chunk = symbols[i:i + chunk_size]
 
-
-    # # Iterate over stocks in chunks of size chunk_size, to avoid an error from Alpaca api
-    # chunk_size = 1000
-    # for i in range(0, len(symbols), chunk_size):
-    #     symbol_chunk = symbols[i:i + chunk_size]
-
-    #     for i in range(0, len(symbols), chunk_size):
-    #         symbol_chunk = symbols[i:i + chunk_size]
-
-    #         # Retrieve historical data for current stock from Alpaca database
-    #         snaps = api.get_snapshots(symbol_chunk)
-    #         for symbol in snaps:
-    #             print(f'{now} updating snapshots ({symbol})')
-    #             # Insert data into local database
-    #             try: 
-    #                 db.execute('INSERT INTO latestTrade (stock_id, time, price, size) VALUES (?, ?, ?, ?)',
-    #                             (stock_dict[symbol], 12, snaps[symbol].latest_trade.p, snaps[symbol].latest_trade.s))
-    #                 db.execute('INSERT INTO latestQuote (stock_id, time, askPrice, bidPrice, bidSize) VALUES (?, ?, ?, ?, ?)',
-    #                         (stock_dict[symbol], 12, snaps[symbol].latest_quote.ap, snaps[symbol].latest_quote.bp, snaps[symbol].latest_quote.bs))
-    #             except:
-    #                 print(f'Failed to get {symbol}')
-    # conn.commit() # Commit insertions when finished
-    # print ('stockHistory has been successfully populated.')
+            # Retrieve historical data for current stock from Alpaca database
+            snaps = api.get_snapshots(symbol_chunk)
+            for symbol in snaps:
+                print(f'{now} updating snapshots ({symbol})')
+                # Insert data into local database
+                if stock_dict[symbol] not in latest_trade_db: 
+                    try: 
+                        db.execute('UPDATE latestTrade SET time = ?, price = ?, size = ? WHERE stock_id = ?',
+                                    (snaps[symbol].latest_trade.t.datetime() , snaps[symbol].latest_trade.p, snaps[symbol].latest_trade.s, stock_dict[symbol]))
+                    except:
+                        print(f'Failed to update {symbol}')
+                if stock_dict[symbol] not in latest_quote_db:
+                    try: 
+                        ask_size = getattr(snaps[symbol].latest_quote, "as")
+                        db.execute('UPDATE latestQuote SET time = ?, askPrice = ?, askSize = ?, bidPrice = ?, bidSize = ? WHERE stock_id = ?',
+                                (snaps[symbol].latest_quote.t.datetime(), snaps[symbol].latest_quote.ap, ask_size, snaps[symbol].latest_quote.bp, snaps[symbol].latest_quote.bs, stock_dict[symbol]))
+                    except:
+                        print(f'Failed to update {symbol}')
+    conn.commit() # Commit insertions when finished
+    print ('stockHistory has been successfully populated.')
 
 
 if __name__ == '__main__':

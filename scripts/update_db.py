@@ -124,24 +124,32 @@ def set_snapshots():
     rows = db.fetchall()
     latest_quote_db = [row['stock_id'] for row in rows]
     
+    # Iterate over stocks in chunks of size chunk_size, to avoid an error from Alpaca api
     for i in range(0, len(symbols), chunk_size):
         symbol_chunk = symbols[i:i + chunk_size]
         snaps = api.get_snapshots(symbol_chunk)
+
         for symbol in snaps:
-            print(f'{today} updating snapshots ({symbol})')
+            print(f'{today} updating snapshots ({symbol})') 
+
             # Insert trade and quote data for each stock into local database if no entries for that stock exist.
             if stock_dict[symbol] not in latest_trade_db:
                 try: 
                     db.execute('INSERT INTO latestTrade (stock_id, time, price, size) VALUES (?, ?, ?, ?)',
-                                (stock_dict[symbol], 12, snaps[symbol].latest_trade.p, snaps[symbol].latest_trade.s))
+                                (stock_dict[symbol], snaps[symbol].latest_trade.t.date(), snaps[symbol].latest_trade.p, snaps[symbol].latest_trade.s))
                 except:
                     print(f'---------Failed to retrieve latest trade {symbol}-----------!')
+                    db.execute('INSERT INTO latestTrade (stock_id, time, price, size) VALUES (?, ?, ?, ?)',
+                                (stock_dict[symbol], today, 0, 0))
             if stock_dict[symbol] not in latest_quote_db:
                 try: 
+                    ask_size = getattr(snaps[symbol].latest_quote, "as")
                     db.execute('INSERT INTO latestQuote (stock_id, time, askPrice, askSize, bidPrice, bidSize) VALUES (?, ?, ?, ?, ?, ?)',
-                            (stock_dict[symbol], 12, snaps[symbol].latest_quote.ap, snaps[symbol].latest_quote.aS, snaps[symbol].latest_quote.bp, snaps[symbol].latest_quote.bs))
+                            (stock_dict[symbol], snaps[symbol].latest_quote.t.date(), snaps[symbol].latest_quote.ap, ask_size, snaps[symbol].latest_quote.bp, snaps[symbol].latest_quote.bs))
                 except:   
                     print(f'-----------------Failed to retrieve latest quote {symbol} -------------!')
+                    db.execute('INSERT INTO latestQuote (stock_id, time, askPrice, askSize, bidPrice, bidSize) VALUES (?, ?, ?, ?, ?, ?)',
+                            (stock_dict[symbol], today, 0, 0, 0, 0))
     conn.commit() # Commit insertions when finished
     print ('SNAPSHOTS ADDED.')
 

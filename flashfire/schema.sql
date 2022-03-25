@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS latestQuote (
     stock_id INTEGER NOT NULL,
     time TEXT NOT NULL,
     askPrice NUMERIC NOT NULL,
-    askSize NUMERIC,
+    askSize NUMERIC NOT NULL,
     bidPrice NUMERIC NOT NULL,
     bidSize NUMERIC NOT NULL,
     FOREIGN KEY (stock_id) REFERENCES stocks (id)
