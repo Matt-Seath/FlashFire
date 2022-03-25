@@ -70,7 +70,8 @@ __------------------PACKAGE TREE--------------------------__
     ├───scripts
     │   ├───update_db.py
     │   ├───update_latest.py
-    │   ├───update_prices.py
+    │   ├───update_prices.py   
+    │   ├───update_snaps.py
     │   └───update_stocks.py
     ├───.flaskenv
     ├───.gitignore

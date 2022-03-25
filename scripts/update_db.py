@@ -13,7 +13,7 @@ conn = sqlite3.connect('instance/flashfire.sqlite')
 conn.row_factory = sqlite3.Row
 db = conn.cursor()
 
-# Configure how many days of data to retrieve (backdate)
+# Configure the minimum latest days of data to retrieve (backdate)
 days = 20
 today = datetime.date.today()
 backdate = today - datetime.timedelta(days = days)
@@ -40,10 +40,11 @@ api = ata.REST(os.environ.get('ALPACA_KEY'), os.environ.get('ALPACA_SECRET'),
 
 def main():
 
-    update_stocks()
-    update_prices()
-    set_snapshots()
+    update_stocks() # Retrieve and insert all current US stocks into stocks table
+    update_prices() # Retrieve and Insert historical data for stocks in database
+    set_snapshots() # Retrieve and insert latest snapshot data for stocks
     print('DATABASE HAS BEEN SUCCESSFULLY POPULATED')
+    return 0
 
 
 def update_stocks():
@@ -66,7 +67,7 @@ def update_stocks():
             print(ticker.name)
             print(Exception)
     conn.commit()
-    print('STOCKS POPULATED')
+    print('STOCKS ADDED SUCCESSFULLY')
     return 0
 
 
@@ -107,7 +108,7 @@ def update_prices():
             db.execute('INSERT INTO stockHistory (stock_id, date, open, high, low, close, volume, no_trades) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
                         (stock_id, bar.t.date(), bar.o, bar.h, bar.l, bar.c, bar.v, bar.n))
     conn.commit()
-    print ('STOCK HISTORY UP TO DATE')
+    print ('HISTORICAL DATA ADDED SUCCESSFULLY')
     return 0
 
 
@@ -116,7 +117,7 @@ def set_snapshots():
        into their respective tables"""
 
     print('RETRIEVING SNAPSHOTS')
-    # Get list of stock_ids that have stored data in lastestTrade and latestQuote
+    # Get 2 lists of stock_ids currently stored in lastestTrade and latestQuote tables
     db.execute('SELECT stock_id FROM latestTrade')
     rows = db.fetchall()
     latest_trade_db = [row['stock_id'] for row in rows]
@@ -130,29 +131,29 @@ def set_snapshots():
         snaps = api.get_snapshots(symbol_chunk)
 
         for symbol in snaps:
-            print(f'{today} updating snapshots ({symbol})') 
-
             # Insert trade and quote data for each stock into local database if no entries for that stock exist.
             if stock_dict[symbol] not in latest_trade_db:
-                try: 
+                try:     
                     db.execute('INSERT INTO latestTrade (stock_id, time, price, size) VALUES (?, ?, ?, ?)',
-                                (stock_dict[symbol], snaps[symbol].latest_trade.t.date(), snaps[symbol].latest_trade.p, snaps[symbol].latest_trade.s))
-                except:
+                                (stock_dict[symbol], snaps[symbol].latest_trade.t.ctime(), snaps[symbol].latest_trade.p, snaps[symbol].latest_trade.s))
+                    print(f'{today} initialising trade data ({symbol})') 
+                except:     # If not data found, insert values of 0
                     print(f'---------Failed to retrieve latest trade {symbol}-----------!')
                     db.execute('INSERT INTO latestTrade (stock_id, time, price, size) VALUES (?, ?, ?, ?)',
                                 (stock_dict[symbol], today, 0, 0))
             if stock_dict[symbol] not in latest_quote_db:
-                try: 
+                try:       
                     ask_size = getattr(snaps[symbol].latest_quote, "as")
                     db.execute('INSERT INTO latestQuote (stock_id, time, askPrice, askSize, bidPrice, bidSize) VALUES (?, ?, ?, ?, ?, ?)',
-                            (stock_dict[symbol], snaps[symbol].latest_quote.t.date(), snaps[symbol].latest_quote.ap, ask_size, snaps[symbol].latest_quote.bp, snaps[symbol].latest_quote.bs))
-                except:   
+                            (stock_dict[symbol], snaps[symbol].latest_quote.t.ctime(), snaps[symbol].latest_quote.ap, ask_size, snaps[symbol].latest_quote.bp, snaps[symbol].latest_quote.bs))
+                    print(f'{today} initialising trade data ({symbol})') 
+                except:    # If no data found, insert values of 0
                     print(f'-----------------Failed to retrieve latest quote {symbol} -------------!')
                     db.execute('INSERT INTO latestQuote (stock_id, time, askPrice, askSize, bidPrice, bidSize) VALUES (?, ?, ?, ?, ?, ?)',
                             (stock_dict[symbol], today, 0, 0, 0, 0))
     conn.commit() # Commit insertions when finished
-    print ('SNAPSHOTS ADDED.')
-
+    print ('SNAPSHOTS ADDED SUCCESSFULLY.')
+    return 0
 
 if __name__ == "__main__":
     main()

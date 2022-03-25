@@ -1,6 +1,9 @@
---FlashFire Database SCHEMA--
---Initialized with GLI command: $flask init-db
+"""     
 
+    FlashFire Database SCHEMA
+    Initialized with GLI command:   $  flask init-db 
+
+"""
 
 CREATE TABLE IF NOT EXISTS  users (
     id INTEGER, 
@@ -62,7 +65,7 @@ CREATE TABLE IF NOT EXISTS stockHistory (
 
 CREATE TABLE IF NOT EXISTS latestTrade (
     id INTEGER PRIMARY KEY,
-    stock_id INTEGER NOT NULL,
+    stock_id INTEGER NOT NULL UNIQUE,
     time TEXT NOT NULL,
     price NUMERIC NOT NULL,
     size NUMERIC NOT NULL,
@@ -71,7 +74,7 @@ CREATE TABLE IF NOT EXISTS latestTrade (
 
 CREATE TABLE IF NOT EXISTS latestQuote (
     id INTEGER PRIMARY KEY,
-    stock_id INTEGER NOT NULL,
+    stock_id INTEGER NOT NULL UNIQUE,
     time TEXT NOT NULL,
     askPrice NUMERIC NOT NULL,
     askSize NUMERIC NOT NULL,

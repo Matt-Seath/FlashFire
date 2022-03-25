@@ -8,6 +8,14 @@ from flashfire.db import get_db, query_db
 
 class db_query():
 
+    def get_latest_trade(stock_id):
+        result = query_db('SELECT * FROM latestTrade WHERE stock_id = ?', [stock_id])
+        return result
+
+    def get_latest_quote(stock_id):
+        result = query_db('SELECT * FROM latestQuote WHERE stock_id = ?', [stock_id], one = True)
+        return result
+
     def get_stocklist():
         result = query_db('SELECT id, symbol, company FROM stocks')
         return result
@@ -20,7 +28,7 @@ class db_query():
 
     def get_user(username):
         user = query_db('SELECT * FROM users WHERE username = ?',
-                        [username], one=True)
+                        [username], one = True)
         return user
 
     def get_user_data(user_id):

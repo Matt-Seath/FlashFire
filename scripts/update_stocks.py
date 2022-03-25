@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 
 def main():
 
+    print('RETRIEVING STOCKS')
     # Connect to flashfire database and create cursor object
     conn = sqlite3.connect('instance/flashfire.sqlite')
     conn.row_factory = sqlite3.Row
@@ -43,6 +44,7 @@ def main():
             print(ticker.name)
             print(Exception)
     conn.commit()   # Commit insertions to the database
+    print('STOCKS ADDED SUCCESSFULLY')
     return 0
 
 

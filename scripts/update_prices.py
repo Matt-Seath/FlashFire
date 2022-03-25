@@ -70,7 +70,8 @@ def main():
             db.execute('INSERT INTO stockHistory (stock_id, date, open, high, low, close, volume, no_trades) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
                         (stock_dict[bar.S], bar.t.date(), bar.o, bar.h, bar.l, bar.c, bar.v, bar.n))
     conn.commit() # Commit insertions when finished
-    print ('stockHistory has been successfully populated.')
+    print ('HISTORICAL DATA ADDED SUCCESSFULLY')
+    return 0
 
 
 if __name__ == '__main__':
