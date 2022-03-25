@@ -1,12 +1,11 @@
-from distutils.util import execute
-import os
-import datetime
-import alpaca_trade_api as ata
-import sqlite3
 from dotenv import load_dotenv
+import alpaca_trade_api as ata
+import datetime
+import sqlite3
+import os
 
-"""THIS SCRIPT SHOULD BE RUN AFTER INITIALISING A NEW DATABASE, AND THEN SCHEDULED 
-   TO AUTOMATICALLY RUN AT LEAST ONCE PER DAY."""
+"""THIS SCRIPT SHOULD BE RUN AFTER INITIALISING A NEW DATABASE, 
+   AND THEN SCHEDULED TO AUTOMATICALLY RUN AT LEAST ONCE PER DAY."""
 
 
 # Connect to flashfire database and create cursor object
@@ -15,9 +14,9 @@ conn.row_factory = sqlite3.Row
 db = conn.cursor()
 
 # Configure how many days of data to retrieve (backdate)
-min_backdate = 20
+days = 20
 today = datetime.date.today()
-past_date = today - datetime.timedelta(days = backdate)
+backdate = today - datetime.timedelta(days = days)
 
 # Limit requests to handle X number of stocks at a time
 chunk_size = 1000
@@ -33,15 +32,19 @@ for row in rows:
     symbol = row['symbol']
     stock_dict[symbol] = row['id']
 
-
-
 # Validate Alpaca API using secret api keys
 load_dotenv()
 api = ata.REST(os.environ.get('ALPACA_KEY'), os.environ.get('ALPACA_SECRET'), 
-      base_url=os.environ.get('LIVE_URL'))
+    base_url=os.environ.get('LIVE_URL'))
 
 
-def 
+def main():
+
+    update_stocks()
+    update_prices()
+    set_snapshots()
+    print('DATABASE HAS BEEN SUCCESSFULLY POPULATED')
+
 
 def update_stocks():
     """RETRIEVES AN UPDATED LIST OF AVAILABLE STOCKS ON THE MARKET AND INSERTS NEW STOCKS INTO
@@ -56,12 +59,13 @@ def update_stocks():
             if ticker.status == 'active' and ticker.tradable and ticker.exchange != 'OTC' and ticker.symbol not in symbols:
                 if ticker.exchange == 'ARCA':
                     ticker.exchange = 'AMEX'
-                print(f'{today}  {ticker.exchange} stock added ({ticker.symbol}):  {ticker.name}')
+                print(f'{today} {ticker.exchange} stock added ({ticker.symbol}):  {ticker.name}')
                 db.execute('INSERT INTO stocks (symbol, company, exchange) VALUES (?, ?, ?)',
                             (ticker.symbol, ticker.name, ticker.exchange))
         except Exception:
             print(ticker.name)
             print(Exception)
+    conn.commit()
     print('STOCKS POPULATED')
     return 0
 
@@ -71,13 +75,30 @@ def update_prices():
        DATA IS THEN STORED IN THE 'stockHistory' TABLE"""
 
     print('RETRIEVING HISTORICAL DATA')
-    
+
+    # Configure the 'start date' for the request
+    try:
+        # If data already exists in db, start search one day after the date of last entry
+        db.execute('SELECT date FROM stockHistory ORDER BY date DESC LIMIT 1')
+        latest_entry = db.fetchone()[0]
+        converted_date = datetime.datetime.strptime(latest_entry, "%Y-%m-%d").date()
+        start_date = converted_date + datetime.timedelta(days = 1)
+    except:
+        # If no data exists in table, get last X days of data, where X = backdate
+        start_date = backdate
+
+    if start_date >= today:
+        print('STOCKHISTORY HAS ALREADY BEEN UPDATED TODAY')
+        return 1
+
+    print (f' START DATE IS SET FOR: {start_date}')
+
     # Iterate over stocks in chunks of size chunk_size, to avoid an error from Alpaca api
     for i in range(0, len(symbols), chunk_size):
         symbol_chunk = symbols[i:i + chunk_size]
 
         # Retrieve historical data for current stock from Alpaca database
-        bar_sets = api.get_bars(symbol_chunk, "1Day", start = past_date)
+        bar_sets = api.get_bars(symbol_chunk, "1Day", start = start_date)
         for bar in bar_sets:
             print(f'{today} processing data ({bar.S}) : {bar.t.date()}')
             stock_id = stock_dict[bar.S]
@@ -85,7 +106,7 @@ def update_prices():
             # Insert data into local database
             db.execute('INSERT INTO stockHistory (stock_id, date, open, high, low, close, volume, no_trades) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
                         (stock_id, bar.t.date(), bar.o, bar.h, bar.l, bar.c, bar.v, bar.n))
-  
+    conn.commit()
     print ('STOCK HISTORY UP TO DATE')
     return 0
 
@@ -102,9 +123,9 @@ def set_snapshots():
     db.execute('SELECT stock_id FROM latestQuote')
     rows = db.fetchall()
     latest_quote_db = [row['stock_id'] for row in rows]
+    
     for i in range(0, len(symbols), chunk_size):
         symbol_chunk = symbols[i:i + chunk_size]
-
         snaps = api.get_snapshots(symbol_chunk)
         for symbol in snaps:
             print(f'{today} updating snapshots ({symbol})')
@@ -114,19 +135,16 @@ def set_snapshots():
                     db.execute('INSERT INTO latestTrade (stock_id, time, price, size) VALUES (?, ?, ?, ?)',
                                 (stock_dict[symbol], 12, snaps[symbol].latest_trade.p, snaps[symbol].latest_trade.s))
                 except:
-                    print(f'Failed to retrieve latest trade {symbol}')
+                    print(f'---------Failed to retrieve latest trade {symbol}-----------!')
             if stock_dict[symbol] not in latest_quote_db:
                 try: 
-                    db.execute('INSERT INTO latestQuote (stock_id, time, askPrice, bidPrice, bidSize) VALUES (?, ?, ?, ?, ?)',
-                            (stock_dict[symbol], 12, snaps[symbol].latest_quote.ap, snaps[symbol].latest_quote.bp, snaps[symbol].latest_quote.bs))
+                    db.execute('INSERT INTO latestQuote (stock_id, time, askPrice, askSize, bidPrice, bidSize) VALUES (?, ?, ?, ?, ?, ?)',
+                            (stock_dict[symbol], 12, snaps[symbol].latest_quote.ap, snaps[symbol].latest_quote.aS, snaps[symbol].latest_quote.bp, snaps[symbol].latest_quote.bs))
                 except:   
-                    print(f'Failed to retrieve latest quote {symbol}')
+                    print(f'-----------------Failed to retrieve latest quote {symbol} -------------!')
     conn.commit() # Commit insertions when finished
     print ('SNAPSHOTS ADDED.')
 
 
 if __name__ == "__main__":
-    update_stocks()
-    update_prices()
-    set_snapshots()
-    print('DATABASE HAS BEEN SUCCESSFULLY POPULATED')
+    main()
