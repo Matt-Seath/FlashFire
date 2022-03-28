@@ -2,13 +2,14 @@
 
 __STATUS:__ CURRENTLY IN DEVELOPMENT     <br><br>
 __Application:__                         <br>
-FlashFire is a trading platform / web application that will reproduce behavior and features of the US stock markets, allowing users to execute orders with zero commissions through live trading functionality, or practice trading stocks without financial risk with paper trading.                <br>
+FlashFire is a trading platform / flask web application that reproduces the behaviours and features of the US stock market, while utilising Alpacas trade API to both retrieve market data and place orders. This allows users to trade commission-free with live-trading, or simply practice trading equities without financial risk with paper-trading.                <br>
 
-FlashFire will also provide users with the option to utilise a paradigm of popular trading strategies that can be configured from the user interface to automatically execute trades on the users behalf.      <br>
+The user interface prioritises user-friendliness with a simplistic design that aims to reduce klutter and support individuals that may have little to no experience trading or managing financial portfolios. Upon registering an account, each users paper-trading configuration can be tailored to suit that individuals level of trading experience.             
+Users will also be able to utilise a paradigm of popular trading strategies that can be configured from the user interface to automatically place/cancel orders on the users behalf.      <br>                                                                                 
 
-The app uses Aplacas Trade API to place orders and request historical data that is then inserted into a local sqlite database.       <br>
-Created in Python, using the Flask framework.                                                                                    <br><br>
+This is my first major flask capstone project, so any feedback/assistance on the app will be welcomed and highly appreciated. Feel free to contact me if you experience any issues   <br><br><br>
 
+<<<<<<< HEAD
 ### .gitignore:               
     __pycache__/
     instance/
@@ -19,12 +20,16 @@ Created in Python, using the Flask framework.                                   
     
 <br>    
 ### Package dependencies:               
+=======
+### Package dependencies: 
+    python,              
+>>>>>>> d4f28efd2c07065dc778e9766415e1372ee43d16
     flask,                        
     flask-session,                
     flask-wtf,                    
     requests,                     
     python-dotenv,                
-    alpaca-trade-api,             
+    alpaca-trade-api,          
     email_validator,              
     datetime,
     
