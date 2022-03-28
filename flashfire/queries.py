@@ -16,9 +16,14 @@ class db_query():
         result = query_db('SELECT * FROM latestQuote WHERE stock_id = ?', [stock_id], one = True)
         return result
 
-    def get_stocklist():
+    def get_stocks():
         result = query_db('SELECT id, symbol, company FROM stocks')
         return result
+
+    def get_stocklist():
+        result = query_db('SELECT symbol FROM stocks')
+        symbols = [row['symbol'] for row in result]
+        return symbols
 
     def get_watchlist(user_id):
         result = query_db("""select watchlist.id, symbol, company from stocks

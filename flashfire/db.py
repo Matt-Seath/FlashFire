@@ -34,7 +34,7 @@ def get_db():
         g.db.row_factory = sqlite3.Row
     return g.db
 
-# A simple framework function that makes querying the database less tedious
+# A simple higher-order function that makes querying the database less tedious
 def query_db(query, args=(), one=False):
     cur = get_db().execute(query, args)
     rv = cur.fetchall()

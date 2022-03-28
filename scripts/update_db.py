@@ -138,7 +138,7 @@ def set_snapshots():
                                 (stock_dict[symbol], snaps[symbol].latest_trade.t.ctime(), snaps[symbol].latest_trade.p, snaps[symbol].latest_trade.s))
                     print(f'{today} initialising trade data ({symbol})') 
                 except:     # If not data found, insert values of 0
-                    print(f'---------Failed to retrieve latest trade {symbol}-----------!')
+                    print(f'--Failed to retrieve latest trade {symbol}----------------------------!')
                     db.execute('INSERT INTO latestTrade (stock_id, time, price, size) VALUES (?, ?, ?, ?)',
                                 (stock_dict[symbol], today, 0, 0))
             if stock_dict[symbol] not in latest_quote_db:
@@ -148,7 +148,7 @@ def set_snapshots():
                             (stock_dict[symbol], snaps[symbol].latest_quote.t.ctime(), snaps[symbol].latest_quote.ap, ask_size, snaps[symbol].latest_quote.bp, snaps[symbol].latest_quote.bs))
                     print(f'{today} initialising trade data ({symbol})') 
                 except:    # If no data found, insert values of 0
-                    print(f'-----------------Failed to retrieve latest quote {symbol} -------------!')
+                    print(f'---------------------------Failed to retrieve latest quote {symbol} --!')
                     db.execute('INSERT INTO latestQuote (stock_id, time, askPrice, askSize, bidPrice, bidSize) VALUES (?, ?, ?, ?, ?, ?)',
                             (stock_dict[symbol], today, 0, 0, 0, 0))
     conn.commit() # Commit insertions when finished

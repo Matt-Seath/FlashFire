@@ -9,6 +9,15 @@ FlashFire will also provide users with the option to utilise a paradigm of popul
 The app uses Aplacas Trade API to place orders and request historical data that is then inserted into a local sqlite database.       <br>
 Created in Python, using the Flask framework.                                                                                    <br><br>
 
+### .gitignore:               
+    __pycache__/
+    instance/
+    tests/
+    .env
+    test.py
+    logs/
+    
+<br>    
 ### Package dependencies:               
     flask,                        
     flask-session,                
