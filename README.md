@@ -9,21 +9,9 @@ Users will also be able to utilise a paradigm of popular trading strategies that
 
 This is my first major flask capstone project, so any feedback/assistance on the app will be welcomed and highly appreciated. Feel free to contact me if you experience any issues   <br><br><br>
 
-<<<<<<< HEAD
-### .gitignore:               
-    __pycache__/
-    instance/
-    tests/
-    .env
-    test.py
-    logs/
-    
-<br>    
-### Package dependencies:               
-=======
+
 ### Package dependencies: 
     python,              
->>>>>>> d4f28efd2c07065dc778e9766415e1372ee43d16
     flask,                        
     flask-session,                
     flask-wtf,                    
@@ -33,7 +21,17 @@ This is my first major flask capstone project, so any feedback/assistance on the
     email_validator,              
     datetime,
     
-<br>    
+<br>  
+
+### .gitignore:               
+    __pycache__/
+    instance/
+    tests/
+    .env
+    test.py
+    logs/
+    
+<br>      
 
 ### Usage:                                                                  <br>
 1. __Install the latest version of Python and add to your PATH.__           <br>
