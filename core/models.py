@@ -12,3 +12,6 @@ class Stock(models.Model):
     company = models.CharField(max_length=255),
     exchange = models.CharField(max_length=255)
 
+class WatchList(models.Model):
+    user_id = models.ForeignKey(Username, related_name="watchlist"),
+    stock_id = models.ForeignKey(Stock, related_name="watchlist")
