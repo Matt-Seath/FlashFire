@@ -20,8 +20,7 @@ class WatchList(models.Model):
 
 
 class StockHistory(models.Model):
-    stock_id = models.ForeignKey(Stock, on_delete=models.CASCADE, related_name="history"),
-    date = 
+    stock_id = models.ForeignKey(Stock, on_delete=models.CASCADE, related_name="history") 
 
 
 class LatestTrade(models.Model):
