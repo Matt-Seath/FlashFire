@@ -7,13 +7,13 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev \
-    && apk add --no-cache mariadb-dev
-RUN python -m pip install -U pip
-RUN pip install --upgrade setuptools
+    && apk add --no-cache mariadb-dev \
+    && python -m pip install -U pip \
+    && pip install --upgrade setuptools
 
 COPY requirements.txt /app
-RUN pip install -r requirements.txt --no-cache-dir
-RUN apk del build-deps
+RUN pip install -r requirements.txt --no-cache-dir \
+    && apk del build-deps
 
 COPY . /app
 
