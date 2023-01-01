@@ -13,6 +13,13 @@ class Stock(models.Model):
     company = models.CharField(max_length=255)
     exchange = models.CharField(max_length=255)
 
+class StockPriceMinute(models.Model):
+    open = models.DecimalField(default=0.00, decimal_places=2, max_digits=15)
+    high = models.DecimalField(default=0.00, decimal_places=2, max_digits=15)
+    low = models.DecimalField(default=0.00, decimal_places=2, max_digits=15)
+    close = models.DecimalField(default=0.00, decimal_places=2, max_digits=15)
+    volume = models.DecimalField(default=0.00, decimal_places=2, max_digits=15)
+    datetime = models.DateTimeField(auto_now_add=True)
 
 class WatchList(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist")
@@ -21,12 +28,3 @@ class WatchList(models.Model):
 
 class StockHistory(models.Model):
     stock_id = models.ForeignKey(Stock, on_delete=models.CASCADE, related_name="history") 
-
-
-class LatestTrade(models.Model):
-    stock_id = models.ForeignKey(Stock, on_delete=models.CASCADE, related_name="latest")
-    time = models.CharField(max_length=255)
-    price = models.DecimalField(decimal_places=2, max_digits=15)
-    size = models.DecimalField(decimal_places=2, max_digits=15)
-
-
