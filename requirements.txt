@@ -19,6 +19,7 @@ Pillow
 drf-nested-routers
 django-cors-headers
 django-templated-mail
+matplotlib
 
 pytest
 django-pytest

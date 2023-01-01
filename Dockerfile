@@ -9,16 +9,19 @@ RUN apk update \
     && apk add --no-cache --update gcc python3 \
     python3-dev mariadb-dev gfortran musl-dev  \
     g++ libffi-dev openssl-dev libxml2 libxml2-dev  \
-    libxslt libxslt-dev libjpeg-turbo-dev zlib-dev
+    libxslt libxslt-dev libjpeg-turbo-dev zlib-dev \
+    jpeg-dev libjpeg tesseract-ocr py3-numpy make
 
-RUN pip install pip==22.3.1 wheel==0.38.4
+RUN pip install --upgrade \
+    pip setuptools wheel
 
 COPY requirements.txt /app
 RUN pip install -r requirements.txt --no-cache-dir
 
-RUN apk del gcc fortran musl-dev  \
+RUN apk del gcc gfortran musl-dev  \
     g++ libffi-dev openssl-dev libxml2 libxml2-dev  \
-    libxslt libxslt-dev libjpeg-turbo-dev zlib-dev
+    libxslt libxslt-dev libjpeg-turbo-dev zlib-dev \
+    jpeg-dev libjpeg
 
 COPY . /app
 
