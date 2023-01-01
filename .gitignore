@@ -4,3 +4,4 @@ tests/
 .env
 test.py
 logs/
+venv/
