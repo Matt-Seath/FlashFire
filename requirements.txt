@@ -3,6 +3,7 @@ mysqlclient==2.1.1
 python-dotenv==0.21.0
 backtrader==1.9.76.123
 ib-insync==0.9.81
+IbPy2==0.8.0
 pandas==1.5.2
 redis==4.4.0
 celery==5.2.7
@@ -18,6 +19,7 @@ Pillow==9.3.0
 drf-nested-routers==0.93.4
 django-cors-headers==3.13.0
 django-templated-mail==1.1.1
+matplotlib==3.6.2
 openai==0.25.0
 
 pytest==7.2.0
