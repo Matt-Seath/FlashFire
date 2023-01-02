@@ -1,8 +1,8 @@
-django
-mysqlclient
-python-dotenv
-backtrader
-IbPy2
+django==3.2.16
+mysqlclient==2.1.1
+python-dotenv==0.20.0
+backtrader==1.9.76.123
+IbPy2==0.8.0
 openai
 pandas
 redis
@@ -24,3 +24,7 @@ matplotlib
 pytest
 django-pytest
 pytest-watch
+model-bakery
+django-silk
+locust
+
