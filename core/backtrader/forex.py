@@ -1,14 +1,15 @@
 import backtrader as bt
-import backtrader.stores.ibstore as ibstore
+from atreyu_backtrader_api import IBData
 
-def start():
-    print("starting backtrader..")
-    cerebro = bt.Cerebro()
+cerebro = bt.Cerebro()
 
-    store = ibstore.IBStore(port=7496)
-    data = store.getdata(
-        dataname="MSFT", secType="STK", exchange="SMART", timeframe=bt.TimeFrame.TimeFrame.Seconds)
-    cerebro.resampledata(data, timeframe=bt.TimeFrame.TimeFrame.Seconds, compression=15)
-
-    cerebro.run()
-start()
+data = IBData(host='127.0.0.1', port=7496, clientId=1,
+               name="GOOG",     # Data name
+               dataname='GOOG', # Symbol name
+               secType='STK',   # SecurityType is STOCK 
+               exchange='SMART',# Trading exchange IB's SMART exchange 
+               currency='USD',  # Currency of SecurityType
+               rtbar=True,      # Request Realtime bars
+               _debug=True      # Set to True to print out debug messagess from IB TWS API
+              )
+print(data)

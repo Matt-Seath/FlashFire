@@ -1,10 +1,7 @@
 backtrader                    1.9.76.123
 celery                        5.2.7
 Django                        4.1.5
-django-cors-headers           3.13.0
-django_debug_toolbar          3.8.1
 django-filter                 22.1
-django-pytest                 0.2.0
 django-redis                  5.2.0
 django-silk                   5.0.2
 django-templated-mail         1.1.1
@@ -13,7 +10,6 @@ djangorestframework-simplejwt 4.8.0
 djoser                        2.1.0
 drf-nested-routers            0.93.4
 flower                        1.2.0
-locust                        2.14.0
 matplotlib                    3.6.2
 model-bakery                  1.9.0
 mysqlclient                   2.1.1
@@ -22,10 +18,5 @@ openai                        0.25.0
 pandas                        1.5.2
 Pillow                        9.4.0
 pip                           22.3.1
-pytest                        7.2.0
-pytest-watch                  4.2.0
 python-dotenv                 0.21.0
 redis                         4.4.0
-setuptools                    65.6.3
-wheel                         0.38.4
-whitenoise                    6.2.0
