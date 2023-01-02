@@ -1,4 +1,4 @@
-FROM python:3.7-alpine3.17
+FROM python:3.6.8-alpine
 
 WORKDIR /app 
 
@@ -6,22 +6,17 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 RUN apk update \
-    && apk add --no-cache --update gcc python3 \
+    && apk add --no-cache --update gcc \
     python3-dev mariadb-dev gfortran musl-dev  \
     g++ libffi-dev openssl-dev libxml2 libxml2-dev  \
     libxslt libxslt-dev libjpeg-turbo-dev zlib-dev \
     jpeg-dev libjpeg tesseract-ocr py3-numpy make
 
-RUN pip install --upgrade \
-    pip setuptools wheel
+RUN python3 -m ensurepip
+RUN pip3 install --no-cache --upgrade pip setuptools wheel
 
 COPY requirements.txt /app
-RUN pip install -r requirements.txt --no-cache-dir
-
-RUN apk del gcc gfortran musl-dev  \
-    g++ libffi-dev openssl-dev libxml2 libxml2-dev  \
-    libxslt libxslt-dev libjpeg-turbo-dev zlib-dev \
-    jpeg-dev libjpeg
+RUN pip3 install -r requirements.txt --no-cache-dir
 
 COPY . /app
 
