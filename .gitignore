@@ -1,6 +1,6 @@
 __pycache__/
 instance/
-tests/
+flashfire/tests/
 .env
 test.py
 logs/
