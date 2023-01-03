@@ -26,6 +26,9 @@ pytest                      ==  7.2.0
 pytest-watch                ==  4.2.0
 python-dotenv               ==  0.21.0
 redis                       ==  4.4.0
+requests-html               ==  0.10.0
 setuptools                  ==  65.6.3
 wheel                       ==  0.38.4
 whitenoise                  ==  6.2.0
+yahoo-fin                   ==  0.8.9.1
+yfinance                    ==  0.2.3
