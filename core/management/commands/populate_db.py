@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db import connection
 from pathlib import Path
+from core.models import Stock
 from sqlalchemy import create_engine
 from flashfire import settings
 import pandas as pd
@@ -23,4 +24,6 @@ class Command(BaseCommand):
         engine = create_engine(settings.DATABASE_URL)
 
 
-        df.to_sql(, con=engine, index=False)
+        df.to_sql(Stock, if_exists="replace", con=engine, index=False)
+
+        print("ok")
