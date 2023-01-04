@@ -28,6 +28,7 @@ python-dotenv               ==  0.21.0
 redis                       ==  4.4.0
 requests-html               ==  0.10.0
 setuptools                  ==  65.6.3
+SQLAlchemy                  ==  1.4.45
 wheel                       ==  0.38.4
 whitenoise                  ==  6.2.0
 yahoo-fin                   ==  0.8.9.1

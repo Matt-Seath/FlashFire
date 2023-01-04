@@ -1,7 +1,13 @@
 from django.core.management.base import BaseCommand
 from django.db import connection
 from pathlib import Path
+from sqlalchemy import create_engine
+from flashfire import settings
+import pandas as pd
 import os
+
+
+
 
 
 class Command(BaseCommand):
@@ -10,10 +16,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print('Populating the database...')
         current_dir = os.path.dirname(__file__)
-        file_path = os.path.join(current_dir, 'seed.sql')
-        sql = Path(file_path).read_text()
+        csv = os.path.join(current_dir, 'assets//asx.csv')
+        df = pd.read_csv(csv)
+        df = df["ASX code"]
 
-        with connection.cursor() as cursor:
-            cursor.execute(sql)
+        engine = create_engine(settings.DATABASE_URL)
 
-        print("Done.")
+
+        df.to_sql(, con=engine, index=False)

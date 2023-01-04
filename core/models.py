@@ -70,7 +70,6 @@ class StockInfo(models.Model):
     total_cash = models.BigIntegerField()
     total_debt = models.BigIntegerField()
     total_revenue = models.BigIntegerField()
-
     total_cash_per_share = models.DecimalField(max_digits=6, decimal_places=3)
     financial_currency = models.CharField(max_length=3)
     revenue_per_share = models.DecimalField(max_digits=6, decimal_places=3)
@@ -103,7 +102,6 @@ class StockInfo(models.Model):
     shares_short = models.BigIntegerField()
     shares_percent_shares_out = models.DecimalField(max_digits=6, decimal_places=4)
     fund_family = models.CharField(max_length=50, null=True)
-    
     last_fiscal_year_end = models.PositiveIntegerField()
     held_percent_institutions = models.DecimalField(max_digits=6, decimal_places=5)
     net_income_to_common = models.BigIntegerField()
@@ -113,13 +111,12 @@ class StockInfo(models.Model):
     price_to_book = models.DecimalField(max_digits=8, decimal_places=5)
     held_percent_insiders = models.DecimalField(max_digits=7, decimal_places=5)
     next_fiscal_year_end = models.PositiveIntegerField()
-    yield_ = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    total_yield = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     most_recent_quarter = models.PositiveIntegerField()
     short_ratio = models.DecimalField(max_digits=4, decimal_places=1)
     shares_short_previous_month_date = models.PositiveIntegerField()
     float_shares = models.BigIntegerField()
     beta = models.DecimalField(max_digits=6, decimal_places=5)
-
     enterprise_value = models.BigIntegerField()
     price_hint = models.SmallIntegerField()
     three_year_average_return = models.FloatField(blank=True, null=True)
@@ -145,7 +142,6 @@ class StockInfo(models.Model):
     two_hundred_day_average = models.FloatField()
     trailing_annual_dividend_yield = models.FloatField()
     payout_ratio = models.FloatField()
-
     volume24Hr = models.CharField(max_length=50, null=True)
     regularMarketDayHigh = models.CharField(max_length=50, null=True)
     navPrice = models.CharField(max_length=50, null=True)
@@ -181,7 +177,6 @@ class StockInfo(models.Model):
     fromCurrency = models.CharField(max_length=50, null=True)
     fiveYearAvgDividendYield = models.CharField(max_length=50, null=True)
     fiftyTwoWeekLow = models.CharField(max_length=50, null=True)
-
     bid = models.FloatField()
     tradeable = models.BooleanField()
     dividend_yield = models.FloatField()
