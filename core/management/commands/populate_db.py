@@ -26,4 +26,4 @@ class Command(BaseCommand):
 
         df.to_sql(Stock, if_exists="replace", con=engine, index=False)
 
-        print("ok")
+        print("ok.")
