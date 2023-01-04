@@ -8,7 +8,7 @@ services:
       sh -c "sleep 10s;
       python manage.py setup_api; 
       python manage.py migrate; 
-      python manage.py update_db;
+      python manage.py get_stocks;
       python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
