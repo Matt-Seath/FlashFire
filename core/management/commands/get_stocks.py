@@ -40,4 +40,6 @@ class Command(BaseCommand):
                     
                     bar("Populating Stock Table", (i + 1), total_rows, symbol)
 
+            print("")
+            print("")
             print("done.")

@@ -38,7 +38,7 @@ class StockInfo(models.Model):
     long_business_summary = models.TextField()
     city = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
-    state = models.CharField(max_length=2)
+    state = models.CharField(max_length=20)
     country = models.CharField(max_length=50)
     company_officers = models.TextField()
     website = models.URLField()

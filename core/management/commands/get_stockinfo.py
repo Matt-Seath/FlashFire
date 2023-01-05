@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.db import connection
+from .progress_bar import bar
 import yfinance as yf
 import pandas as pd
 import csv
@@ -23,11 +24,26 @@ def get_symbols(file_path):
 
 
 def get_symbols_df(symbols):
+    total_symbols = len(symbols)
     df = []
-    print("Buiding Dataframe for Stocks..   ", end="")
-    for t in range(2):
-        print(t)
-        df = pd.DataFrame([yf.Ticker(symbols[t]).info])
+    for t in range(total_symbols):
+        try:
+            df = pd.DataFrame([yf.Ticker(symbols[t]).info])
+            df = df.rename(columns={"yield_": "total_yield"})
+        except:
+            print(f"Failed to obtain information for {symbols[t]}..")
+            return 1
+        with connection.cursor() as cursor:
+
+            # creating column list for insertion
+            cols = "`,`".join([str(i) for i in df.columns.tolist()])
+            for i,row in df.iterrows():
+                sql = "INSERT INTO `core_stockinfo` (`" +cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
+                cursor.execute(sql, tuple(row))
+                # print(sql, tuple(row))
+
+
+        bar("Populating StockInfo Table", t, total_symbols, symbols[t])
         
     return df
 
