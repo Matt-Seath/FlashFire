@@ -11,9 +11,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         data = pd.DataFrame({
-            'symbol':["A", "S"],
-            'company':['Python Programming', 'Learn MySQL'],
-            'exchange':["asx", None]
+            'symbol':["A"],
+            'company':['Python Programming'],
+            'exchange':["asx"]
         })
         print(data)
         print("")

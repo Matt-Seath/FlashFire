@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.db.utils import IntegrityError
 from django.db import connection
 from .progress_bar import bar
 import yfinance as yf
@@ -11,7 +12,7 @@ import os
 
 def get_symbols(file_path):
     symbols_list = []
-    print("Generating list of Symbols..   ", end="")
+    # print("Generating list of Symbols..   ", end="")
     with open(file_path, newline='') as csvfile:
         data = csv.DictReader(csvfile)
 
@@ -19,34 +20,48 @@ def get_symbols(file_path):
             symbol = row["ASX code"] + ".AX"
             symbols_list.append(symbol)
 
-    print("Done.")
+    # print("Done.")
     return symbols_list
 
 
 def get_symbols_df(symbols):
     total_symbols = len(symbols)
-    df = []
-    for t in range(total_symbols):
+    pd.set_option("display.max_columns", None)
+    df = pd.DataFrame()
+
+    for t in range(5):
         try:
-            pd.set_option("display.max_columns", None)
-            df = pd.DataFrame([yf.Ticker(symbols[t]).info])
-            df = df.rename(columns={"yield_": "total_yield"})
-            print(df.head)
-        except:
-            print(f"Failed to obtain information for {symbols[t]}..")
-            return 1
-        # with connection.cursor() as cursor:
-
-        #     # creating column list for insertion
-        #     cols = "`,`".join([str(i) for i in df.columns.tolist()])
-        #     for i,row in df.iterrows():
-        #         sql = "INSERT INTO `core_stockinfo` (`" +cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
-        #         cursor.execute(sql, tuple(row))
-        #         # print(sql, tuple(row))
-
-
-        bar("Populating StockInfo Table", t, total_symbols, symbols[t])
+            df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
+            # print(df.head(1))
+        except Exception as e:
+            f = open("logs/errors.txt", "a")
+            f.write(f"Failed to obtain information for {symbols[t]}: {e}\n ")
+            print(f"{symbols[t]} Not Found")
+            f.close()
+        df = pd.concat([df, df_entry], axis=0)
         
+            
+        bar("Retrieving Stock Info", t, total_symbols, symbols[t])
+
+    df = df.rename(columns={"yield": "totalYield", "open": "openPrice", \
+        "zip": "zipCode", "52WeekChange": "fiftyTwoWeekChange", "logo_url": "logoUrl"})
+    df.drop(['companyOfficers'], axis=1, inplace=True)
+    df.to_csv('logs/raw_data.csv', index=False)
+
+    with connection.cursor() as cursor:
+        # creating column list for insertion
+        cols = "`,`".join([str(i) for i in df.columns.tolist()])
+        for i,row in df.iterrows():
+            sql = "INSERT INTO `core_stockinfo` (`" +cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
+            try:
+                cursor.execute("DELETE FROM core_stockinfo;")
+                cursor.execute(sql, tuple(row))
+                # print(df)
+            except IntegrityError as e:
+                print(f"{t} already exists in this database!")
+            # print(sql, tuple(row))
+
+    
     return df
 
 
@@ -61,7 +76,7 @@ class Command(BaseCommand):
         symbols = get_symbols(csv_path)
         symbols_df = get_symbols_df(symbols)
         
-        print(symbols_df)
+        # print(symbols_df)
             #     # creating column list for insertion
             #     cols = "`,`".join([str(i) for i in data.columns.tolist()])
 
