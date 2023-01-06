@@ -2,13 +2,14 @@ from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
 from django.db import connection
 from .progress_bar import bar
+from datetime import datetime
 import yfinance as yf
 import pandas as pd
 import numpy as np
 import csv
 import os
 
-
+NOW = datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
 
 
 def get_symbols(file_path):
@@ -26,47 +27,71 @@ def get_symbols(file_path):
 
 
 def get_symbols_df(symbols):
+    with open("logs/query.txt", "w") as f:
+        f.truncate(0)
+    with open("logs/errors.txt", "w") as f:
+        f.truncate(0)
     total_symbols = len(symbols)
     pd.set_option("display.max_columns", None)
     df = pd.DataFrame()
-    loops = 30
+    loops = 5
 
     for t in range(loops):
         try:
             df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
             # print(df.head(1))
         except Exception as e:
-            print(f"{symbols[t]} Not Found")
+            with open("logs/errors.txt", "a") as f: 
+                f.write(f"{NOW}: {symbols[t]} Not Found \n")
+
         df = pd.concat([df, df_entry], axis=0)
         
         bar("Retrieving Stock Info", t + 1, loops, symbols[t])
 
-    df = df.rename(columns={"yield": "totalYield", "open": "openPrice", \
-        "zip": "zipCode", "52WeekChange": "fiftyTwoWeekChange", "logo_url": "logoUrl"})
-    df.drop(["companyOfficers", "fundInceptionDate", "lastSplitDate", \
-        "lastDividendDate", "dateShortInterest"], axis=1, inplace=True)
+    df = df.rename(columns={"open": "openPrice", \
+        "52WeekChange": "fiftyTwoWeekChange", "logo_url": "logoUrl"})
+    df.drop(["zip", "companyOfficers", "fundInceptionDate", "lastSplitDate", \
+        "lastDividendDate", "dateShortInterest", "fullTimeEmployees", "fax", "targetLowPrice", \
+        "targetMedianPrice", "earningsGrowth", "numberOfAnalystOpinions", "targetMeanPrice", \
+        "targetHighPrice", "recommendationMean", "annualHoldingsTurnover", "beta3Year", \
+        "morningStarRiskRating", "forwardEps", "revenueQuarterlyGrowth", \
+        "annualReportExpenseRatio", "totalAssets", "sharesShort", "sharesPercentSharesOut", \
+        "fundFamily", "yield", "shortRatio", "sharesShortPreviousMonthDate", \
+        "threeYearAverageReturn", "lastSplitFactor", "legalType", "morningStarOverallRating", \
+        "earningsQuarterlyGrowth", "pegRatio", "ytdReturn", "lastCapGain", "shortPercentOfFloat", \
+        "sharesShortPriorMonth", "impliedSharesOutstanding", "category", "fiveYearAverageReturn", \
+        "volume24Hr", "navPrice", "toCurrency", "expireDate", "algorithm", "dividendRate", \
+        "exDividendDate", "circulatingSupply", "startDate", "lastMarket", "maxSupply", \
+        "openInterest", "volumeAllCurrencies", "strikePrice", "fromCurrency", \
+        "fiveYearAvgDividendYield", "dividendYield", "coinMarketCapLink", "preMarketPrice", \
+        "trailingPegRatio", "address2"], axis=1, inplace=True)
+    df.drop(df.columns[df.columns.str.contains('unnamed',case = False)],axis = 1, inplace = True)
     df = df.where(pd.notnull(df), None)
     df = df.replace(np.nan, None)
-    df.to_csv('logs/raw_data.csv', index=False)
-
+    df = df.reset_index(drop=True)
+    
     with connection.cursor() as cursor:
+        cursor.execute("DELETE FROM core_stockinfo;")
         # creating column list for insertion
         cols = "`,`".join([str(i) for i in df.columns.tolist()])
+        errors = 0
         for i,row in df.iterrows():
             sql = "INSERT INTO `core_stockinfo` (`" +cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
-            query = (sql, tuple(row))
-            # print(df)
+            query = f"{sql}{tuple(row)}"
             try:
-                cursor.execute("DELETE FROM core_stockinfo;")
-                cursor.execute(query)
+                # print(sql, tuple(row))
+                cursor.execute(sql, tuple(row))
             except Exception as e:
-                f = open("logs/query.txt", "w")
-                f.write(query)
-                f.close()
-                print(e)
+                with open("logs/query.txt", "a") as f:
+                    f.write(query + '\n')
+                with open("logs/errors.txt", "a") as f:
+                    f.write(f"{NOW}: Could not insert {symbols[t]}, {e} \n")
+                errors += 1
             # print(sql, tuple(row))
+            bar("Inserting into Database", i + 1, loops, symbols[t])
 
-    return df
+    df.to_csv("logs/raw_data.csv", index=False)
+    return errors
 
 
 class Command(BaseCommand):
@@ -78,6 +103,8 @@ class Command(BaseCommand):
         csv_path = os.path.join(current_dir, 'assets//asx.csv')
 
         symbols = get_symbols(csv_path)
-        get_symbols_df(symbols)
+        errors = get_symbols_df(symbols)
         
-        print("Done.")
+        print("")
+        print("")
+        print(f"Task completed with {errors} error/s.")
