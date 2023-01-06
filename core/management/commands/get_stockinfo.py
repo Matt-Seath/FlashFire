@@ -34,7 +34,7 @@ def get_symbols_df(symbols):
     total_symbols = len(symbols)
     pd.set_option("display.max_columns", None)
     df = pd.DataFrame()
-    loops = 5
+    loops = 20
 
     for t in range(loops):
         try:
@@ -64,11 +64,10 @@ def get_symbols_df(symbols):
         "exDividendDate", "circulatingSupply", "startDate", "lastMarket", "maxSupply", \
         "openInterest", "volumeAllCurrencies", "strikePrice", "fromCurrency", \
         "fiveYearAvgDividendYield", "dividendYield", "coinMarketCapLink", "preMarketPrice", \
-        "trailingPegRatio", "address2"], axis=1, inplace=True)
-    df.drop(df.columns[df.columns.str.contains('unnamed',case = False)],axis = 1, inplace = True)
-    df = df.where(pd.notnull(df), None)
+        "trailingPegRatio", "address2", "lastDividendValue", "trailingPE"], axis=1, inplace=True)
     df = df.replace(np.nan, None)
     df = df.reset_index(drop=True)
+    # df.drop(df.columns[df.columns.str.contains('unnamed',case = False)],axis = 1, inplace = True)
     
     with connection.cursor() as cursor:
         cursor.execute("DELETE FROM core_stockinfo;")
@@ -90,8 +89,7 @@ def get_symbols_df(symbols):
             # print(sql, tuple(row))
             bar("Inserting into Database", i + 1, loops, symbols[t])
 
-    df.to_csv("logs/raw_data.csv", index=False)
-    return errors
+    return df, errors
 
 
 class Command(BaseCommand):
@@ -103,8 +101,10 @@ class Command(BaseCommand):
         csv_path = os.path.join(current_dir, 'assets//asx.csv')
 
         symbols = get_symbols(csv_path)
-        errors = get_symbols_df(symbols)
+        df, errors = get_symbols_df(symbols)
         
         print("")
+        print(df)
+        df.to_csv("logs/raw_data.csv", index=False)
         print("")
         print(f"Task completed with {errors} error/s.")
