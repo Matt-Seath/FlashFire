@@ -31,16 +31,19 @@ def get_symbols_df(symbols):
         f.truncate(0)
     with open("logs/errors.txt", "w") as f:
         f.truncate(0)
-    total_symbols = len(symbols)
+
     pd.set_option("display.max_columns", None)
     df = pd.DataFrame()
-    loops = 20
+    errors = 0
+    loops = 80
+    # loops = len(symbols)
 
     for t in range(loops):
         try:
             df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
             # print(df.head(1))
         except Exception as e:
+            errors += 1
             with open("logs/errors.txt", "a") as f: 
                 f.write(f"{NOW}: {symbols[t]} Not Found \n")
 
@@ -73,7 +76,7 @@ def get_symbols_df(symbols):
         cursor.execute("DELETE FROM core_stockinfo;")
         # creating column list for insertion
         cols = "`,`".join([str(i) for i in df.columns.tolist()])
-        errors = 0
+
         for i,row in df.iterrows():
             sql = "INSERT INTO `core_stockinfo` (`" +cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
             query = f"{sql}{tuple(row)}"
@@ -84,10 +87,10 @@ def get_symbols_df(symbols):
                 with open("logs/query.txt", "a") as f:
                     f.write(query + '\n')
                 with open("logs/errors.txt", "a") as f:
-                    f.write(f"{NOW}: Could not insert {symbols[t]}, {e} \n")
+                    f.write(f"{NOW}: Could not insert {symbols[i]}, {e} \n")
                 errors += 1
             # print(sql, tuple(row))
-            bar("Inserting into Database", i + 1, loops, symbols[t])
+            bar("Inserting into Database", i + 1, loops, symbols[i])
 
     return df, errors
 
