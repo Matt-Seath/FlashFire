@@ -28,19 +28,31 @@ def get_symbols(file_path):
 
 
 def clear_logs():
-    with open("logs/query.txt", "w") as f:
+    with open("logs/query.log", "w") as f:
         f.truncate(0)
-    with open("logs/added_symbols.txt", "w") as f:
+    with open("logs/added_symbols.log", "w") as f:
         f.truncate(0)
-    with open("logs/errors.txt", "w") as f:
+    with open("logs/errors.log", "w") as f:
         f.truncate(0)
-    with open ("logs/skipped.txt", "w") as f:
+    with open ("logs/skipped.log", "w") as f:
         f.truncate(0)
+
+
+def write_to_logs(added=None, skipped=None):
+    if added:
+        for entry in added:
+            with open ("logs/added.log", "a") as f:
+                f.write(entry)
+    if skipped:
+        for entry in skipped:
+            with open ("logs/skipped.log", "a") as f:
+                f.write(entry)
 
 
 def get_symbols_df(symbols):
     df = pd.DataFrame()
     df_entry = pd.DataFrame()
+    added_symbols = []
     skipped_symbols = []
     errors = 0
     loops = 8
@@ -51,19 +63,16 @@ def get_symbols_df(symbols):
             df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
         except Exception as e:
             errors += 0
-            with open("logs/errors.txt", "a") as f: 
+            with open("logs/errors.log", "a") as f: 
                 f.write(f"{NOW}: {symbols[t]} Not Found \n")
 
         print(len(df_entry.columns))
         if len(df_entry.columns) < 130:
-            print(df_entry)
             print(f"Skipping {symbols[t]}")
             skipped_symbols.append(symbols[t])
             continue
 
         df = pd.concat([df, df_entry], axis=0)
-        print(symbols[t])
-        print("")
         # bar("Retrieving Stock Info", t + 1, loops, symbols[t])
 
 
@@ -104,19 +113,17 @@ def get_symbols_df(symbols):
                 print(row["symbol"])
                 print(query)
                 cursor.execute(sql, tuple(row))
+                added_symbols.append(row["symbol"])
             except Exception as e:
-                with open("logs/query.txt", "a") as f:
+                with open("logs/query.log", "a") as f:
                     f.write(query + '\n')
-                with open("logs/errors.txt", "a") as f:
+                with open("logs/errors.log", "a") as f:
                     f.write(f"{NOW}: Could not insert {row['symbol']}, {e} \n")
                 errors += 1
             # print(sql, tuple(row))
             # bar("Inserting into Database", i + 1, loops, symbols[i])
     print(f"Skipped Symbols: {str(skipped_symbols)}")
-    for e in skipped_symbols:
-        with open ("logs/skipped.txt", "a") as f:
-            f.write(e)
-
+    write_to_logs(added_symbols, skipped_symbols)
     return df, errors
 
 
@@ -134,4 +141,5 @@ class Command(BaseCommand):
         clear_logs()
         df.to_csv("logs/raw_data.csv", index=False)
         print("")
+
         print(f"Task completed with {errors} error/s.")
