@@ -53,23 +53,25 @@ def get_symbols_df(symbols):
 
     # pd.set_option("display.max_columns", None)
     df = pd.DataFrame()
+    ignore_list = ["2BE.AX", "3MF.AX"]
     errors = 0
-    loops = 4
+    loops = 70
     # loops = len(symbols)
 
     for t in range(loops):
+        if symbols[t] in ignore_list:
+            continue
         try:
             df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
             # print(df.head(1))
         except Exception as e:
-            errors += 1
+            errors += 0
             with open("logs/errors.txt", "a") as f: 
                 f.write(f"{NOW}: {symbols[t]} Not Found \n")
 
         df = pd.concat([df, df_entry], axis=0)
-        
         bar("Retrieving Stock Info", t + 1, loops, symbols[t])
-        print(df)
+
     df = df.replace(np.nan, None)
     df = df.reset_index(drop=True)
     df = df.rename(columns={"open": "openPrice", \
