@@ -21,7 +21,7 @@ def get_symbols(file_path):
 
         for row in data:
             symbol = row["ASX code"].strip() + ".AX"
-            symbols_list.append(symbol)
+            symbols_list.append(symbol + ", ")
 
     print("Done.")
     return symbols_list
@@ -30,7 +30,7 @@ def get_symbols(file_path):
 def clear_logs():
     with open("logs/query.log", "w") as f:
         f.truncate(0)
-    with open("logs/added_symbols.log", "w") as f:
+    with open("logs/added.log", "w") as f:
         f.truncate(0)
     with open("logs/errors.log", "w") as f:
         f.truncate(0)
@@ -55,7 +55,7 @@ def get_symbols_df(symbols):
     added_symbols = []
     skipped_symbols = []
     errors = 0
-    loops = 8
+    loops = 12
     # loops = len(symbols)
 
     for t in range(loops):
@@ -68,12 +68,12 @@ def get_symbols_df(symbols):
 
         print(len(df_entry.columns))
         if len(df_entry.columns) < 130:
-            print(f"Skipping {symbols[t]}")
+            # print(f"Skipping {symbols[t]}")
             skipped_symbols.append(symbols[t])
             continue
 
         df = pd.concat([df, df_entry], axis=0)
-        # bar("Retrieving Stock Info", t + 1, loops, symbols[t])
+        bar("Retrieving Stock Info", t + 1, loops, symbols[t])
 
 
     df = df.replace(np.nan, None)
@@ -110,10 +110,8 @@ def get_symbols_df(symbols):
             # method = update_sql if symbol_exists else insert_sql
             query = f"{sql}{tuple(row)}"
             try:
-                print(row["symbol"])
-                print(query)
                 cursor.execute(sql, tuple(row))
-                added_symbols.append(row["symbol"])
+                added_symbols.append(row["symbol"] + ", ")
             except Exception as e:
                 with open("logs/query.log", "a") as f:
                     f.write(query + '\n')
@@ -122,6 +120,7 @@ def get_symbols_df(symbols):
                 errors += 1
             # print(sql, tuple(row))
             # bar("Inserting into Database", i + 1, loops, symbols[i])
+    print("")
     print(f"Skipped Symbols: {str(skipped_symbols)}")
     write_to_logs(added_symbols, skipped_symbols)
     return df, errors
@@ -132,13 +131,12 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
+        clear_logs()
         current_dir = os.path.dirname(__file__)
         csv_path = os.path.join(current_dir, 'assets//asx.csv')
-
         symbols = get_symbols(csv_path)
         df, errors = get_symbols_df(symbols)
         
-        clear_logs()
         df.to_csv("logs/raw_data.csv", index=False)
         print("")
 
