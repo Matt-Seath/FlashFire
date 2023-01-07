@@ -1,6 +1,4 @@
 from django.core.management.base import BaseCommand
-from django.db.utils import IntegrityError
-from django.db import connection
 from .progress_bar import bar
 from datetime import datetime
 from sqlalchemy import create_engine
@@ -53,24 +51,27 @@ def get_symbols_df(symbols):
 
     # pd.set_option("display.max_columns", None)
     df = pd.DataFrame()
-    ignore_list = ["2BE.AX", "3MF.AX"]
     errors = 0
     loops = 70
     # loops = len(symbols)
 
     for t in range(loops):
-        if symbols[t] in ignore_list:
-            continue
         try:
             df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
-            # print(df.head(1))
         except Exception as e:
             errors += 0
             with open("logs/errors.txt", "a") as f: 
                 f.write(f"{NOW}: {symbols[t]} Not Found \n")
-
+        if len(df_entry.columns) < 130:
+            print(df_entry)
+            print(f"Skipping {symbols[t]}")
+            continue
         df = pd.concat([df, df_entry], axis=0)
-        bar("Retrieving Stock Info", t + 1, loops, symbols[t])
+        print(symbols[t])
+        print(len(df_entry.columns))
+        print("")
+        # bar("Retrieving Stock Info", t + 1, loops, symbols[t])
+
 
     df = df.replace(np.nan, None)
     df = df.reset_index(drop=True)
