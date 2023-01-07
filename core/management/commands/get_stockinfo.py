@@ -10,7 +10,25 @@ import numpy as np
 import csv
 import os
 
+
+
 NOW = datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
+
+
+def mysql_replace_into(table, conn, keys, data_iter):
+    from sqlalchemy.dialects.mysql import insert
+    from sqlalchemy.ext.compiler import compiles
+    from sqlalchemy.sql.expression import Insert
+
+    @compiles(Insert)
+    def replace_string(insert, compiler, **kw):
+        s = compiler.visit_insert(insert, **kw)
+        s = s.replace("INSERT INTO", "REPLACE INTO")
+        return s
+
+    data = [dict(zip(keys, row)) for row in data_iter]
+
+    conn.execute(table.table.insert(replace_string=""), data)
 
 
 def get_symbols(file_path):
@@ -36,7 +54,7 @@ def get_symbols_df(symbols):
     # pd.set_option("display.max_columns", None)
     df = pd.DataFrame()
     errors = 0
-    loops = 40
+    loops = 4
     # loops = len(symbols)
 
     for t in range(loops):
@@ -78,7 +96,8 @@ def get_symbols_df(symbols):
     engine = create_engine("mysql://root:root@db:3306/flashfire")
 
 
-    df.to_sql("core_stockinfo", con=engine, if_exists="replace", index_label="id")            
+    df.to_sql("core_stockinfo", con=engine, if_exists="append", index_label="id", method=mysql_replace_into)            
+
 
     # with connection.cursor() as cursor:
     #     cursor.execute("DELETE FROM core_stockinfo;")
