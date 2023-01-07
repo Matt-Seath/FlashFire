@@ -20,19 +20,25 @@ def get_symbols(file_path):
         data = csv.DictReader(csvfile)
 
         for row in data:
-            symbol = row["ASX code"] + ".AX"
+            symbol = row["ASX code"].strip() + ".AX"
             symbols_list.append(symbol)
 
     print("Done.")
     return symbols_list
 
 
-def get_symbols_df(symbols):
+def clear_logs():
     with open("logs/query.txt", "w") as f:
+        f.truncate(0)
+    with open("logs/added_symbols.txt", "w") as f:
         f.truncate(0)
     with open("logs/errors.txt", "w") as f:
         f.truncate(0)
+    with open ("logs/skipped.txt", "w") as f:
+        f.truncate(0)
 
+
+def get_symbols_df(symbols):
     df = pd.DataFrame()
     df_entry = pd.DataFrame()
     skipped_symbols = []
@@ -107,8 +113,9 @@ def get_symbols_df(symbols):
             # print(sql, tuple(row))
             # bar("Inserting into Database", i + 1, loops, symbols[i])
     print(f"Skipped Symbols: {str(skipped_symbols)}")
-    with open ("logs/skipped.txt", "w") as f:
-        f.write(skipped_symbols)
+    for e in skipped_symbols:
+        with open ("logs/skipped.txt", "a") as f:
+            f.write(e)
 
     return df, errors
 
@@ -124,7 +131,7 @@ class Command(BaseCommand):
         symbols = get_symbols(csv_path)
         df, errors = get_symbols_df(symbols)
         
-        print("")
+        clear_logs()
         df.to_csv("logs/raw_data.csv", index=False)
         print("")
         print(f"Task completed with {errors} error/s.")
