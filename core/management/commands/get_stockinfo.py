@@ -3,6 +3,7 @@ from django.db.utils import IntegrityError
 from django.db import connection
 from .progress_bar import bar
 from datetime import datetime
+from sqlalchemy import create_engine
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -32,10 +33,10 @@ def get_symbols_df(symbols):
     with open("logs/errors.txt", "w") as f:
         f.truncate(0)
 
-    pd.set_option("display.max_columns", None)
+    # pd.set_option("display.max_columns", None)
     df = pd.DataFrame()
     errors = 0
-    loops = 80
+    loops = 40
     # loops = len(symbols)
 
     for t in range(loops):
@@ -50,7 +51,9 @@ def get_symbols_df(symbols):
         df = pd.concat([df, df_entry], axis=0)
         
         bar("Retrieving Stock Info", t + 1, loops, symbols[t])
-
+        print(df)
+    df = df.replace(np.nan, None)
+    df = df.reset_index(drop=True)
     df = df.rename(columns={"open": "openPrice", \
         "52WeekChange": "fiftyTwoWeekChange", "logo_url": "logoUrl"})
     df.drop(["zip", "companyOfficers", "fundInceptionDate", "lastSplitDate", \
@@ -67,30 +70,35 @@ def get_symbols_df(symbols):
         "exDividendDate", "circulatingSupply", "startDate", "lastMarket", "maxSupply", \
         "openInterest", "volumeAllCurrencies", "strikePrice", "fromCurrency", \
         "fiveYearAvgDividendYield", "dividendYield", "coinMarketCapLink", "preMarketPrice", \
-        "trailingPegRatio", "address2", "lastDividendValue", "trailingPE"], axis=1, inplace=True)
-    df = df.replace(np.nan, None)
-    df = df.reset_index(drop=True)
+        "trailingPegRatio", "address2", "lastDividendValue", "trailingPE", "0", "", " "], \
+        axis=1, inplace=True, errors="ignore")
     # df.drop(df.columns[df.columns.str.contains('unnamed',case = False)],axis = 1, inplace = True)
-    
-    with connection.cursor() as cursor:
-        cursor.execute("DELETE FROM core_stockinfo;")
-        # creating column list for insertion
-        cols = "`,`".join([str(i) for i in df.columns.tolist()])
 
-        for i,row in df.iterrows():
-            sql = "INSERT INTO `core_stockinfo` (`" +cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
-            query = f"{sql}{tuple(row)}"
-            try:
-                # print(sql, tuple(row))
-                cursor.execute(sql, tuple(row))
-            except Exception as e:
-                with open("logs/query.txt", "a") as f:
-                    f.write(query + '\n')
-                with open("logs/errors.txt", "a") as f:
-                    f.write(f"{NOW}: Could not insert {symbols[i]}, {e} \n")
-                errors += 1
-            # print(sql, tuple(row))
-            bar("Inserting into Database", i + 1, loops, symbols[i])
+
+    engine = create_engine("mysql://root:root@db:3306/flashfire")
+
+
+    df.to_sql("core_stockinfo", con=engine, if_exists="replace", index_label="id")            
+
+    # with connection.cursor() as cursor:
+    #     cursor.execute("DELETE FROM core_stockinfo;")
+    #     # creating column list for insertion
+    #     cols = "`,`".join([str(i) for i in df.columns.tolist()])
+
+    #     for i,row in df.iterrows():
+    #         sql = "INSERT INTO `core_stockinfo` (`" +cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
+    #         query = f"{sql}{tuple(row)}"
+    #         try:
+    #             # print(sql, tuple(row))
+    #             cursor.execute(sql, tuple(row))
+    #         except Exception as e:
+    #             with open("logs/query.txt", "a") as f:
+    #                 f.write(query + '\n')
+    #             with open("logs/errors.txt", "a") as f:
+    #                 f.write(f"{NOW}: Could not insert {symbols[i]}, {e} \n")
+    #             errors += 1
+    #         # print(sql, tuple(row))
+    #         bar("Inserting into Database", i + 1, loops, symbols[i])
 
     return df, errors
 
@@ -107,7 +115,6 @@ class Command(BaseCommand):
         df, errors = get_symbols_df(symbols)
         
         print("")
-        print(df)
         df.to_csv("logs/raw_data.csv", index=False)
         print("")
         print(f"Task completed with {errors} error/s.")
