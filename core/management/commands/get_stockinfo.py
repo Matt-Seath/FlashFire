@@ -62,10 +62,12 @@ def get_symbols_df(symbols):
             errors += 0
             with open("logs/errors.txt", "a") as f: 
                 f.write(f"{NOW}: {symbols[t]} Not Found \n")
+
         if len(df_entry.columns) < 130:
             print(df_entry)
             print(f"Skipping {symbols[t]}")
             continue
+
         df = pd.concat([df, df_entry], axis=0)
         print(symbols[t])
         print(len(df_entry.columns))
@@ -99,7 +101,7 @@ def get_symbols_df(symbols):
     engine = create_engine("mysql://root:root@db:3306/flashfire")
 
 
-    df.to_sql("core_stockinfo", con=engine, if_exists="append", index_label="id", method=mysql_replace_into)            
+    df.to_sql("core_stockinfo", con=engine, if_exists="append", index=False, method=mysql_replace_into)            
 
 
     # with connection.cursor() as cursor:
