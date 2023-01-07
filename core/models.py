@@ -32,7 +32,7 @@ class StockHistory(models.Model):
 
 
 class StockInfo(models.Model):
-    symbol = models.CharField(max_length=10, unique=True)
+    symbol = models.CharField(primary_key=True, max_length=10, unique=True)
     marketCap = models.CharField(max_length=50, null=True)
     averageVolume = models.CharField(max_length=50, null=True)
     dayLow = models.CharField(max_length=50, null=True)

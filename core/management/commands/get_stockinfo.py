@@ -34,9 +34,10 @@ def get_symbols_df(symbols):
         f.truncate(0)
 
     df = pd.DataFrame()
+    df_entry = pd.DataFrame()
     skipped_symbols = []
     errors = 0
-    loops = 1
+    loops = 8
     # loops = len(symbols)
 
     for t in range(loops):
@@ -47,6 +48,7 @@ def get_symbols_df(symbols):
             with open("logs/errors.txt", "a") as f: 
                 f.write(f"{NOW}: {symbols[t]} Not Found \n")
 
+        print(len(df_entry.columns))
         if len(df_entry.columns) < 130:
             print(df_entry)
             print(f"Skipping {symbols[t]}")
@@ -55,7 +57,6 @@ def get_symbols_df(symbols):
 
         df = pd.concat([df, df_entry], axis=0)
         print(symbols[t])
-        print(len(df_entry.columns))
         print("")
         # bar("Retrieving Stock Info", t + 1, loops, symbols[t])
 
@@ -84,20 +85,19 @@ def get_symbols_df(symbols):
 
     with connection.cursor() as cursor:
         # creating column list for insertion
-        insert_cols = "`,`".join([str(i) for i in df.columns.tolist()])
-        update_cols = "=%s, ".join([str(i) for i in df.columns.tolist()])
+        cols = "`,`".join([str(i) for i in df.columns.tolist()])
+        # update_cols = "=%s, ".join([str(i) for i in df.columns.tolist()])
         
         for i,row in df.iterrows():
-            symbol_exists = cursor.execute("SELECT symbol from core_stockinfo WHERE symbol = %s", (row["symbol"], ))
-            insert_sql = "INSERT INTO `core_stockinfo` (`"+ insert_cols +"`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
-            update_sql = "UPDATE 'core_stockinfo' SET "+ update_cols +"`=%s WHERE symbol = " + row["symbol"]
-            method = update_sql if symbol_exists else insert_sql
-            query = f"{method}{tuple(row)}"
+            # symbol_exists = cursor.execute("SELECT symbol from core_stockinfo WHERE symbol = %s", (row["symbol"], ))
+            sql = "REPLACE INTO `core_stockinfo` (`"+ cols +"`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
+            # update_sql = "UPDATE 'core_stockinfo' SET "+ update_cols +"`=%s WHERE symbol = " + row["symbol"]
+            # method = update_sql if symbol_exists else insert_sql
+            query = f"{sql}{tuple(row)}"
             try:
                 print(row["symbol"])
-                print(method)
-                print(cursor.mogrify(method, tuple(row)))
-                cursor.execute(method, tuple(row))
+                print(query)
+                cursor.execute(sql, tuple(row))
             except Exception as e:
                 with open("logs/query.txt", "a") as f:
                     f.write(query + '\n')
@@ -107,6 +107,9 @@ def get_symbols_df(symbols):
             # print(sql, tuple(row))
             # bar("Inserting into Database", i + 1, loops, symbols[i])
     print(f"Skipped Symbols: {str(skipped_symbols)}")
+    with open ("logs/skipped.txt", "w") as f:
+        f.write(skipped_symbols)
+
     return df, errors
 
 
