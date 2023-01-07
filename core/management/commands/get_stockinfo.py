@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from .progress_bar import bar
 from datetime import datetime
-from sqlalchemy import create_engine
+from django.db import connection
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -13,25 +13,9 @@ import os
 NOW = datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
 
 
-def mysql_replace_into(table, conn, keys, data_iter):
-    from sqlalchemy.dialects.mysql import insert
-    from sqlalchemy.ext.compiler import compiles
-    from sqlalchemy.sql.expression import Insert
-
-    @compiles(Insert)
-    def replace_string(insert, compiler, **kw):
-        s = compiler.visit_insert(insert, **kw)
-        s = s.replace("INSERT INTO", "REPLACE INTO")
-        return s
-
-    data = [dict(zip(keys, row)) for row in data_iter]
-
-    conn.execute(table.table.insert(replace_string=""), data)
-
-
 def get_symbols(file_path):
     symbols_list = []
-    # print("Generating list of Symbols..   ", end="")
+    print("Generating list of Symbols..   ", end="")
     with open(file_path, newline='') as csvfile:
         data = csv.DictReader(csvfile)
 
@@ -39,7 +23,7 @@ def get_symbols(file_path):
             symbol = row["ASX code"] + ".AX"
             symbols_list.append(symbol)
 
-    # print("Done.")
+    print("Done.")
     return symbols_list
 
 
@@ -49,10 +33,10 @@ def get_symbols_df(symbols):
     with open("logs/errors.txt", "w") as f:
         f.truncate(0)
 
-    # pd.set_option("display.max_columns", None)
     df = pd.DataFrame()
+    skipped_symbols = []
     errors = 0
-    loops = 70
+    loops = 2
     # loops = len(symbols)
 
     for t in range(loops):
@@ -66,6 +50,7 @@ def get_symbols_df(symbols):
         if len(df_entry.columns) < 130:
             print(df_entry)
             print(f"Skipping {symbols[t]}")
+            skipped_symbols.append(symbols[t])
             continue
 
         df = pd.concat([df, df_entry], axis=0)
@@ -95,35 +80,31 @@ def get_symbols_df(symbols):
         "fiveYearAvgDividendYield", "dividendYield", "coinMarketCapLink", "preMarketPrice", \
         "trailingPegRatio", "address2", "lastDividendValue", "trailingPE", "0", "", " "], \
         axis=1, inplace=True, errors="ignore")
-    # df.drop(df.columns[df.columns.str.contains('unnamed',case = False)],axis = 1, inplace = True)
 
 
-    engine = create_engine("mysql://root:root@db:3306/flashfire")
+    with connection.cursor() as cursor:
+        # creating column list for insertion
+        cursor.execute("SELECT symbol from core_stockinfo;")
+        db_symbols = cursor.fetchall()
+        cols = "`,`".join([str(i) for i in df.columns.tolist()])
 
-
-    df.to_sql("core_stockinfo", con=engine, if_exists="append", index=False, method=mysql_replace_into)            
-
-
-    # with connection.cursor() as cursor:
-    #     cursor.execute("DELETE FROM core_stockinfo;")
-    #     # creating column list for insertion
-    #     cols = "`,`".join([str(i) for i in df.columns.tolist()])
-
-    #     for i,row in df.iterrows():
-    #         sql = "INSERT INTO `core_stockinfo` (`" +cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
-    #         query = f"{sql}{tuple(row)}"
-    #         try:
-    #             # print(sql, tuple(row))
-    #             cursor.execute(sql, tuple(row))
-    #         except Exception as e:
-    #             with open("logs/query.txt", "a") as f:
-    #                 f.write(query + '\n')
-    #             with open("logs/errors.txt", "a") as f:
-    #                 f.write(f"{NOW}: Could not insert {symbols[i]}, {e} \n")
-    #             errors += 1
-    #         # print(sql, tuple(row))
-    #         bar("Inserting into Database", i + 1, loops, symbols[i])
-
+        for i,row in df.iterrows():
+            sql = "INSERT INTO `core_stockinfo` (`" +cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
+            query = f"{sql}{tuple(row)}"
+            try:
+                print(row["symbol"])
+                print(db_symbols)
+                # print(sql, tuple(row))
+                # cursor.execute(sql, tuple(row))
+            except Exception as e:
+                with open("logs/query.txt", "a") as f:
+                    f.write(query + '\n')
+                with open("logs/errors.txt", "a") as f:
+                    f.write(f"{NOW}: Could not insert {symbols[i]}, {e} \n")
+                errors += 1
+            # print(sql, tuple(row))
+            # bar("Inserting into Database", i + 1, loops, symbols[i])
+    print(f"Skipped Symbols: {str(skipped_symbols)}")
     return df, errors
 
 
