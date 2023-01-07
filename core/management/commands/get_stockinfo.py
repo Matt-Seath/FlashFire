@@ -36,7 +36,7 @@ def get_symbols_df(symbols):
     df = pd.DataFrame()
     skipped_symbols = []
     errors = 0
-    loops = 2
+    loops = 1
     # loops = len(symbols)
 
     for t in range(loops):
@@ -84,23 +84,25 @@ def get_symbols_df(symbols):
 
     with connection.cursor() as cursor:
         # creating column list for insertion
-        cursor.execute("SELECT symbol from core_stockinfo;")
-        db_symbols = cursor.fetchall()
-        cols = "`,`".join([str(i) for i in df.columns.tolist()])
-
+        insert_cols = "`,`".join([str(i) for i in df.columns.tolist()])
+        update_cols = "=%s, ".join([str(i) for i in df.columns.tolist()])
+        
         for i,row in df.iterrows():
-            sql = "INSERT INTO `core_stockinfo` (`" +cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
-            query = f"{sql}{tuple(row)}"
+            symbol_exists = cursor.execute("SELECT symbol from core_stockinfo WHERE symbol = %s", (row["symbol"], ))
+            insert_sql = "INSERT INTO `core_stockinfo` (`"+ insert_cols +"`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
+            update_sql = "UPDATE 'core_stockinfo' SET "+ update_cols +"`=%s WHERE symbol = " + row["symbol"]
+            method = update_sql if symbol_exists else insert_sql
+            query = f"{method}{tuple(row)}"
             try:
                 print(row["symbol"])
-                print(db_symbols)
-                # print(sql, tuple(row))
-                # cursor.execute(sql, tuple(row))
+                print(method)
+                print(cursor.mogrify(method, tuple(row)))
+                cursor.execute(method, tuple(row))
             except Exception as e:
                 with open("logs/query.txt", "a") as f:
                     f.write(query + '\n')
                 with open("logs/errors.txt", "a") as f:
-                    f.write(f"{NOW}: Could not insert {symbols[i]}, {e} \n")
+                    f.write(f"{NOW}: Could not insert {row['symbol']}, {e} \n")
                 errors += 1
             # print(sql, tuple(row))
             # bar("Inserting into Database", i + 1, loops, symbols[i])
