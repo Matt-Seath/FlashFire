@@ -6,14 +6,14 @@ import yfinance as yf
 import pandas as pd
 import numpy as np
 import csv
-import os
 
 
 
 NOW = datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
 
 
-def get_symbols(file_path):
+def get_symbols():
+    file_path = 'assets//asx.csv'
     symbols_list = []
     print("Generating list of Symbols..   ", end="")
     with open(file_path, newline='') as csvfile:
@@ -54,12 +54,13 @@ def get_symbols_df(symbols):
     df_entry = pd.DataFrame()
     added_symbols = []
     skipped_symbols = []
+    dropped_columns = []
     errors = 0
-    # loops = 12
-    loops = len(symbols)
+    loops = 10
+    # loops = len(symbols)
 
     for t in range(loops):
-        bar("Retrieving Stock Info", t + 1, loops, symbols[t])
+        # bar("Retrieving Stock Info", t + 1, loops, symbols[t])
         try:
             df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
         except Exception as e:
@@ -68,7 +69,7 @@ def get_symbols_df(symbols):
                 f.write(f"{NOW}: {symbols[t]} Not Found \n")
         if len(df_entry.columns) < 130:
             # print(f"Skipping {symbols[t]}")
-            skipped_symbols.append(symbols[t] + ", ")
+            skipped_symbols.append(symbols[t])
             continue
 
         df = pd.concat([df, df_entry], axis=0)
@@ -78,34 +79,21 @@ def get_symbols_df(symbols):
     df = df.reset_index(drop=True)
     df = df.rename(columns={"open": "openPrice", \
         "52WeekChange": "fiftyTwoWeekChange", "logo_url": "logoUrl"})
-    df.drop(["zip", "companyOfficers", "fundInceptionDate", "lastSplitDate", \
-        "lastDividendDate", "dateShortInterest", "fullTimeEmployees", "fax", "targetLowPrice", \
-        "targetMedianPrice", "earningsGrowth", "numberOfAnalystOpinions", "targetMeanPrice", \
-        "targetHighPrice", "recommendationMean", "annualHoldingsTurnover", "beta3Year", \
-        "morningStarRiskRating", "forwardEps", "revenueQuarterlyGrowth", \
-        "annualReportExpenseRatio", "totalAssets", "sharesShort", "sharesPercentSharesOut", \
-        "fundFamily", "yield", "shortRatio", "sharesShortPreviousMonthDate", \
-        "threeYearAverageReturn", "lastSplitFactor", "legalType", "morningStarOverallRating", \
-        "earningsQuarterlyGrowth", "pegRatio", "ytdReturn", "lastCapGain", "shortPercentOfFloat", \
-        "sharesShortPriorMonth", "impliedSharesOutstanding", "category", "fiveYearAverageReturn", \
-        "volume24Hr", "navPrice", "toCurrency", "expireDate", "algorithm", "dividendRate", \
-        "exDividendDate", "circulatingSupply", "startDate", "lastMarket", "maxSupply", \
-        "openInterest", "volumeAllCurrencies", "strikePrice", "fromCurrency", \
-        "fiveYearAvgDividendYield", "dividendYield", "coinMarketCapLink", "preMarketPrice", \
-        "trailingPegRatio", "address2", "lastDividendValue", "trailingPE", "0", "", " "], \
-        axis=1, inplace=True, errors="ignore")
 
+    with open("assets/columns.txt") as f:
+        column_list = f.read()
+        columns = list(df.columns.values)
+        for column in columns:
+            if column not in column_list:
+                df.drop(column, axis=1, inplace=True, errors="ignore")
+                dropped_columns.append(column + ", ")
 
     with connection.cursor() as cursor:
         # creating column list for insertion
         cols = "`,`".join([str(i) for i in df.columns.tolist()])
-        # update_cols = "=%s, ".join([str(i) for i in df.columns.tolist()])
         
         for i,row in df.iterrows():
-            # symbol_exists = cursor.execute("SELECT symbol from core_stockinfo WHERE symbol = %s", (row["symbol"], ))
             sql = "REPLACE INTO `core_stockinfo` (`"+ cols +"`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
-            # update_sql = "UPDATE 'core_stockinfo' SET "+ update_cols +"`=%s WHERE symbol = " + row["symbol"]
-            # method = update_sql if symbol_exists else insert_sql
             query = f"{sql}{tuple(row)}"
             try:
                 cursor.execute(sql, tuple(row))
@@ -116,10 +104,10 @@ def get_symbols_df(symbols):
                 with open("logs/errors.log", "a") as f:
                     f.write(f"{NOW}: Could not insert {row['symbol']}, {e} \n")
                 errors += 1
-            # print(sql, tuple(row))
-            # bar("Inserting into Database", i + 1, loops, symbols[i])
+            bar("Inserting into Database", i + 1, loops, row["symbol"])
     print("")
     print(f"Skipped Symbols: {str(skipped_symbols)}")
+    print(f"Dropped Columns: {str(dropped_columns)}")
     write_to_logs(added_symbols, skipped_symbols)
     return df, errors
 
@@ -127,15 +115,12 @@ def get_symbols_df(symbols):
 class Command(BaseCommand):
     help = 'Populates the database with collections and products'
 
-
     def handle(self, *args, **options):
         clear_logs()
-        current_dir = os.path.dirname(__file__)
-        csv_path = os.path.join(current_dir, 'assets//asx.csv')
-        symbols = get_symbols(csv_path)
-        df, errors = get_symbols_df(symbols)
-        
-        df.to_csv("logs/raw_data.csv", index=False)
-        print("")
 
+        symbols = get_symbols()
+        df, errors = get_symbols_df(symbols)  
+
+        df.to_csv("logs/raw_data.csv", index=False)
         print(f"Task completed with {errors} error/s.")
+        return 0
