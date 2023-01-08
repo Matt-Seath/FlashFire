@@ -100,6 +100,7 @@ class StockInfo(models.Model):
     regular_market_volume = models.BigIntegerField(null=True)
     regular_market_price = models.FloatField(null=True)
     logo_url = models.URLField(null=True)
+    last_update = models.DateTimeField(auto_now=True)
 
 class WatchList(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist")
