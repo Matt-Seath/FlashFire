@@ -11,6 +11,8 @@ import csv
 import io
 
 
+SLEEPER = 0
+ITERATIONS = 30
 NOW = datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
 
 
@@ -56,17 +58,16 @@ def write_to_logs(added=None, skipped=None, dropped=None):
                 f.write(entry)
 
 
-def get_dataframe(symbols):
+def get_dataframe(symbols, loops=ITERATIONS):
+    loops = len(symbols)
     df = pd.DataFrame()
     df_entry = pd.DataFrame()
     skipped_symbols = []
     dropped_columns = []
     errors = 0
-    loops = 25
-    # loops = len(symbols)
 
     for t in tqdm(range(loops), desc="Retrieving stock data from yfinance"):
-        time.sleep(0.2)
+        time.sleep(SLEEPER)
         try:
             with contextlib.redirect_stdout(io.StringIO()):
                 df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
@@ -180,7 +181,7 @@ def write_df_to_database(df, errors, skipped_symbols):
             sql_operation = "REPLACE INTO `core_stockinfo` (`"+ cols +"`) "
             sql_values = "VALUES (" + "%s,"*(len(row)-1) + "%s)"
             sql =  sql_operation + sql_values
-            query = sql_operation + "VALUES" + tuple(row) + "; \n"
+            query = sql_operation + "VALUES" + str(row) + "; \n"
             try:
                 cursor.execute(sql, tuple(row))
                 added_symbols.append(row["symbol"] + ", ")
@@ -196,7 +197,8 @@ def write_df_to_database(df, errors, skipped_symbols):
 
 
 def print_stats(errors, skipped_symbols, dropped_columns):
-    print("") * 2
+    print("")
+    print("")
     print(f"Skipped Symbols: {str(skipped_symbols)}")
     print(f"Dropped Columns: {len(dropped_columns)}")
     print("")
