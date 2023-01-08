@@ -21,7 +21,7 @@ def get_symbols(file_path):
 
         for row in data:
             symbol = row["ASX code"].strip() + ".AX"
-            symbols_list.append(symbol + ", ")
+            symbols_list.append(symbol)
 
     print("Done.")
     return symbols_list
@@ -55,25 +55,23 @@ def get_symbols_df(symbols):
     added_symbols = []
     skipped_symbols = []
     errors = 0
-    loops = 12
-    # loops = len(symbols)
+    # loops = 12
+    loops = len(symbols)
 
     for t in range(loops):
+        bar("Retrieving Stock Info", t + 1, loops, symbols[t])
         try:
             df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
         except Exception as e:
             errors += 0
             with open("logs/errors.log", "a") as f: 
                 f.write(f"{NOW}: {symbols[t]} Not Found \n")
-
-        print(len(df_entry.columns))
         if len(df_entry.columns) < 130:
             # print(f"Skipping {symbols[t]}")
-            skipped_symbols.append(symbols[t])
+            skipped_symbols.append(symbols[t] + ", ")
             continue
 
         df = pd.concat([df, df_entry], axis=0)
-        bar("Retrieving Stock Info", t + 1, loops, symbols[t])
 
 
     df = df.replace(np.nan, None)
