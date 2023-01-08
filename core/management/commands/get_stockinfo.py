@@ -5,8 +5,8 @@ from django.db import connection
 import yfinance as yf
 import pandas as pd
 import numpy as np
+import time
 import csv
-
 
 
 NOW = datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
@@ -62,11 +62,12 @@ def get_symbols_df(symbols):
     skipped_symbols = []
     dropped_columns = []
     errors = 0
-    loops = 6
-    # loops = len(symbols)
+    # loops = 6
+    loops = len(symbols)
 
     for t in range(loops):
         bar("Retrieving Stock Info", t + 1, loops, symbols[t])
+        time.sleep(0.9)
         try:
             df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
         except Exception as e:
