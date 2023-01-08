@@ -79,11 +79,14 @@ WSGI_APPLICATION = 'flashfire.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+
+db_host = "db" if "DOCKER_DB" in os.environ else "localhost"
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': "flashfire",
-        'HOST': "db",
+        'HOST': db_host,
         'USER': "root",
         'PORT': 3306,
         'PASSWORD': "root",
