@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from .progress_bar import bar
+from .progress_bar import bar2
 from datetime import datetime
 from django.db import connection
 import yfinance as yf
@@ -62,11 +62,11 @@ def get_symbols_df(symbols):
     skipped_symbols = []
     dropped_columns = []
     errors = 0
-    # loops = 6
-    loops = len(symbols)
+    loops = 6
+    # loops = len(symbols)
 
     for t in range(loops):
-        bar("Retrieving Stock Info", t + 1, loops, symbols[t])
+        bar2(t + 1, loops)
         time.sleep(0.9)
         try:
             df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
@@ -100,18 +100,19 @@ def get_symbols_df(symbols):
         cols = "`,`".join([str(i) for i in df.columns.tolist()])
         
         for i,row in df.iterrows():
+            bar2(i + 1, loops)
             sql = "REPLACE INTO `core_stockinfo` (`"+ cols +"`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
             query = f"{sql}{tuple(row)}"
             try:
                 cursor.execute(sql, tuple(row))
                 added_symbols.append(row["symbol"] + ", ")
             except Exception as e:
+                skipped_symbols.append(row["symbol"])
                 with open("logs/query.log", "a") as f:
                     f.write(query + '\n')
                 with open("logs/errors.log", "a") as f:
                     f.write(f"{NOW}: Could not insert {row['symbol']}, {e} \n")
                 errors += 1
-            bar("Inserting into Database", i + 1, loops, row["symbol"])
     print("")
     print(f"Skipped Symbols: {str(skipped_symbols)}")
     print(f"Dropped Columns: {len(dropped_columns)}")
@@ -126,7 +127,7 @@ class Command(BaseCommand):
         clear_logs()
 
         symbols = get_symbols()
-        df, errors = get_symbols_df(symbols)  
+        df, errors = get_symbols_df(symbols)
 
         df.to_csv("logs/raw_data.csv", index=False)
         print("")
