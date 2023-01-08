@@ -87,7 +87,7 @@ class StockInfo(models.Model):
     quoteType = models.CharField(max_length=10, null=True)
     messageBoardId = models.CharField(max_length=20, null=True)
     market = models.CharField(max_length=20, null=True)
-    enterpriseToRevenue = models.DecimalField(max_digits=9, decimal_places=3, null=True)
+    enterpriseToRevenue = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     enterpriseToEbitda = models.DecimalField(max_digits=9, decimal_places=3, null=True)
     fiftyTwoWeekChange = models.DecimalField(max_digits=9, decimal_places=5, null=True)
     sharesOutstanding = models.BigIntegerField(null=True)

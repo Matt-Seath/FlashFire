@@ -1,7 +1,4 @@
 __pycache__/
 instance/
-flashfire/tests/
 .env
-test.py
-logs/
 venv/

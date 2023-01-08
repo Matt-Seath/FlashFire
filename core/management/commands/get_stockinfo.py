@@ -28,6 +28,8 @@ def get_symbols():
 
 
 def clear_logs():
+    with open("logs/dropped.log", "w") as f:
+        f.truncate(0)
     with open("logs/query.log", "w") as f:
         f.truncate(0)
     with open("logs/added.log", "w") as f:
@@ -38,7 +40,7 @@ def clear_logs():
         f.truncate(0)
 
 
-def write_to_logs(added=None, skipped=None):
+def write_to_logs(added=None, skipped=None, dropped=None):
     if added:
         for entry in added:
             with open ("logs/added.log", "a") as f:
@@ -46,6 +48,10 @@ def write_to_logs(added=None, skipped=None):
     if skipped:
         for entry in skipped:
             with open ("logs/skipped.log", "a") as f:
+                f.write(entry)
+    if dropped:
+        for entry in dropped:
+            with open ("logs/dropped.log", "a") as f:
                 f.write(entry)
 
 
@@ -56,11 +62,11 @@ def get_symbols_df(symbols):
     skipped_symbols = []
     dropped_columns = []
     errors = 0
-    loops = 10
+    loops = 6
     # loops = len(symbols)
 
     for t in range(loops):
-        # bar("Retrieving Stock Info", t + 1, loops, symbols[t])
+        bar("Retrieving Stock Info", t + 1, loops, symbols[t])
         try:
             df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
         except Exception as e:
@@ -107,8 +113,8 @@ def get_symbols_df(symbols):
             bar("Inserting into Database", i + 1, loops, row["symbol"])
     print("")
     print(f"Skipped Symbols: {str(skipped_symbols)}")
-    print(f"Dropped Columns: {str(dropped_columns)}")
-    write_to_logs(added_symbols, skipped_symbols)
+    print(f"Dropped Columns: {len(dropped_columns)}")
+    write_to_logs(added_symbols, skipped_symbols, dropped_columns)
     return df, errors
 
 
@@ -122,5 +128,6 @@ class Command(BaseCommand):
         df, errors = get_symbols_df(symbols)  
 
         df.to_csv("logs/raw_data.csv", index=False)
+        print("")
         print(f"Task completed with {errors} error/s.")
         return 0
