@@ -11,22 +11,19 @@ import csv
 import io
 
 
-SLEEPER = 0
-ITERATIONS = 30
+GET_ALL_ASX_STOCKS = True
+SLEEPER = 0 # Higher value slows api request frequency to avoid throttling.
+ITERATIONS = 3 # How many stocks to retrieve if GET_ALL_ASX_STOCKS is false
 NOW = datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
 
 
 def clear_logs():
-    with open("logs/dropped.log", "w") as f:
-        f.truncate(0)
-    with open("logs/query.log", "w") as f:
-        f.truncate(0)
-    with open("logs/added.log", "w") as f:
-        f.truncate(0)
-    with open("logs/errors.log", "w") as f:
-        f.truncate(0)
-    with open ("logs/skipped.log", "w") as f:
-        f.truncate(0)
+    logs = ["dropped", "query", "added", "errors", "skipped"]
+    for log in logs:
+        with open(f"logs/{log}.log", "w") as f:
+            f.truncate(0)
+
+    return
 
 
 def get_symbols():
@@ -40,31 +37,42 @@ def get_symbols():
             symbol = row["ASX code"].strip() + ".AX"
             symbols_list.append(symbol)
     print("Done.")
+
     return symbols_list
 
 
 def write_to_logs(added=None, skipped=None, dropped=None):
+
+    def write_log(log, filename, formatted=True):
+        for entry in log:
+            if not formatted:
+                entry = entry + ", "
+            with open (filename, "a") as f:
+                f.write(entry)
+
+        return
+
     if added:
-        for entry in added:
-            with open ("logs/added.log", "a") as f:
-                f.write(entry)
+        filename = "logs/added.log"
+        write_log(added, filename)
     if skipped:
-        for entry in skipped:
-            with open ("logs/skipped.log", "a") as f:
-                f.write(entry)
+        filename = "logs/skipped.log"
+        write_log(skipped, filename, formatted=False)
     if dropped:
-        for entry in dropped:
-            with open ("logs/dropped.log", "a") as f:
-                f.write(entry)
+        filename = "logs/dropped.log"
+        write_log(dropped, filename)
+    
+    return
 
 
 def get_dataframe(symbols, loops=ITERATIONS):
-    loops = len(symbols)
     df = pd.DataFrame()
     df_entry = pd.DataFrame()
     skipped_symbols = []
     dropped_columns = []
     errors = 0
+    if GET_ALL_ASX_STOCKS:
+        loops = len(symbols)
 
     for t in tqdm(range(loops), desc="Retrieving stock data from yfinance"):
         time.sleep(SLEEPER)
@@ -158,6 +166,7 @@ def get_dataframe(symbols, loops=ITERATIONS):
         "fiftyTwoWeekLow": "fifty_two_week_low",
         "bidSize": "bid_size",
         "dayHigh": "day_high",
+        "yield": "deleted",
         "regularMarketPrice": "regular_market_price",
     })
 
@@ -178,10 +187,10 @@ def write_df_to_database(df, errors, skipped_symbols):
 
     with connection.cursor() as cursor:
         for i,row in tqdm(df.iterrows(), desc="Inserting stockinfo into database"):
-            sql_operation = "REPLACE INTO `core_stockinfo` (`"+ cols +"`) "
+            sql_operation = "REPLACE INTO `core_stockinfo` (`"+ cols +"`)"
             sql_values = "VALUES (" + "%s,"*(len(row)-1) + "%s)"
             sql =  sql_operation + sql_values
-            query = sql_operation + "VALUES" + str(row) + "; \n"
+            query = f"{sql_operation} VALUES {tuple(row)}; \n"
             try:
                 cursor.execute(sql, tuple(row))
                 added_symbols.append(row["symbol"] + ", ")
@@ -198,13 +207,12 @@ def write_df_to_database(df, errors, skipped_symbols):
 
 def print_stats(errors, skipped_symbols, dropped_columns):
     print("")
-    print("")
     print(f"Skipped Symbols: {str(skipped_symbols)}")
     print(f"Dropped Columns: {len(dropped_columns)}")
     print("")
     print(f"Task completed with {errors} error/s.")
 
-    return 0
+    return
 
 class Command(BaseCommand):
     help = 'Populates the database with collections and products'
