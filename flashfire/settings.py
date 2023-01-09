@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'asx.apps.AsxConfig',
     'backtest.apps.BacktestConfig',
     'loggers.apps.LoggersConfig',
+    'frontend.apps.FrontendConfig',
 ]
 
 MIDDLEWARE = [
