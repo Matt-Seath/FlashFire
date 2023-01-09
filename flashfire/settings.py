@@ -42,10 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
-    'asx',
-    'backtest',
-    'loggers',
+    'core.apps.CoreConfig',
+    'asx.apps.AsxConfig',
+    'backtest.apps.BacktestConfig',
+    'loggers.apps.LoggersConfig',
 ]
 
 MIDDLEWARE = [
