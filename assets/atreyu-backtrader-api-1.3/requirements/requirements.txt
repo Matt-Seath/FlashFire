@@ -1,2 +1,0 @@
-backtrader==1.9.76.123
-exchange-calendars==3.4
