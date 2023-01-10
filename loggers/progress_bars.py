@@ -1,7 +1,7 @@
-import sys
 import colorama
 
-def bar(task, current, total, optional=" "):
+
+def bar1(task, current, total, optional=" "):
     percentage_complete = round((current / total) * 100)
     bar_full = round(percentage_complete / 2)
     full_pixels = "=" * bar_full
@@ -10,8 +10,9 @@ def bar(task, current, total, optional=" "):
     if (current + 1) == total:
         print(f"{task}  (100% Completed)")
     else:
-        print(f"  {task}  [{full_pixels}{empty_pixels}]   {current} of {total} ({percentage_complete}% Complete.) {optional}", end="\r")
-    
+        print(
+            f"  {task}  [{full_pixels}{empty_pixels}]   {current} of {total} ({percentage_complete}% Complete.) {optional}", end="\r")
+
 
 def bar2(progress, total, color=colorama.Fore.YELLOW):
     percent = 100 * (progress / float(total))

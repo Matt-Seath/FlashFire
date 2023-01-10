@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'backtest.apps.BacktestConfig',
     'core.apps.CoreConfig',
     'frontend.apps.FrontendConfig',
-    'loggers.apps.LoggersConfig',
+    'loggers.apps.LoggerConfig',
     'pipelines.apps.PipelinesConfig',
     'stockdata.apps.StockdataConfig',
 ]

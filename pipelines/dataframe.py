@@ -1,5 +1,6 @@
-from stockdata.assets import get_symbols
+from ..stocks.assets import get_symbols
 from django.db import connection
+from datetime import datetime
 from tqdm import tqdm
 import yfinance as yf
 import contextlib
@@ -8,18 +9,25 @@ import numpy as np
 import time
 import io
 
+
+file_path = "core/assests/stockdata/asx_list.csv"
+symbol_column = "TESt"
+extension = ".AX"
+
+
 class StockDataFrame():
 
     iterations = None
     symbols = None
+    sleeper = 0
 
     def __init__(self, *symbols_list):
         if self.symbols == None and symbols_list:
             self.symbols == symbols_list
             print(symbols_list)
 
-
-
+    def timestamp(self):
+        return datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
 
     def get_dataframe(self, symbols):
         df = pd.DataFrame()
@@ -31,14 +39,15 @@ class StockDataFrame():
             loops = len(symbols)
 
         for t in tqdm(range(loops), desc="Retrieving stock data from yfinance"):
-            time.sleep(SLEEPER)
+            time.sleep(self.sleeper)
             try:
                 with contextlib.redirect_stdout(io.StringIO()):
                     df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
             except Exception as e:
                 errors += 0
-                with open("logs/errors.log", "a") as f: 
-                    f.write(f"{NOW}: {symbols[t]} Not Found, {e} \n")
+                with open("logs/errors.log", "a") as f:
+                    f.write(
+                        f"{self.timestamp()}: {symbols[t]} Not Found, {e} \n")
             if len(df_entry.columns) < 130:
                 # print(f"Skipping {symbols[t]}")
                 skipped_symbols.append(symbols[t])
@@ -48,7 +57,7 @@ class StockDataFrame():
 
         df = df.reset_index(drop=True).replace(np.nan, None)
         df = df.rename(columns={
-            "open": "open_price", 
+            "open": "open_price",
             "address1": "address",
             "52WeekChange": "fifty_two_week_change",
             "longBusinessSummary": "long_business_summary",
@@ -136,16 +145,16 @@ class StockDataFrame():
 
         return df, errors, skipped_symbols, dropped_columns
 
-
-    def write_df_to_database(df, errors, skipped_symbols):
+    def write_df_to_database(self, df, errors, skipped_symbols):
         added_symbols = []
         cols = "`,`".join([str(i) for i in df.columns.tolist()])
 
         with connection.cursor() as cursor:
-            for i,row in tqdm(df.iterrows(), desc="Inserting stockinfo into database"):
-                sql_operation = "REPLACE INTO `core_stockinfo` (`"+ cols +"`)"
+            for i, row in tqdm(df.iterrows(), desc="Inserting stockinfo into database"):
+                sql_operation = "REPLACE INTO `core_stockinfo` (`" + \
+                    cols + "`)"
                 sql_values = "VALUES (" + "%s,"*(len(row)-1) + "%s)"
-                sql =  sql_operation + sql_values
+                sql = sql_operation + sql_values
                 query = f"{sql_operation} VALUES {tuple(row)}; \n"
                 try:
                     cursor.execute(sql, tuple(row))
@@ -155,9 +164,11 @@ class StockDataFrame():
                     with open("logs/query.log", "a") as f:
                         f.write(query)
                     with open("logs/errors.log", "a") as f:
-                        f.write(f"{NOW}: Could not insert {row['symbol']}, {e} \n")
+                        f.write(
+                            f"{self.timestamp()}: Could not insert {row['symbol']}, {e} \n")
                     errors += 1
-        
+
         return df, errors, added_symbols, skipped_symbols
 
-sdf = StockDataFrame(get_symbols())
+
+sdf = StockDataFrame(assets.get_symbols(file_path, symbol_column, extension))

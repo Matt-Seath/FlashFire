@@ -13,13 +13,8 @@ import io
 
 
 GET_ALL_ASX_STOCKS = True
-SLEEPER = 0.7 # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 3 # How many stocks to retrieve if GET_ALL_ASX_STOCKS is false
-NOW = datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
-
-
-
-
+SLEEPER = 0.7  # Higher value slows api request frequency to avoid throttling.
+ITERATIONS = 3  # How many stocks to retrieve if GET_ALL_ASX_STOCKS is false
 
 
 class Command(BaseCommand):
@@ -30,7 +25,8 @@ class Command(BaseCommand):
 
         symbols = get_symbols()
         df, errors, skipped_symbols, dropped_columns = get_dataframe(symbols)
-        df, errors, added_symbols, skipped_symbols = write_df_to_database(df, errors, skipped_symbols)
+        df, errors, added_symbols, skipped_symbols = write_df_to_database(
+            df, errors, skipped_symbols)
         write_to_logs(added_symbols, skipped_symbols, dropped_columns)
         print_stats(errors, skipped_symbols, dropped_columns)
 
