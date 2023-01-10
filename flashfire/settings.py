@@ -42,11 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core.apps.CoreConfig',
-    'asx.apps.AsxConfig',
     'backtest.apps.BacktestConfig',
-    'loggers.apps.LoggersConfig',
+    'core.apps.CoreConfig',
     'frontend.apps.FrontendConfig',
+    'loggers.apps.LoggersConfig',
+    'pipelines.apps.PipelinesConfig',
+    'stockdata.apps.StockdataConfig',
 ]
 
 MIDDLEWARE = [

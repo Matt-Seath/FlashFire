@@ -1,2 +1,0 @@
-FLASK_APP=flashfire
-FLASK_ENV=development

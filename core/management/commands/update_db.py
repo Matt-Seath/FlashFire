@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from asx import update_db
+from pipelines import update_db
 
 
 class Command(BaseCommand):
