@@ -9,7 +9,7 @@ class TempLogger():
     def __init__(self, *args) -> None:
         if self.logs == None:
             self.logs = set()
-        self.add_logs(*args)
+        self.create_logs(*args)
 
     def __str__(self):
         logs_str = set()
@@ -18,11 +18,16 @@ class TempLogger():
 
         return str(logs_str)
 
-    def add_logs(self, *args) -> None:
+    def base_dir(self, path):
+        if not Path(path).exists():
+            print("Specified log path does not exist.")
+        self.log_base_dir = path
+
+    def create_logs(self, *args) -> None:
         for arg in range(len(args)):
             self.logs.add(self.Log(args[arg]))
 
-    def entry(self, log_name, *entries) -> None:
+    def entry(self, log_name, entries) -> None:
         for log in self.logs:
             if log_name == log.name:
                 for entry in entries:

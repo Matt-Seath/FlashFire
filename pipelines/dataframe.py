@@ -1,4 +1,3 @@
-from ..stocks.assets import get_symbols
 from django.db import connection
 from datetime import datetime
 from tqdm import tqdm
@@ -8,11 +7,6 @@ import pandas as pd
 import numpy as np
 import time
 import io
-
-
-file_path = "core/assests/stockdata/asx_list.csv"
-symbol_column = "TESt"
-extension = ".AX"
 
 
 class StockDataFrame():
@@ -29,7 +23,7 @@ class StockDataFrame():
     def timestamp(self):
         return datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
 
-    def get_dataframe(self, symbols):
+    def build_df(self, symbols):
         df = pd.DataFrame()
         df_entry = pd.DataFrame()
         skipped_symbols = []
@@ -145,7 +139,7 @@ class StockDataFrame():
 
         return df, errors, skipped_symbols, dropped_columns
 
-    def write_df_to_database(self, df, errors, skipped_symbols):
+    def write_df_to_db(self, df, errors, skipped_symbols):
         added_symbols = []
         cols = "`,`".join([str(i) for i in df.columns.tolist()])
 
@@ -169,6 +163,3 @@ class StockDataFrame():
                     errors += 1
 
         return df, errors, added_symbols, skipped_symbols
-
-
-sdf = StockDataFrame(assets.get_symbols(file_path, symbol_column, extension))
