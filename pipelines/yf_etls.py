@@ -9,7 +9,7 @@ import time
 import io
 
 
-class YFStockETL():
+class StockInfoETL():
 
     symbols = None
     df = None

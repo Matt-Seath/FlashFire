@@ -1,5 +1,5 @@
 from loggers.temp_logger import TempLogger
-from pipelines.yf_etls import YFStockETL
+from pipelines.yf_etls import StockInfoETL
 from stockdata import assets
 
 
@@ -16,43 +16,64 @@ PATH_TO_COLS_WHITELIST = "assets/stockdata/cols_whitelist.csv"
 PATH_TO_COLS_RENAME_CSV = "assets/stockdata/cols_rename.csv"
 
 # Variables to format csv to list for yfinance API
-ASX_LIST_COLUMN = "ASX code" # Only append values from this column to list
-ASX_LIST_EXTENSION = ".AX" # Add this extension to end of each value for asx stocks, e.g: "A2M.AX"
+ASX_LIST_COLUMN = "ASX code"  # Only append values from this column to list
+ASX_LIST_EXTENSION = ".AX"  # Add this extension to end of each value for asx stocks
 
-
-LOGS = ["errors", "added", "dropped", "skipped", "queries"]
-LOGGER_BASE_DIR = "logs/asx/"
+# Logger Configuration
+LOGS = ["errors", "added", "dropped",
+        "skipped", "queries"]  # Logs to be created
+LOGGER_BASE_DIR = "logs/asx/"  # Logs to be written into this directory
 
 
 def main():
-    logger = TempLogger(*LOGS)
-    logger.base_dir(LOGGER_BASE_DIR)
-    logger.clear_logs(all=True)
+    logger = TempLogger(*LOGS)  # Initialize Logger
+    logger.base_dir(LOGGER_BASE_DIR)  # Set base directory
+    logger.clear_logs(all=True)  # Clear logs if they already exist
 
-    symbols = assets.get_list_of_symbols(
+    symbols = assets.get_list_of_symbols(   # Extract symbols from csv file to list
         PATH_TO_ASX_LIST, ASX_LIST_COLUMN, ASX_LIST_EXTENSION)
-    cols_dict = assets.get_cols_rename_dict(
+    cols_dict = assets.get_cols_rename_dict(  # Get columns from csv file to dict
         PATH_TO_COLS_RENAME_CSV)
-    cols_whitelist = assets.get_cols_whitelist(PATH_TO_COLS_WHITELIST)
+    cols_whitelist = assets.get_cols_whitelist(
+        PATH_TO_COLS_WHITELIST)  # Get column names for db
 
-    etl = YFStockETL(symbols, all=GET_ALL_ASX_STOCKS,
-                     iterations=ITERATIONS, sleeper=SLEEPER)
+    # ETL Pipeline
+    etl = StockInfoETL(symbols, all=GET_ALL_ASX_STOCKS,  # Initialize ETL
+                       iterations=ITERATIONS, sleeper=SLEEPER)
 
-    etl.set_whitelist(cols_whitelist)
+    etl.set_whitelist(cols_whitelist)  # ETL will only load these columns
+    # ETL will change column names before loading into db
     etl.rename_cols(cols_dict)
-    etl.print_iter_range()
+    etl.print_iter_range()  # Print the total number to stocks ETL will extract
 
+    # ETL iterates over stock symbols, sending a http request to yfinance endpoint for each symbol.
+    # If the stock doesn't exist of if the data is corrupt, that stock is skipped and is logged.
+    # Validated response data for each iteration is then appended into a single pandas dataframe
     etl.extract()
+
+    # The resulting dataframe is then stripped of Nan values, converting them to None values;
+    # Column names are changed from camel-case to snake-case to conform with sql schema;
+    # Finally, each column is checked against the columns in the whitelist, any column name that
+    # doesn't exist in the whitelist is dropped from the dataframe.
     etl.transform()
+
+    # Each row of the cleaned dataframe (each row contains the information of a single stock)
+    # is iterated over and inserted into the database. If that stock already exists in the
+    # database, it is replaced instead. Any errors are logged and the query data is stored.
     etl.load()
 
-    for log in LOGS:
-        log_entry = getattr(etl, log)
+    # Create the logs
+    for log in LOGS:  # Iterate over each log and write to the file
+        log_entry = getattr(etl, log)  # Get the logged data from ETL
+        # Add the data to the respective log object
         logger.entry(log, log_entry)
+    # Write log data to .log files in base log directory.
     logger.write_to_files(all=True)
 
+    # Finally print stats to the terminal before finishing process.
     print(f"\nETL process finished with {len(etl.errors)} error/s")
     etl.print_added_count()
     etl.print_skipped_count()
     etl.print_dropped_count()
+
     return 0
