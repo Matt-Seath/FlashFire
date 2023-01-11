@@ -3,7 +3,7 @@ from pipelines.yf_etls import YFStockETL
 from stockdata import assets
 
 
-GET_ALL_ASX_STOCKS = True
+GET_ALL_ASX_STOCKS = False
 SLEEPER = 0.7  # Higher value slows api request frequency to avoid throttling.
 ITERATIONS = 3  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
@@ -14,13 +14,14 @@ PATH_TO_COLS_WHITELIST = "assets/stockdata/cols_whitelist.csv"
 ASX_LIST_COLUMN = "ASX code"
 ASX_LIST_EXTENSION = ".AX"
 
-LOGS = ["errors", "added", "dropped", "skipped"]
+LOGS = ["errors", "added", "dropped", "skipped", "queries"]
 LOGGER_BASE_DIR = "logs/asx/"
 
 
 def main():
     logger = TempLogger(*LOGS)
     logger.base_dir(LOGGER_BASE_DIR)
+    logger.clear_logs(all=True)
 
     symbols = assets.get_list_of_symbols(
         PATH_TO_ASX_LIST, ASX_LIST_COLUMN, ASX_LIST_EXTENSION)
@@ -30,19 +31,23 @@ def main():
 
     etl = YFStockETL(symbols, all=GET_ALL_ASX_STOCKS,
                      iterations=ITERATIONS, sleeper=SLEEPER)
+
     etl.set_whitelist(cols_whitelist)
     etl.rename_cols(cols_dict)
+    etl.print_iter_range()
 
-    # logs = etl.extract()
-    # logger.entry(logs)
+    etl.extract()
+    etl.transform()
+    etl.load()
 
-    # logs = etl.transform()
-    # logger.entry(logs)
-
-    # logs = etl.load()
-    # logger.entry(logs)
-
-    print(logger)
+    for log in LOGS:
+        log_entry = getattr(etl, log)
+        logger.entry(log, log_entry)
     logger.write_to_files(all=True)
+
+    print(f"\nETL process finished with {len(etl.errors)} error/s")
+    etl.print_added_count()
+    etl.print_skipped_count()
+    etl.print_dropped_count()
 
     return 0

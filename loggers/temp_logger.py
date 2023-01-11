@@ -3,12 +3,12 @@ from pathlib import Path
 
 class TempLogger():
 
-    log_base_dir = "logs/"
     logs = None
 
-    def __init__(self, *args) -> None:
+    def __init__(self, *args, log_base_dir="logs/") -> None:
         if self.logs == None:
             self.logs = set()
+            self.log_base_dir = log_base_dir
         self.create_logs(*args)
 
     def __str__(self):
@@ -45,6 +45,7 @@ class TempLogger():
             entry = entry + ", "
             with open(filename, "a") as f:
                 f.write(entry)
+                f.write("\n")
 
     def clear_logs(self, *list_of_logs, all=False):
         for log in self.logs:
@@ -65,13 +66,13 @@ class TempLogger():
 
     class Log():
 
-        name = ""
         data = None
-        stats = None
-        text = None
 
-        def __init__(self, name) -> None:
+        def __init__(self, name="") -> None:
             if self.data == None:
+                self.name = name
+                self.stats = ""
+                self.status = ""
                 self.data = []
             self.name = name
 

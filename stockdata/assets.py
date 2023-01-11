@@ -9,7 +9,7 @@ def get_list_of_symbols(csv_path, search_column, extension=""):
         return 1
     symbols_list = []
     print(
-        f"Generating list of Symbols with extension: '{extension}'   ", end="")
+        f"\nGenerating list of Symbols with extension: '{extension}'   ", end="")
     with open(csv_path, newline='') as csvfile:
         data = csv.DictReader(csvfile)
         for row in data:

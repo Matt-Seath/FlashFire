@@ -11,22 +11,52 @@ import io
 
 class YFStockETL():
 
-    iterations = None
     symbols = None
-    sleeper = 0
+    df = None
     df_cols = None
     df_cols_renamed = None
+    df_latest_entry = None
+    skipped = None
+    added = None
+    dropped = None
+    errors = None
+    queries = None
 
     def __init__(self, symbols_list, sleeper=0, all=True, iterations=1):
-        if self.symbols == None and self.df_cols == None and self.df_cols_renamed == None and symbols_list:
+        if self.symbols == None and self.df == None and self.df_cols == None and \
+                self.df_latest_entry == None and self.df_cols_renamed == None and \
+            self.skipped == None and self.added == None and self.queries == None and \
+                self.dropped == None and self.errors == None and symbols_list:
+
             self.iterations = len(symbols_list) if all else iterations
+            self.symbols = symbols_list
+            self.df = pd.DataFrame()
+            self.df_latest_entry = pd.DataFrame()
             self.df_cols = []
             self.df_cols_renamed = {}
-            self.symbols = symbols_list
             self.sleeper = sleeper
+            self.skipped = []
+            self.dropped = []
+            self.added = []
+            self.errors = []
+            self.queries = []
+        else:
+            raise Exception("YFStockETL could not be initialized")
 
-    def print(self):
+    def print_iter_range(self):
         print(f"Total symbols to process: {self.iterations}")
+
+    def print_error_count(self):
+        print(f"Total errors: {len(self.errors)}")
+
+    def print_skipped_count(self):
+        print(f"Symbols skipped: {len(self.skipped)}")
+
+    def print_added_count(self):
+        print(f"Stocks added: {len(self.added)}")
+
+    def print_dropped_count(self):
+        print(f"Columns dropped: {len(self.dropped)}")
 
     def timestamp(self):
         return datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
@@ -35,53 +65,45 @@ class YFStockETL():
         self.df_cols = whitelist
 
     def rename_cols(self, col_dict):
-        self.df_cols = col_dict
+        self.df_cols_renamed = col_dict
 
-    def build_df(self, symbols):
-        df = pd.DataFrame()
-        df_entry = pd.DataFrame()
-        skipped_symbols = []
-        dropped_columns = []
-        errors = 0
-        if not self.iterations:
-            loops = len(symbols)
-
-        for t in tqdm(range(loops), desc="Retrieving stock data from yfinance"):
+    def extract(self):
+        for i in tqdm(range(self.iterations), desc="Retrieving stock data from yfinance"):
             time.sleep(self.sleeper)
             try:
                 with contextlib.redirect_stdout(io.StringIO()):
-                    df_entry = (pd.DataFrame([yf.Ticker(symbols[t]).info]))
+                    self.df_latest_entry = (pd.DataFrame(
+                        [yf.Ticker(self.symbols[i]).info]))
             except Exception as e:
-                errors += 0
-                with open("logs/errors.log", "a") as f:
-                    f.write(
-                        f"{self.timestamp()}: {symbols[t]} Not Found, {e} \n")
-            if len(df_entry.columns) < 130:
-                # print(f"Skipping {symbols[t]}")
-                skipped_symbols.append(symbols[t])
+                self.skipped.append(self.symbols[i])
+                self.errors.append(
+                    f"{self.timestamp()}: {self.symbols[t]} Not Found, {e} \n")
+            if len(self.df_latest_entry.columns) < 130:
+                self.skipped.append(self.symbols[i])
                 continue
 
-            df = pd.concat([df, df_entry], axis=0)
+            self.df = pd.concat([self.df, self.df_latest_entry], axis=0)
 
-        df = df.reset_index(drop=True).replace(np.nan, None)
-        df = df.rename(colums=self.df_cols_renamed)
+        return
 
-        with open("assets/columns.txt") as f:
-            column_list = f.read()
-            columns = list(df.columns.values)
-            for column in columns:
-                if column not in column_list:
-                    df.drop(column, axis=1, inplace=True, errors="ignore")
-                    dropped_columns.append(column + ", ")
+    def transform(self):
+        self.df.rename(columns=self.df_cols_renamed)
+        self.df.reset_index(drop=True).replace(np.nan, None)
 
-        return df, errors, skipped_symbols, dropped_columns
+        columns = list(self.df.columns.values)
+        for column in columns:
+            if column not in self.df_cols:
+                self.df.drop(column, axis=1, inplace=True, errors="ignore")
+                self.dropped.append(column)
 
-    def write_df_to_db(self, df, errors, skipped_symbols):
+        return
+
+    def load(self):
         added_symbols = []
-        cols = "`,`".join([str(i) for i in df.columns.tolist()])
+        cols = "`,`".join([str(i) for i in self.df.columns.tolist()])
 
         with connection.cursor() as cursor:
-            for i, row in tqdm(df.iterrows(), desc="Inserting stockinfo into database"):
+            for i, row in tqdm(self.df.iterrows(), desc="Inserting stockinfo into database"):
                 sql_operation = "REPLACE INTO `core_stockinfo` (`" + \
                     cols + "`)"
                 sql_values = "VALUES (" + "%s,"*(len(row)-1) + "%s)"
@@ -90,13 +112,11 @@ class YFStockETL():
                 try:
                     cursor.execute(sql, tuple(row))
                     added_symbols.append(row["symbol"] + ", ")
+                    self.added.append(row["symbol"])
                 except Exception as e:
-                    skipped_symbols.append(row["symbol"])
-                    with open("logs/query.log", "a") as f:
-                        f.write(query)
-                    with open("logs/errors.log", "a") as f:
-                        f.write(
-                            f"{self.timestamp()}: Could not insert {row['symbol']}, {e} \n")
-                    errors += 1
+                    self.queries.append(query)
+                    self.skipped.append(row["symbol"])
+                    self.errors.append(
+                        f"{self.timestamp()}: Could not insert {row['symbol']}, {e}")
 
-        return df, errors, added_symbols, skipped_symbols
+        return
