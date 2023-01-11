@@ -7,9 +7,9 @@ GET_ALL_ASX_STOCKS = True
 SLEEPER = 0.7  # Higher value slows api request frequency to avoid throttling.
 ITERATIONS = 3  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
-PATH_TO_ASX_LIST = "core/assets/stockdata/asx_list.csv"
-PATH_TO_COLS_RENAME_CSV = "core/assets/stockdata/cols_rename.csv"
-PATH_TO_COLS_WHITELIST = "core/assets/stockdata/cols_whitelist.csv"
+PATH_TO_ASX_LIST = "assets/stockdata/asx_list.csv"
+PATH_TO_COLS_RENAME_CSV = "assets/stockdata/cols_rename.csv"
+PATH_TO_COLS_WHITELIST = "assets/stockdata/cols_whitelist.csv"
 
 ASX_LIST_COLUMN = "ASX code"
 ASX_LIST_EXTENSION = ".AX"

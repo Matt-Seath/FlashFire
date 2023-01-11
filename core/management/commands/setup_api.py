@@ -9,9 +9,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print('Installing Packages...')
-        pkg_1_path = 'core/assets/packages/atreyu-backtrader-api-1.3'
-        pkg_2_path = 'core/assets/packages/pythonclient'
+        pkg_1_path = 'assets/packages/atreyu-backtrader-api-1.3'
+        pkg_2_path = 'assets/packages/pythonclient'
 
-        subprocess.check_call([sys.executable, "-m", "pip", "install", pkg_1_path])
-        subprocess.check_call([sys.executable, "-m", "pip", "install", pkg_2_path])
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", pkg_1_path])
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", pkg_2_path])
         print("Done.")
