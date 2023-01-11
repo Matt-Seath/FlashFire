@@ -14,6 +14,8 @@ class ETL():
     symbols = None
     df = None
     df_latest_entry = None
+    df_cols = None
+    df_cols_renamed = None
     skipped = None
     added = None
     dropped = None
@@ -21,7 +23,8 @@ class ETL():
     queries = None
 
     def __init__(self, symbols_list, sleeper=0, all=True, iterations=1):
-        if self.symbols == None and self.df == None and self.df_latest_entry == None and \
+        if self.symbols == None and self.df == None and self.df_cols == None and \
+                self.df_latest_entry == None and self.df_cols_renamed == None and \
             self.skipped == None and self.added == None and self.queries == None and \
                 self.dropped == None and self.errors == None and symbols_list:
 
@@ -29,6 +32,8 @@ class ETL():
             self.symbols = symbols_list
             self.df = pd.DataFrame()
             self.df_latest_entry = pd.DataFrame()
+            self.df_cols = []
+            self.df_cols_renamed = {}
             self.sleeper = sleeper
             self.skipped = []
             self.dropped = []
@@ -56,45 +61,6 @@ class ETL():
     def timestamp(self):
         return datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
 
-    def extract(self):
-        print("User Defined Function")
-        return
-
-    def transform(self):
-        print("User Defined Function")
-        return
-
-    def load(self):
-        print("User Defined Function")
-        return
-
-
-class StockInfoETL(ETL):
-
-    df_cols = None
-    df_cols_renamed = None
-
-    def __init__(self, symbols_list, sleeper=0, all=True, iterations=1):
-        if self.symbols == None and self.df == None and self.df_cols == None and \
-                self.df_latest_entry == None and self.df_cols_renamed == None and \
-            self.skipped == None and self.added == None and self.queries == None and \
-                self.dropped == None and self.errors == None and symbols_list:
-
-            self.iterations = len(symbols_list) if all else iterations
-            self.symbols = symbols_list
-            self.df = pd.DataFrame()
-            self.df_latest_entry = pd.DataFrame()
-            self.df_cols = []
-            self.df_cols_renamed = {}
-            self.sleeper = sleeper
-            self.skipped = []
-            self.dropped = []
-            self.added = []
-            self.errors = []
-            self.queries = []
-        else:
-            raise Exception("YFStockETL could not be initialized")
-
     def set_whitelist(self, whitelist):
         self.df_cols = whitelist
 
@@ -102,22 +68,7 @@ class StockInfoETL(ETL):
         self.df_cols_renamed = col_dict
 
     def extract(self):
-        for i in tqdm(range(self.iterations), desc="Retrieving stock data from yfinance"):
-            time.sleep(self.sleeper)
-            try:
-                with contextlib.redirect_stdout(io.StringIO()):
-                    self.df_latest_entry = (pd.DataFrame(
-                        [yf.Ticker(self.symbols[i]).info]))
-            except Exception as e:
-                self.skipped.append(self.symbols[i])
-                self.errors.append(
-                    f"{self.timestamp()}: {self.symbols[i]} Not Found, {e} \n")
-            if len(self.df_latest_entry.columns) < 130:
-                self.skipped.append(self.symbols[i])
-                continue
-
-            self.df = pd.concat([self.df, self.df_latest_entry], axis=0)
-
+        print("User Defined Function")
         return
 
     def transform(self):
@@ -156,30 +107,82 @@ class StockInfoETL(ETL):
         return
 
 
-class StockHistoryETL(ETL):
+class StockInfoETL(ETL):
 
     def extract(self):
-        for i in tqdm(range(self.iterations), desc="Retrieving stock history from yfinance"):
+        for i in tqdm(range(self.iterations), desc="Retrieving stock info from yfinance"):
             time.sleep(self.sleeper)
             try:
                 with contextlib.redirect_stdout(io.StringIO()):
                     self.df_latest_entry = (pd.DataFrame(
-                        [yf.Ticker(self.symbols[i]).history(start="2023-01-01", end="2023-01-05", interval="1d")]))
+                        [yf.Ticker(self.symbols[i]).info]))
             except Exception as e:
                 self.skipped.append(self.symbols[i])
                 self.errors.append(
-                    f"{self.timestamp()}: {self.symbols[i]} Not Found, {e} \n")
+                    f"{self.timestamp()}: {self.symbols[i]} Error, {e} \n")
+                continue
             if len(self.df_latest_entry.columns) < 130:
                 self.skipped.append(self.symbols[i])
                 continue
 
             self.df = pd.concat([self.df, self.df_latest_entry], axis=0)
+
+        return
+
+
+class StockHistoryETL(ETL):
+
+    def __init__(self, symbols_list, period=None, interval=None, start=None,
+                 end=None, sleeper=0, actions=True, all=True, iterations=1):
+        if self.symbols == None and self.df == None and self.df_cols == None and \
+                self.df_latest_entry == None and self.df_cols_renamed == None and \
+            self.skipped == None and self.added == None and self.queries == None and \
+                self.dropped == None and self.errors == None and symbols_list:
+
+            self.iterations = len(symbols_list) if all else iterations
+            self.symbols = symbols_list
+            self.df = pd.DataFrame()
+            self.df_latest_entry = pd.DataFrame()
+            self.df_cols = []
+            self.df_cols_renamed = {}
+            self.sleeper = sleeper
+            self.skipped = []
+            self.dropped = []
+            self.added = []
+            self.errors = []
+            self.queries = []
+            self.start = start
+            self.end = end
+            self.period = period
+            self.interval = interval
+            self.actions = actions
+        else:
+            raise Exception("YFStockETL could not be initialized")
+
+    def print_range(self):
+        print(
+            f"Starting date: {self.start}, Ending date: {self.end}, period: {self.period}")
+
+    def extract(self):
+        self.print_range()
+        for i in tqdm(range(self.iterations), desc="Retrieving stock history from yfinance"):
+            time.sleep(self.sleeper)
+            try:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.df_latest_entry = yf.Ticker(self.symbols[i]).history(
+                        start=self.start, end=self.end, period=self.period, actions=self.actions)
+            except Exception as e:
+                self.skipped.append(self.symbols[i])
+                self.errors.append(
+                    f"{self.timestamp()}: {self.symbols[i]} Error, {e} \n")
+                continue
+            self.df_latest_entry["symbol"] = self.symbols[i]
+            self.df = pd.concat([self.df, self.df_latest_entry], axis=0)
+        print(self.df)
         return
 
     def transform(self):
-        print("Transform")
-        return
+        return "transform"
 
     def load(self):
-        print("Load")
-        return
+        return "load"

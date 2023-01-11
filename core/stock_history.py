@@ -1,6 +1,7 @@
 from loggers.temp_logger import TempLogger
 from pipelines.yf_etls import StockHistoryETL
 from stockdata import assets
+from datetime import datetime
 
 """
 
@@ -16,11 +17,17 @@ database.
 
 GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
 SLEEPER = 0.7  # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 1  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+ITERATIONS = 3  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+
+START_DATE = datetime(2023, 1, 1)
+END_DATE = datetime(2023, 1, 8)
+PERIOD = "1d"
+INTERVAL = None
+ACTIONS = False
 
 # Paths to static assets
 # List that contains all tickers on the ASX exchange
-PATH_TO_ASX_LIST = "assets/stockdata/asx_list.csv"
+PATH_TO_ASX_LIST = "assets/asx/asx_list.csv"
 
 # Variables to format csv to list for yfinance API
 ASX_LIST_COLUMN = "ASX code"  # Only append values from this column to list
@@ -44,9 +51,12 @@ def main():
         PATH_TO_ASX_LIST, ASX_LIST_COLUMN, ASX_LIST_EXTENSION)
 
     # ETL Pipeline
-    etl = StockHistoryETL(symbols, all=GET_ALL_ASX_STOCKS,  # Initialize ETL
-                          iterations=ITERATIONS, sleeper=SLEEPER)
+    etl = StockHistoryETL(symbols, all=GET_ALL_ASX_STOCKS, start=START_DATE, end=END_DATE,  # Initialize ETL
+                          actions=ACTIONS, period=PERIOD, iterations=ITERATIONS, sleeper=SLEEPER)
 
+    # print(etl.start)
+    # print(etl.end)
+    # print(etl.period)
     etl.print_iter_range()  # Print the total number to stocks ETL will extract
 
     # ETL iterates over stock symbols, sending a http request to yfinance endpoint for each symbol.
