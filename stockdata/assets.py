@@ -2,7 +2,7 @@ from pathlib import Path
 import csv
 
 
-def get_symbols(csv_path, search_column, extension=""):
+def get_list_of_symbols(csv_path, search_column, extension=""):
     file = Path(csv_path)
     if not file.exists():
         print("csv path does not exist.")
@@ -21,3 +21,15 @@ def get_symbols(csv_path, search_column, extension=""):
     print("Done.")
 
     return symbols_list
+
+
+def get_cols_rename_dict(csv_path):
+    file = Path(csv_path)
+    if not file.exists():
+        print("csv path does not exist.")
+        return 1
+    with open(file, mode='r') as infile:
+        reader = csv.reader(infile)
+        cols_dict = {rows[0]: rows[1] for rows in reader}
+
+        return cols_dict
