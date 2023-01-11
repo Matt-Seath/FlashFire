@@ -2,10 +2,12 @@ from django.db import models
 
 # Create your models here.
 
+
 class User(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     cash = models.DecimalField(default=0.00, decimal_places=2, max_digits=15)
+
 
 class StockInfo(models.Model):
     symbol = models.CharField(primary_key=True, max_length=10, unique=True)
@@ -16,8 +18,10 @@ class StockInfo(models.Model):
     ask_size = models.BigIntegerField(null=True)
     volume = models.IntegerField(null=True)
     open_price = models.DecimalField(max_digits=9, decimal_places=3, null=True)
-    fifty_two_week_high = models.DecimalField(max_digits=9, decimal_places=3, null=True)
-    fifty_two_week_low = models.DecimalField(max_digits=9, decimal_places=3, null=True)
+    fifty_two_week_high = models.DecimalField(
+        max_digits=9, decimal_places=3, null=True)
+    fifty_two_week_low = models.DecimalField(
+        max_digits=9, decimal_places=3, null=True)
     bid = models.DecimalField(max_digits=9, decimal_places=3, null=True)
     tradeable = models.BooleanField(null=True)
     bid_size = models.BigIntegerField(null=True)
@@ -32,28 +36,41 @@ class StockInfo(models.Model):
     max_age = models.PositiveIntegerField(null=True)
     address = models.CharField(max_length=100, null=True)
     industry = models.CharField(max_length=50, null=True)
-    ebitda_margins = models.DecimalField(max_digits=9, decimal_places=4, null=True)
-    profit_margins = models.DecimalField(max_digits=9, decimal_places=4, null=True)
-    gross_margins = models.DecimalField(max_digits=9, decimal_places=4, null=True)
+    ebitda_margins = models.DecimalField(
+        max_digits=9, decimal_places=4, null=True)
+    profit_margins = models.DecimalField(
+        max_digits=9, decimal_places=4, null=True)
+    gross_margins = models.DecimalField(
+        max_digits=9, decimal_places=4, null=True)
     operating_cashflow = models.BigIntegerField(null=True)
-    revenue_growth = models.DecimalField(max_digits=10, decimal_places=4, null=True)
-    operating_margins = models.DecimalField(max_digits=10, decimal_places=3, null=True)
+    revenue_growth = models.DecimalField(
+        max_digits=10, decimal_places=4, null=True)
+    operating_margins = models.DecimalField(
+        max_digits=10, decimal_places=3, null=True)
     ebitda = models.BigIntegerField(null=True)
     recommendation_key = models.CharField(max_length=15, null=True)
     gross_profits = models.BigIntegerField(null=True)
     free_cashflow = models.BigIntegerField(null=True)
-    current_price = models.DecimalField(max_digits=9, decimal_places=2, null=True)
-    current_ratio = models.DecimalField(max_digits=9, decimal_places=4, null=True)
-    return_on_assets = models.DecimalField(max_digits=9, decimal_places=4, null=True)
-    debt_to_equity = models.DecimalField(max_digits=9, decimal_places=4, null=True)
-    return_on_equity = models.DecimalField(max_digits=9, decimal_places=4, null=True)
+    current_price = models.DecimalField(
+        max_digits=9, decimal_places=2, null=True)
+    current_ratio = models.DecimalField(
+        max_digits=9, decimal_places=4, null=True)
+    return_on_assets = models.DecimalField(
+        max_digits=9, decimal_places=4, null=True)
+    debt_to_equity = models.DecimalField(
+        max_digits=9, decimal_places=4, null=True)
+    return_on_equity = models.DecimalField(
+        max_digits=9, decimal_places=4, null=True)
     total_cash = models.BigIntegerField(null=True)
     total_debt = models.BigIntegerField(null=True)
     total_revenue = models.BigIntegerField(null=True)
-    total_cash_per_share = models.DecimalField(max_digits=9, decimal_places=3, null=True)
+    total_cash_per_share = models.DecimalField(
+        max_digits=9, decimal_places=3, null=True)
     financial_currency = models.CharField(max_length=7, null=True)
-    revenue_per_share = models.DecimalField(max_digits=9, decimal_places=3, null=True)
-    quick_ratio = models.DecimalField(max_digits=9, decimal_places=3, null=True)
+    revenue_per_share = models.DecimalField(
+        max_digits=9, decimal_places=3, null=True)
+    quick_ratio = models.DecimalField(
+        max_digits=9, decimal_places=3, null=True)
     exchange = models.CharField(max_length=5, null=True)
     short_name = models.CharField(max_length=30, null=True)
     long_name = models.CharField(max_length=50, null=True)
@@ -64,34 +81,45 @@ class StockInfo(models.Model):
     quote_type = models.CharField(max_length=10, null=True)
     message_board_id = models.CharField(max_length=20, null=True)
     market = models.CharField(max_length=10, null=True)
-    enterprise_to_revenue = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    enterprise_to_ebitda = models.DecimalField(max_digits=9, decimal_places=3, null=True)
-    fifty_two_week_change = models.DecimalField(max_digits=9, decimal_places=5, null=True)
+    enterprise_to_revenue = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True)
+    enterprise_to_ebitda = models.DecimalField(
+        max_digits=9, decimal_places=3, null=True)
+    fifty_two_week_change = models.DecimalField(
+        max_digits=9, decimal_places=5, null=True)
     shares_outstanding = models.BigIntegerField(null=True)
     book_value = models.DecimalField(max_digits=9, decimal_places=3, null=True)
     last_fiscal_year_end = models.PositiveIntegerField(null=True)
-    held_percent_institutions = models.DecimalField(max_digits=9, decimal_places=5, null=True)
+    held_percent_institutions = models.DecimalField(
+        max_digits=9, decimal_places=5, null=True)
     net_income_to_common = models.BigIntegerField(null=True)
-    trailing_eps = models.DecimalField(max_digits=8, decimal_places=2, null=True)
-    s_and_p_52_week_change = models.DecimalField(max_digits=10, decimal_places=6, null=True)
-    price_to_book = models.DecimalField(max_digits=10, decimal_places=5, null=True)
-    held_percent_insiders = models.DecimalField(max_digits=9, decimal_places=5, null=True)
+    trailing_eps = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True)
+    s_and_p_52_week_change = models.DecimalField(
+        max_digits=10, decimal_places=6, null=True)
+    price_to_book = models.DecimalField(
+        max_digits=10, decimal_places=5, null=True)
+    held_percent_insiders = models.DecimalField(
+        max_digits=9, decimal_places=5, null=True)
     next_fiscal_year_end = models.PositiveIntegerField(null=True)
     most_recent_quarter = models.PositiveIntegerField(null=True)
     float_shares = models.BigIntegerField(null=True)
     beta = models.DecimalField(max_digits=9, decimal_places=5, null=True)
     enterprise_value = models.BigIntegerField(null=True)
     price_hint = models.SmallIntegerField(null=True)
-    price_to_sales_trailing_12_months = models.DecimalField(max_digits=15, decimal_places=3, null=True)
+    price_to_sales_trailing_12_months = models.DecimalField(
+        max_digits=15, decimal_places=3, null=True)
     forward_p_e = models.FloatField(null=True)
-    previous_close = models.DecimalField(max_digits=9, decimal_places=3, null=True)
+    previous_close = models.DecimalField(
+        max_digits=9, decimal_places=3, null=True)
     regular_market_open = models.FloatField(null=True)
     two_hundred_day_average = models.FloatField(null=True)
     trailing_annual_dividend_yield = models.FloatField(null=True)
     payout_ratio = models.FloatField(null=True)
     regular_market_day_high = models.FloatField(null=True)
     average_daily_volume_10_day = models.IntegerField(null=True)
-    regular_market_previous_close = models.DecimalField(max_digits=9, decimal_places=3, null=True)
+    regular_market_previous_close = models.DecimalField(
+        max_digits=9, decimal_places=3, null=True)
     fifty_day_average = models.FloatField(null=True)
     trailing_annual_dividend_rate = models.CharField(max_length=50, null=True)
     average_volume_10_days = models.FloatField(null=True)
@@ -102,15 +130,24 @@ class StockInfo(models.Model):
     logo_url = models.URLField(null=True)
     last_update = models.DateTimeField(auto_now=True)
 
+
 class WatchList(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist")
-    stock_id = models.ForeignKey(StockInfo, on_delete=models.CASCADE, related_name="watchlist")
+    user_id = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="watchlist")
+    stock_id = models.ForeignKey(
+        StockInfo, on_delete=models.CASCADE, related_name="watchlist")
+
 
 class StockHistory(models.Model):
-    stock_id = models.ForeignKey(StockInfo, on_delete=models.CASCADE, related_name="history") 
-    open_price = models.DecimalField(default=0.00, decimal_places=2, max_digits=15)
-    high = models.DecimalField(default=0.00, decimal_places=2, max_digits=15)
-    low = models.DecimalField(default=0.00, decimal_places=2, max_digits=15)
-    close = models.DecimalField(default=0.00, decimal_places=2, max_digits=15)
-    volume = models.DecimalField(default=0.00, decimal_places=2, max_digits=15)
-    datetime = models.DateTimeField(auto_now_add=True)
+    symbol = models.ForeignKey(
+        StockInfo, on_delete=models.CASCADE, related_name="history")
+    open = models.DecimalField(
+        default=0.00, null=True, decimal_places=3, max_digits=15)
+    high = models.DecimalField(
+        default=0.00, null=True, decimal_places=3, max_digits=15)
+    low = models.DecimalField(default=0.00, null=True,
+                              decimal_places=3, max_digits=15)
+    close = models.DecimalField(
+        default=0.00, null=True, decimal_places=3, max_digits=15)
+    volume = models.BigIntegerField(null=True)
+    date = models.DateTimeField(auto_now_add=True)
