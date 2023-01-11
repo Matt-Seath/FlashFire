@@ -2,6 +2,17 @@ from loggers.temp_logger import TempLogger
 from pipelines.yf_etls import StockInfoETL
 from stockdata import assets
 
+"""
+
+This script is an ETL pipeline that retrieves stock information for 
+Australian Securities Exchange (ASX) listed companies from the yfinance API.
+ The script first makes a request to the API to retrieve the current stock 
+information for all ASX listed companies. The returned data is then cleaned 
+by the script, including handling any missing or invalid values, and 
+formatting the data into a suitable structure for insertion into a MySQL 
+database.
+
+"""
 
 GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
 SLEEPER = 0.7  # Higher value slows api request frequency to avoid throttling.
@@ -24,6 +35,9 @@ LOGS = ["errors", "added", "dropped",
         "skipped", "queries"]  # Logs to be created
 LOGGER_BASE_DIR = "logs/asx/"  # Logs to be written into this directory
 
+
+# Microservice architecture was adapted for future projects.
+# Refer to each app for details on each component
 
 def main():
     logger = TempLogger(*LOGS)  # Initialize Logger
@@ -70,10 +84,10 @@ def main():
     # Write log data to .log files in base log directory.
     logger.write_to_files(all=True)
 
-    # Finally print stats to the terminal before finishing process.
+    # Finally print error count and stats to the terminal before finishing process.
     print(f"\nETL process finished with {len(etl.errors)} error/s")
-    etl.print_added_count()
-    etl.print_skipped_count()
-    etl.print_dropped_count()
+    etl.print_added_count()  # Print number of successful insertions to db
+    etl.print_skipped_count()  # Print number of skipped stocks
+    etl.print_dropped_count()  # Print number of columns dropped from df
 
     return 0
