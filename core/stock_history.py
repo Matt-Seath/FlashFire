@@ -28,6 +28,10 @@ ACTIONS = False
 # Paths to static assets
 # List that contains all tickers on the ASX exchange
 PATH_TO_ASX_LIST = "assets/asx/asx_list.csv"
+# List of columns to be loaded into db
+PATH_TO_COLS_WHITELIST = "assets/stockinfo/cols_whitelist.csv"
+# Key-Value pairs of column names, camel-case for yfinance, then to snake-case when loaded to db
+PATH_TO_COLS_RENAME_CSV = "assets/stockinfo/cols_rename.csv"
 
 # Variables to format csv to list for yfinance API
 ASX_LIST_COLUMN = "ASX code"  # Only append values from this column to list
@@ -49,15 +53,18 @@ def main():
 
     symbols = assets.get_list_of_symbols(   # Extract symbols from csv file to list
         PATH_TO_ASX_LIST, ASX_LIST_COLUMN, ASX_LIST_EXTENSION)
+    cols_dict = assets.get_cols_rename_dict(  # Get columns from csv file to dict
+        PATH_TO_COLS_RENAME_CSV)
+    cols_whitelist = assets.get_cols_whitelist(
+        PATH_TO_COLS_WHITELIST)  # Get column names for db
 
     # ETL Pipeline
-    etl = StockHistoryETL(symbols, all=GET_ALL_ASX_STOCKS, start=START_DATE, end=END_DATE,  # Initialize ETL
+    etl = StockHistoryETL(symbols, all=GET_ALL_ASX_STOCKS, start=START_DATE, end=END_DATE,  # Initialize ETL object
                           actions=ACTIONS, period=PERIOD, iterations=ITERATIONS, sleeper=SLEEPER)
 
-    # print(etl.start)
-    # print(etl.end)
-    # print(etl.period)
-    etl.print_iter_range()  # Print the total number to stocks ETL will extract
+    etl.set_whitelist(cols_whitelist)  # ETL will only load these columns
+    # ETL will change column names before loading into db
+    etl.rename_cols(cols_dict)
 
     # ETL iterates over stock symbols, sending a http request to yfinance endpoint for each symbol.
     # If the stock doesn't exist of if the data is corrupt, that stock is skipped and is logged.

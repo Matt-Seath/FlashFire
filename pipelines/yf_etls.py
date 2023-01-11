@@ -110,6 +110,8 @@ class ETL():
 class StockInfoETL(ETL):
 
     def extract(self):
+        self.print_iter_range()
+
         for i in tqdm(range(self.iterations), desc="Retrieving stock info from yfinance"):
             time.sleep(self.sleeper)
             try:
@@ -164,7 +166,10 @@ class StockHistoryETL(ETL):
             f"Starting date: {self.start}, Ending date: {self.end}, period: {self.period}")
 
     def extract(self):
+        print("Retrieving historical data")
         self.print_range()
+        self.print_iter_range()
+
         for i in tqdm(range(self.iterations), desc="Retrieving stock history from yfinance"):
             time.sleep(self.sleeper)
             try:
@@ -176,13 +181,29 @@ class StockHistoryETL(ETL):
                 self.errors.append(
                     f"{self.timestamp()}: {self.symbols[i]} Error, {e} \n")
                 continue
-            self.df_latest_entry["symbol"] = self.symbols[i]
+            self.df_latest_entry["symbol_id"] = self.symbols[i]
             self.df = pd.concat([self.df, self.df_latest_entry], axis=0)
-        print(self.df)
         return
 
-    def transform(self):
-        return "transform"
-
     def load(self):
-        return "load"
+        added_symbols = []
+        cols = "`,`".join([str(i) for i in self.df.columns.tolist()])
+
+        with connection.cursor() as cursor:
+            for i, row in tqdm(self.df.iterrows(), desc="Inserting stock history into database"):
+                sql_operation = "REPLACE INTO `core_stockhistory` (`" + \
+                    cols + "`)"
+                sql_values = "VALUES (" + "%s,"*(len(row)-1) + "%s)"
+                sql = sql_operation + sql_values
+                query = f"{sql_operation} VALUES {tuple(row)}; \n"
+                try:
+                    cursor.execute(sql, tuple(row))
+                    added_symbols.append(row["symbol_id"] + ", ")
+                    self.added.append(row["symbol_id"])
+                except Exception as e:
+                    self.queries.append(query)
+                    self.skipped.append(row["symbol_id"])
+                    self.errors.append(
+                        f"{self.timestamp()}: Could not insert {row['symbol_id']}, {e}")
+
+        return
