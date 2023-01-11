@@ -164,7 +164,7 @@ class StockHistoryETL(ETL):
             try:
                 with contextlib.redirect_stdout(io.StringIO()):
                     self.df_latest_entry = (pd.DataFrame(
-                        [yf.Ticker(self.symbols[i]).history()]))
+                        [yf.Ticker(self.symbols[i]).history(start="2023-01-01", end="2023-01-05", interval="1d")]))
             except Exception as e:
                 self.skipped.append(self.symbols[i])
                 self.errors.append(

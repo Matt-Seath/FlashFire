@@ -20,11 +20,11 @@ ITERATIONS = 16  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = Fal
 
 # Paths to static assets
 # List that contains all tickers on the ASX exchange
-PATH_TO_ASX_LIST = "assets/stockdata/asx_list.csv"
+PATH_TO_ASX_LIST = "assets/asx/asx_list.csv"
 # List of columns to be loaded into db
-PATH_TO_COLS_WHITELIST = "assets/stockdata/cols_whitelist.csv"
+PATH_TO_COLS_WHITELIST = "assets/stockinfo/cols_whitelist.csv"
 # Key-Value pairs of column names, camel-case for yfinance, then to snake-case when loaded to db
-PATH_TO_COLS_RENAME_CSV = "assets/stockdata/cols_rename.csv"
+PATH_TO_COLS_RENAME_CSV = "assets/stockinfo/cols_rename.csv"
 
 # Variables to format csv to list for yfinance API
 ASX_LIST_COLUMN = "ASX code"  # Only append values from this column to list
@@ -33,7 +33,7 @@ ASX_LIST_EXTENSION = ".AX"  # Add this extension to end of each value for asx st
 # Logger Configuration
 LOGS = ["errors", "added", "dropped",
         "skipped", "queries"]  # Logs to be created
-LOGGER_BASE_DIR = "logs/asx/"  # Logs to be written into this directory
+LOGGER_BASE_DIR = "logs/stockinfo/"  # Logs to be written into this directory
 
 
 # Microservice architecture was adapted for future projects.

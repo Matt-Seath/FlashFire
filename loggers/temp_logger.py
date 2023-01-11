@@ -50,7 +50,10 @@ class TempLogger():
     def clear_logs(self, *list_of_logs, all=False):
         for log in self.logs:
             if log.name in list_of_logs or all:
-                with open(f"{self.log_base_dir}{log.name}.log", "w") as f:
+                log_path = Path(f"{self.log_base_dir}{log.name}.log")
+                if not log_path.exists():
+                    continue
+                with open(log_path, "w") as f:
                     f.truncate(0)
 
     def edit(self, name):
