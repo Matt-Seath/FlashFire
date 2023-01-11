@@ -4,10 +4,10 @@ from stockdata import assets
 
 """
 
-This script is an ETL pipeline that retrieves stock information for 
+This script behaves as an ETL pipeline that retrieves stock information for 
 Australian Securities Exchange (ASX) listed companies from the yfinance API.
- The script first makes a request to the API to retrieve the current stock 
-information for all ASX listed companies. The returned data is then cleaned 
+The script first makes a request to the API to retrieve the current stock 
+information for each ASX listed company. The returned data is then cleaned 
 by the script, including handling any missing or invalid values, and 
 formatting the data into a suitable structure for insertion into a MySQL 
 database.
