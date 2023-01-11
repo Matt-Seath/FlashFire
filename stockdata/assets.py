@@ -33,3 +33,17 @@ def get_cols_rename_dict(csv_path):
         cols_dict = {rows[0]: rows[1] for rows in reader}
 
         return cols_dict
+
+
+def get_cols_whitelist(csv_path):
+    cols_whitelist = []
+    file = Path(csv_path)
+    if not file.exists():
+        print("csv path does not exist.")
+        return 1
+    with open(file, mode='r') as infile:
+        reader = csv.reader(infile)
+        for row in reader:
+            cols_whitelist.append(*row)
+
+        return cols_whitelist

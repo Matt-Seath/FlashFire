@@ -31,6 +31,12 @@ class YFStockETL():
     def timestamp(self):
         return datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
 
+    def set_whitelist(self, whitelist):
+        self.df_cols = whitelist
+
+    def rename_cols(self, col_dict):
+        self.df_cols = col_dict
+
     def build_df(self, symbols):
         df = pd.DataFrame()
         df_entry = pd.DataFrame()
