@@ -32,7 +32,7 @@ def get_cols_rename_dict(csv_path):
         reader = csv.reader(infile)
         cols_dict = {rows[0]: rows[1] for rows in reader}
 
-        return cols_dict
+        return (cols_dict)
 
 
 def get_cols_whitelist(csv_path):

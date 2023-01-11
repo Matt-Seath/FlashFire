@@ -77,7 +77,7 @@ class YFStockETL():
             except Exception as e:
                 self.skipped.append(self.symbols[i])
                 self.errors.append(
-                    f"{self.timestamp()}: {self.symbols[t]} Not Found, {e} \n")
+                    f"{self.timestamp()}: {self.symbols[i]} Not Found, {e} \n")
             if len(self.df_latest_entry.columns) < 130:
                 self.skipped.append(self.symbols[i])
                 continue
@@ -87,8 +87,8 @@ class YFStockETL():
         return
 
     def transform(self):
-        self.df.rename(columns=self.df_cols_renamed)
-        self.df.reset_index(drop=True).replace(np.nan, None)
+        self.df = self.df.rename(columns=self.df_cols_renamed)
+        self.df = self.df.reset_index(drop=True).replace(np.nan, None)
 
         columns = list(self.df.columns.values)
         for column in columns:

@@ -1,2 +1,0 @@
-REPLACE INTO `core_stockinfo` (`sector`,`city`,`phone`,`state`,`country`,`website`,`industry`,`ebitda`,`exchange`,`symbol`,`market`,`beta`,`currency`,`ask`,`volume`,`bid`,`tradeable`,`logo_url`) VALUES ('Energy', 'Subiaco', '61 8 6465 5500', 'WA', 'Australia', 'https://www.auroraenergymetals.com', 'Uranium', -1913794, 'ASX', '1AE.AX', 'au_market', nan, 'AUD', 0.165, 217087, 0.16, False, 'https://logo.clearbit.com/auroraenergymetals.com'); 
-, 

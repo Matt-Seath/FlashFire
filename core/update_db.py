@@ -3,16 +3,22 @@ from pipelines.yf_etls import YFStockETL
 from stockdata import assets
 
 
-GET_ALL_ASX_STOCKS = False
+GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
 SLEEPER = 0.7  # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 3  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+ITERATIONS = 16  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
+# Paths to static assets
+# List that contains all tickers on the ASX exchange
 PATH_TO_ASX_LIST = "assets/stockdata/asx_list.csv"
-PATH_TO_COLS_RENAME_CSV = "assets/stockdata/cols_rename.csv"
+# List of columns to be loaded into db
 PATH_TO_COLS_WHITELIST = "assets/stockdata/cols_whitelist.csv"
+# Key-Value pairs of column names, camel-case for yfinance, then to snake-case when loaded to db
+PATH_TO_COLS_RENAME_CSV = "assets/stockdata/cols_rename.csv"
 
-ASX_LIST_COLUMN = "ASX code"
-ASX_LIST_EXTENSION = ".AX"
+# Variables to format csv to list for yfinance API
+ASX_LIST_COLUMN = "ASX code" # Only append values from this column to list
+ASX_LIST_EXTENSION = ".AX" # Add this extension to end of each value for asx stocks, e.g: "A2M.AX"
+
 
 LOGS = ["errors", "added", "dropped", "skipped", "queries"]
 LOGGER_BASE_DIR = "logs/asx/"
@@ -49,5 +55,4 @@ def main():
     etl.print_added_count()
     etl.print_skipped_count()
     etl.print_dropped_count()
-
     return 0
