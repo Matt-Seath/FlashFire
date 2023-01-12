@@ -17,10 +17,10 @@ database.
 
 GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
 SLEEPER = 0.7  # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 3  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+ITERATIONS = 20  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
-START_DATE = datetime(2023, 1, 1)
-END_DATE = datetime(2023, 1, 8)
+START_DATE = datetime(2022, 11, 11)
+END_DATE = datetime(2023, 1, 11)
 PERIOD = "1d"
 INTERVAL = None
 ACTIONS = False
@@ -29,16 +29,16 @@ ACTIONS = False
 # List that contains all tickers on the ASX exchange
 PATH_TO_ASX_LIST = "assets/asx/asx_list.csv"
 # List of columns to be loaded into db
-PATH_TO_COLS_WHITELIST = "assets/stockinfo/cols_whitelist.csv"
+PATH_TO_COLS_WHITELIST = "assets/stockhistory/cols_whitelist.csv"
 # Key-Value pairs of column names, camel-case for yfinance, then to snake-case when loaded to db
-PATH_TO_COLS_RENAME_CSV = "assets/stockinfo/cols_rename.csv"
+PATH_TO_COLS_RENAME_CSV = "assets/stockhistory/cols_rename.csv"
 
 # Variables to format csv to list for yfinance API
 ASX_LIST_COLUMN = "ASX code"  # Only append values from this column to list
 ASX_LIST_EXTENSION = ".AX"  # Add this extension to end of each value for asx stocks
 
 # Logger Configuration
-LOGS = ["errors", "added", "skipped", "queries"]  # Logs to be created
+LOGS = ["errors", "added", "skipped", "dropped"]  # Logs to be created
 # Logs to be written into this directory
 LOGGER_BASE_DIR = "logs/stockhistory/"
 

@@ -128,7 +128,10 @@ class StockInfo(models.Model):
     regular_market_volume = models.BigIntegerField(null=True)
     regular_market_price = models.FloatField(null=True)
     logo_url = models.URLField(null=True)
-    last_update = models.DateTimeField(auto_now=True)
+    last_updated = models.DateTimeField(auto_now=True, null=False)
+
+    def __unicode__(self):
+        return u'%s' % (self.long_name)
 
 
 class WatchList(models.Model):
@@ -139,7 +142,7 @@ class WatchList(models.Model):
 
 
 class StockHistory(models.Model):
-    symbol = models.ForeignKey(
+    stock = models.ForeignKey(
         StockInfo, on_delete=models.CASCADE, related_name="history")
     open = models.DecimalField(
         default=0.00, null=True, decimal_places=3, max_digits=15)
@@ -150,4 +153,4 @@ class StockHistory(models.Model):
     close = models.DecimalField(
         default=0.00, null=True, decimal_places=3, max_digits=15)
     volume = models.BigIntegerField(null=True)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(null=False)

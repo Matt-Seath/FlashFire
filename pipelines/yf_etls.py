@@ -8,6 +8,8 @@ import numpy as np
 import time
 import io
 
+from core.models import StockHistory
+
 
 class ETL():
 
@@ -181,29 +183,39 @@ class StockHistoryETL(ETL):
                 self.errors.append(
                     f"{self.timestamp()}: {self.symbols[i]} Error, {e} \n")
                 continue
-            self.df_latest_entry["symbol_id"] = self.symbols[i]
+            if len(self.df_latest_entry.columns) < 4:
+                self.skipped.append(self.symbols[i])
+                continue
+
+            self.df_latest_entry["stock_id"] = self.symbols[i]
             self.df = pd.concat([self.df, self.df_latest_entry], axis=0)
         return
 
-    def load(self):
-        added_symbols = []
-        cols = "`,`".join([str(i) for i in self.df.columns.tolist()])
+    def transform(self):
+        self.df = self.df.rename(columns=self.df_cols_renamed)
+        self.df["date"] = self.df.index
+        self.df = self.df.replace(np.nan, None)
 
-        with connection.cursor() as cursor:
-            for i, row in tqdm(self.df.iterrows(), desc="Inserting stock history into database"):
-                sql_operation = "REPLACE INTO `core_stockhistory` (`" + \
-                    cols + "`)"
-                sql_values = "VALUES (" + "%s,"*(len(row)-1) + "%s)"
-                sql = sql_operation + sql_values
-                query = f"{sql_operation} VALUES {tuple(row)}; \n"
-                try:
-                    cursor.execute(sql, tuple(row))
-                    added_symbols.append(row["symbol_id"] + ", ")
-                    self.added.append(row["symbol_id"])
-                except Exception as e:
-                    self.queries.append(query)
-                    self.skipped.append(row["symbol_id"])
-                    self.errors.append(
-                        f"{self.timestamp()}: Could not insert {row['symbol_id']}, {e}")
+        columns = list(self.df.columns.values)
+        for column in columns:
+            if column not in self.df_cols:
+                self.df.drop(column, axis=1, inplace=True, errors="ignore")
+                self.dropped.append(column)
+
+        return
+
+    def load(self):
+
+        for i, row in tqdm(self.df.iterrows(), desc="Retrieving stock history from yfinance"):
+            entry = StockHistory(
+                stock_id=row["stock_id"], open=row["open"], close=row["close"],
+                high=row["high"], low=row["low"], volume=row["volume"], date=row["date"])
+            try:
+                entry.save()
+                self.added.append(row["stock_id"])
+            except Exception as e:
+                self.skipped.append(row["stock_id"])
+                self.errors.append(
+                    f"{self.timestamp()}: Could not insert {row['stock_id']}, {e}")
 
         return
