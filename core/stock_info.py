@@ -1,5 +1,5 @@
 from loggers.temp_logger import TempLogger
-from pipelines.yf_etls import StockInfoETL
+from pipelines.yfinance import StockInfoETL
 from stockdata import assets
 
 """
