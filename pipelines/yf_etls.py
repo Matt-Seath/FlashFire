@@ -206,7 +206,7 @@ class StockHistoryETL(ETL):
 
     def load(self):
 
-        for i, row in tqdm(self.df.iterrows(), desc="Retrieving stock history from yfinance"):
+        for i, row in tqdm(self.df.iterrows(), desc="Writing stock history to the database"):
             entry = StockHistory(
                 stock_id=row["stock_id"], open=row["open"], close=row["close"],
                 high=row["high"], low=row["low"], volume=row["volume"], date=row["date"])

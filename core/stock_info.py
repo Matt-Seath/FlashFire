@@ -14,7 +14,7 @@ database.
 
 """
 
-GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
+GET_ALL_ASX_STOCKS = True  # Fully update the ASX stock table
 SLEEPER = 0.7  # Higher value slows api request frequency to avoid throttling.
 ITERATIONS = 16  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 

@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from core import stock_info
+from core import stock_info, stock_history
 
 
 class Command(BaseCommand):
@@ -7,4 +7,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         stock_info.main()
+        stock_history.main()
         return 0
