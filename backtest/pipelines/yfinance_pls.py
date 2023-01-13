@@ -7,8 +7,9 @@ import pandas as pd
 import numpy as np
 import time
 import io
+import sys
 
-from core.models import StockHistory
+from core.models import StockHistory, StockInfo
 
 
 class ETL():
@@ -112,10 +113,10 @@ class ETL():
 class StockInfoETL(ETL):
 
     def extract(self):
-        self.print_iter_range()
-
         for i in tqdm(range(self.iterations), desc="Retrieving stock info from yfinance"):
             time.sleep(self.sleeper)
+            self.df_latest_entry = (pd.DataFrame(
+                [yf.Ticker(self.symbols[i]).info]))
             try:
                 with contextlib.redirect_stdout(io.StringIO()):
                     self.df_latest_entry = (pd.DataFrame(
@@ -130,6 +131,22 @@ class StockInfoETL(ETL):
                 continue
 
             self.df = pd.concat([self.df, self.df_latest_entry], axis=0)
+
+        return
+
+    def load(self):
+        generator = self.df.iterrows()
+        for _ in tqdm(range(len(self.df.index)), desc="Loading stock info into database"):
+            _, row = next(generator)
+            row_dict = row.to_dict()
+            entry = StockInfo(row_dict)
+            try:
+                entry.save()
+                self.added.append(row["stock_id"])
+            except Exception as e:
+                self.skipped.append(row["stock_id"])
+                self.errors.append(
+                    f"{self.timestamp()}: Could not insert {row['stock_id']}, {e}")
 
         return
 
@@ -205,11 +222,11 @@ class StockHistoryETL(ETL):
         return
 
     def load(self):
-
-        for i, row in tqdm(self.df.iterrows(), desc="Writing stock history to the database"):
-            entry = StockHistory(
-                stock_id=row["stock_id"], open=row["open"], close=row["close"],
-                high=row["high"], low=row["low"], volume=row["volume"], date=row["date"])
+        generator = self.df.iterrows()
+        for _ in tqdm(range(len(self.df.index)), desc="Loading stock history into database"):
+            _, row = next(generator)
+            row_dict = row.to_dict()
+            entry = StockInfo(row_dict)
             try:
                 entry.save()
                 self.added.append(row["stock_id"])

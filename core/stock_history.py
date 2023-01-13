@@ -1,5 +1,5 @@
 from loggers.temp_logger import TempLogger
-from backtest.pipelines import assets_pls, yfinance_pls
+from backtest.pipelines import assets_pls, yfinance_pls, mysql_pls
 
 from datetime import datetime
 
@@ -17,7 +17,7 @@ database.
 
 GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
 SLEEPER = 2.0  # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 50  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+ITERATIONS = 5  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
 START_DATE = datetime(2022, 6, 11)
 END_DATE = datetime(2023, 1, 11)
@@ -33,9 +33,7 @@ PATH_TO_COLS_WHITELIST = "assets/stockhistory/cols_whitelist.csv"
 # Key-Value pairs of column names, camel-case for yfinance, then to snake-case when loaded to db
 PATH_TO_COLS_RENAME_CSV = "assets/stockhistory/cols_rename.csv"
 
-# Variables to format csv to list for yfinance API
-ASX_LIST_COLUMN = "ASX code"  # Only append values from this column to list
-ASX_LIST_EXTENSION = ".AX"  # Add this extension to end of each value for asx stocks
+DB_COLUMN = "symbol"
 
 # Logger Configuration
 LOGS = ["errors", "added", "skipped", "dropped"]  # Logs to be created
@@ -51,16 +49,17 @@ def main():
     logger.base_dir(LOGGER_BASE_DIR)  # Set base directory
     logger.clear_logs(all=True)  # Clear logs if they already exist
 
-    symbols = assets_pls.get_list_of_symbols(   # Extract symbols from csv file to list
-        PATH_TO_ASX_LIST, ASX_LIST_COLUMN, ASX_LIST_EXTENSION)
+    symbols = mysql_pls.get_col_list_from_db(DB_COLUMN)
     cols_dict = assets_pls.get_cols_rename_dict(  # Get columns from csv file to dict
         PATH_TO_COLS_RENAME_CSV)
     cols_whitelist = assets_pls.get_cols_whitelist(
         PATH_TO_COLS_WHITELIST)  # Get column names for db
 
+    print(symbols)
+
     # ETL Pipeline
     etl = yfinance_pls.StockHistoryETL(symbols, all=GET_ALL_ASX_STOCKS, start=START_DATE, end=END_DATE,  # Initialize ETL object
-                                   actions=ACTIONS, period=PERIOD, iterations=ITERATIONS, sleeper=SLEEPER)
+                                       actions=ACTIONS, period=PERIOD, iterations=ITERATIONS, sleeper=SLEEPER)
 
     etl.set_whitelist(cols_whitelist)  # ETL will only load these columns
     # ETL will change column names before loading into db
@@ -71,7 +70,7 @@ def main():
     # Validated response data for each iteration is then appended into a single pandas dataframe
     etl.extract()
 
-    # The resulting dataframe is then stripped of Nan values, converting them to None values;
+    # ulting dataframe is then stripped of Nan values, converting them to None values;
     # Column names are changed from camel-case to snake-case to conform with sql schema;
     # Finally, each column is checked against the columns in the whitelist, any column name that
     # doesn't exist in the whitelist is dropped from the dataframe.

@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 
 
@@ -128,7 +127,7 @@ class StockInfo(models.Model):
     regular_market_volume = models.BigIntegerField(null=True)
     regular_market_price = models.FloatField(null=True)
     logo_url = models.URLField(null=True)
-    last_updated = models.DateTimeField(auto_now=True, null=False)
+    last_updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return u'%s' % (self.long_name)
