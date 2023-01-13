@@ -47,8 +47,6 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'frontend.apps.FrontendConfig',
     'loggers.apps.LoggersConfig',
-    'pipelines.apps.PipelinesConfig',
-    'stockdata.apps.StockdataConfig',
 ]
 
 MIDDLEWARE = [
