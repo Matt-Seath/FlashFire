@@ -1,6 +1,5 @@
 from loggers.temp_logger import TempLogger
-from pipelines.yfinance import StockInfoETL
-from stockdata import assets
+from backtest.pipelines import assets_pls, yfinance_pls
 
 """
 
@@ -44,16 +43,16 @@ def main():
     logger.base_dir(LOGGER_BASE_DIR)  # Set base directory
     logger.clear_logs(all=True)  # Clear logs if they already exist
 
-    symbols = assets.get_list_of_symbols(   # Extract symbols from csv file to list
+    symbols = assets_pls.get_list_of_symbols(   # Extract symbols from csv file to list
         PATH_TO_ASX_LIST, ASX_LIST_COLUMN, ASX_LIST_EXTENSION)
-    cols_dict = assets.get_cols_rename_dict(  # Get columns from csv file to dict
+    cols_dict = assets_pls.get_cols_rename_dict(  # Get columns from csv file to dict
         PATH_TO_COLS_RENAME_CSV)
-    cols_whitelist = assets.get_cols_whitelist(
+    cols_whitelist = assets_pls.get_cols_whitelist(
         PATH_TO_COLS_WHITELIST)  # Get column names for db
 
     # ETL Pipeline
-    etl = StockInfoETL(symbols, all=GET_ALL_ASX_STOCKS,  # Initialize ETL
-                       iterations=ITERATIONS, sleeper=SLEEPER)
+    etl = yfinance_pls.StockInfoETL(symbols, all=GET_ALL_ASX_STOCKS,  # Initialize ETL
+                                iterations=ITERATIONS, sleeper=SLEEPER)
 
     etl.set_whitelist(cols_whitelist)  # ETL will only load these columns
     # ETL will change column names before loading into db

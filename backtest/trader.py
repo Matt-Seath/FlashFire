@@ -3,7 +3,7 @@ import datetime
 import time
 
 from backtest.strategies import TestStrategy
-from pipelines.backtrader import DjangoDataFeed
+from backtest.pipelines.backtrader_pls import DjangoDataFeed
 
 
 PATH = "assets/trader/datafeed.csv"
