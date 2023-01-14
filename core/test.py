@@ -1,5 +1,7 @@
 import pandas as pd
-import csv
+from tqdm import tqdm
+from core.models import User
+
 
 file = "assets/test.csv"
 
@@ -7,8 +9,9 @@ file = "assets/test.csv"
 def main():
 
     data = {
-        "calories": ["a", "b", "c", "d", "e", "f"],
-        "duration": ["g", "h", "i", "j", "k", "l"]
+        "name": ["abyy", "barb", "chris"],
+        "email": ["gsdf@gmail.com", "hdfsd@gmail.com", "id@gmail.com"],
+        "cash": [20.0, 23.3, 4.0]
     }
 
     # load data into a DataFrame object:
@@ -19,10 +22,14 @@ def main():
     # print(columns)
 
     it = df.iterrows()
-    for i in range(len(df.index)):
+    for i in tqdm(range(len(df.index)), desc="cool"):
         _, row = next(it)
         row_d = row.to_dict()
         print(row_d)
+
+        entry = User(**row_d)
+        entry.save()
+        print("yup")
 
 
 #     with open(file, newline='') as csvfile:

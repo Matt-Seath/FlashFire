@@ -139,7 +139,7 @@ class StockInfoETL(ETL):
         for _ in tqdm(range(len(self.df.index)), desc="Loading stock info into database"):
             _, row = next(generator)
             row_dict = row.to_dict()
-            entry = StockInfo(row_dict)
+            entry = StockInfo(**row_dict)
             try:
                 entry.save()
                 self.added.append(row["stock_id"])
@@ -226,7 +226,7 @@ class StockHistoryETL(ETL):
         for _ in tqdm(range(len(self.df.index)), desc="Loading stock history into database"):
             _, row = next(generator)
             row_dict = row.to_dict()
-            entry = StockInfo(row_dict)
+            entry = StockInfo(**row_dict)
             try:
                 entry.save()
                 self.added.append(row["stock_id"])

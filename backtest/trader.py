@@ -1,6 +1,7 @@
 import backtrader as bt
 import datetime
 import time
+from backtrader.feeds.yahoo import YahooFinanceCSVData
 
 from backtest.strategies import TestStrategy
 from backtest.pipelines.backtrader_pls import DjangoDataFeed
@@ -24,18 +25,18 @@ def main():
 
     cerebro.broker.set_cash(100000)
 
-    data = DjangoDataFeed()
+    # data = DjangoDataFeed()
 
-    data.todate = TODATE
-    data.fromdate = FROMDATE
-    data.ticker = "WES.AX"
+    # data.todate = TODATE
+    # data.fromdate = FROMDATE
+    # data.ticker = "WES.AX"
 
-    # YahooFinanceCSVData(
-    #     dataname=PATH,
-    #     fromdate=FROMDATE,
-    #     todate=TODATE,
-    #     reverse=False
-    # )
+    data = YahooFinanceCSVData(
+        dataname=PATH,
+        fromdate=FROMDATE,
+        todate=TODATE,
+        reverse=False
+    )
 
     cerebro.adddata(data)
 
