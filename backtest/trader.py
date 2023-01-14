@@ -12,14 +12,6 @@ FROMDATE = datetime.datetime(2000, 12, 31)
 TODATE = datetime.datetime(2001, 12, 31)
 
 
-def countdown(text, dots=4, speed=1):
-    print(text, end="")
-    for i in range(dots):
-        print(".kjkl", end="")
-        time.sleep(speed)
-    return
-
-
 def main():
     cerebro = bt.Cerebro()
 
@@ -44,7 +36,8 @@ def main():
 
     print('Starting portfolio value: %.2f' % cerebro.broker.getvalue())
 
-    # countdown("\nStarting Cerebro")
     cerebro.run()
 
     print('Final portfolio value: %.2f' % cerebro.broker.getvalue())
+
+    cerebro.plot()

@@ -17,7 +17,7 @@ database.
 
 GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
 SLEEPER = 2.0  # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 5  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+ITERATIONS = 1  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
 START_DATE = datetime(2022, 6, 11)
 END_DATE = datetime(2023, 1, 11)
@@ -26,8 +26,6 @@ INTERVAL = None
 ACTIONS = False
 
 # Paths to static assets
-# List that contains all tickers on the ASX exchange
-PATH_TO_ASX_LIST = "assets/asx/asx_list.csv"
 # List of columns to be loaded into db
 PATH_TO_COLS_WHITELIST = "assets/stockhistory/cols_whitelist.csv"
 # Key-Value pairs of column names, camel-case for yfinance, then to snake-case when loaded to db
@@ -49,7 +47,8 @@ def main():
     logger.base_dir(LOGGER_BASE_DIR)  # Set base directory
     logger.clear_logs(all=True)  # Clear logs if they already exist
 
-    symbols = mysql_pls.get_col_list_from_db(DB_COLUMN)
+    symbols = mysql_pls.get_col_list_from_db(
+        "symbol", all=GET_ALL_ASX_STOCKS, limit=ITERATIONS)
     cols_dict = assets_pls.get_cols_rename_dict(  # Get columns from csv file to dict
         PATH_TO_COLS_RENAME_CSV)
     cols_whitelist = assets_pls.get_cols_whitelist(

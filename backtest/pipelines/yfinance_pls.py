@@ -226,10 +226,10 @@ class StockHistoryETL(ETL):
         for _ in tqdm(range(len(self.df.index)), desc="Loading stock history into database"):
             _, row = next(generator)
             row_dict = row.to_dict()
-            entry = StockInfo(**row_dict)
+            entry = StockHistory(**row_dict)
             try:
                 entry.save()
-                self.added.append(row["stock_id"])
+                self.added.append(str(row_dict))
             except Exception as e:
                 self.skipped.append(row["stock_id"])
                 self.errors.append(

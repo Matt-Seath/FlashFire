@@ -143,13 +143,9 @@ class WatchList(models.Model):
 class StockHistory(models.Model):
     stock = models.ForeignKey(
         StockInfo, on_delete=models.CASCADE, related_name="history")
-    open = models.DecimalField(
-        default=0.00, null=True, decimal_places=3, max_digits=15)
-    high = models.DecimalField(
-        default=0.00, null=True, decimal_places=3, max_digits=15)
-    low = models.DecimalField(default=0.00, null=True,
-                              decimal_places=3, max_digits=15)
-    close = models.DecimalField(
-        default=0.00, null=True, decimal_places=3, max_digits=15)
+    open = models.FloatField(null=True)
+    high = models.FloatField(null=True)
+    low = models.FloatField(null=True)
+    close = models.FloatField(null=True)
     volume = models.BigIntegerField(null=True)
     date = models.DateTimeField(null=False)

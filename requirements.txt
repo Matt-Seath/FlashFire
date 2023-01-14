@@ -14,7 +14,7 @@ djoser                      ==  2.1.0
 drf-nested-routers          ==  0.93.4
 flower                      ==  1.2.0
 locust                      ==  2.14.0
-matplotlib                  ==  3.6.2
+matplotlib                  ==  3.2.2
 model-bakery                ==  1.9.0
 mysqlclient                 ==  2.1.1
 numpy                       ==  1.24.1
