@@ -48,7 +48,7 @@ def main():
     logger.clear_logs(all=True)  # Clear logs if they already exist
 
     symbols = mysql_pls.get_col_list_from_db(
-        "symbol", all=GET_ALL_ASX_STOCKS, limit=ITERATIONS)
+        DB_COLUMN, all=GET_ALL_ASX_STOCKS, limit=ITERATIONS)
     cols_dict = assets_pls.get_cols_rename_dict(  # Get columns from csv file to dict
         PATH_TO_COLS_RENAME_CSV)
     cols_whitelist = assets_pls.get_cols_whitelist(
