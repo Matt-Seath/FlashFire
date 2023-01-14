@@ -15,9 +15,9 @@ database.
 
 """
 
-GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
+GET_ALL_ASX_STOCKS = True  # Fully update the ASX stock table
 SLEEPER = 2.0  # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 5  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+ITERATIONS = 1  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
 START_DATE = datetime(2022, 6, 11)
 END_DATE = datetime(2023, 1, 11)

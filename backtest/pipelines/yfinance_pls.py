@@ -210,7 +210,7 @@ class StockHistoryETL(ETL):
 
     def transform(self):
         self.df = self.df.rename(columns=self.df_cols_renamed)
-        self.df["timestamp"] = self.df.index
+        self.df["datetime"] = self.df.index
         self.df = self.df.replace(np.nan, None)
 
         columns = list(self.df.columns.values)
