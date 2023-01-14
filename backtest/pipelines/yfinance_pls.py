@@ -142,11 +142,11 @@ class StockInfoETL(ETL):
             entry = StockInfo(**row_dict)
             try:
                 entry.save()
-                self.added.append(row["stock_id"])
+                self.added.append(str(row_dict))
             except Exception as e:
-                self.skipped.append(row["stock_id"])
+                self.skipped.append(str(row_dict))
                 self.errors.append(
-                    f"{self.timestamp()}: Could not insert {row['stock_id']}, {e}")
+                    f"{self.timestamp()}: Could not insert {row['symbol']}, {e} Value: {str(row_dict)}")
 
         return
 
@@ -231,8 +231,8 @@ class StockHistoryETL(ETL):
                 entry.save()
                 self.added.append(str(row_dict))
             except Exception as e:
-                self.skipped.append(row["stock_id"])
+                self.skipped.append(str(row_dict))
                 self.errors.append(
-                    f"{self.timestamp()}: Could not insert {row['stock_id']}, {e}")
+                    f"{self.timestamp()}: Could not insert {row['stock_id']}, {e} Value: {str(row_dict)}")
 
         return
