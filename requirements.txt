@@ -4,6 +4,7 @@ Django                      ==  4.1.5
 django-cors-headers         ==  3.13.0
 django_debug_toolbar        ==  3.8.1
 django-filter               ==  22.1
+django-pandas               ==  0.6.6
 django-pytest               ==  0.2.0
 django-redis                ==  5.2.0
 django-silk                 ==  5.0.2

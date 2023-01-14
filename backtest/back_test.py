@@ -1,13 +1,11 @@
 import backtrader as bt
 import datetime
-import time
-from backtrader.feeds.yahoo import YahooFinanceCSVData
 
 from backtest.strategies.buy_the_dip import BuyTheDipStrategy
-from backtest.pipelines.backtrader_pls import DjangoDataFeed
+from backtest.pipelines.django_pls import DjangoDataFeed
+from core.models import StockHistory
 
-
-PATH = "assets/trader/datafeed.csv"
+STOCK = "A2M"
 FROMDATE = datetime.datetime(2000, 12, 31)
 TODATE = datetime.datetime(2001, 12, 31)
 
@@ -16,19 +14,8 @@ def main():
     cerebro = bt.Cerebro()
 
     cerebro.broker.set_cash(10000)
-
-    # data = DjangoDataFeed()
-
-    # data.todate = TODATE
-    # data.fromdate = FROMDATE
-    # data.ticker = "WES.AX"
-
-    data = YahooFinanceCSVData(
-        dataname=PATH,
-        fromdate=FROMDATE,
-        todate=TODATE,
-        reverse=False
-    )
+    queryset = StockHistory.objects.filter(stock_id=STOCK + ".AX")
+    data = DjangoDataFeed(queryset)
 
     cerebro.adddata(data)
 
