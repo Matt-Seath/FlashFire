@@ -3,7 +3,7 @@ import datetime
 import time
 from backtrader.feeds.yahoo import YahooFinanceCSVData
 
-from backtest.strategies import BuyTheDipStrategy
+from backtest.strategies.buy_the_dip import BuyTheDipStrategy
 from backtest.pipelines.backtrader_pls import DjangoDataFeed
 
 
