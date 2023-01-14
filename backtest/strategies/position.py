@@ -35,10 +35,6 @@ class BuyTheDipStrategy(bt.Strategy):
     def next(self):
         # Simply log the closing price of the series from the reference
         self.log('Close, %.2f' % self.dataclose[0])
-        # self.log(f"buy_c: {self.buy_created}")
-        # self.log(f"buy_e: {self.buy_executed}")
-        # self.log(f"sell_c: {self.sell_created}")
-        # self.log(f"sell_e: {self.sell_executed}")
         if self.order:
             return
 

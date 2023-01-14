@@ -1,11 +1,13 @@
 import backtrader as bt
 import datetime
 
-from backtest.strategies.buy_the_dip import BuyTheDipStrategy
+from backtest.strategies.all import *
 from backtest.pipelines.django_pls import DjangoDataFeed
 from core.models import StockHistory
 
 STOCK = "A2M"
+STRATEGY = BuyTheDipStrategy()
+
 FROMDATE = datetime.datetime(2000, 12, 31)
 TODATE = datetime.datetime(2001, 12, 31)
 
@@ -19,7 +21,7 @@ def main():
 
     cerebro.adddata(data)
 
-    cerebro.addstrategy(BuyTheDipStrategy)
+    cerebro.addstrategy(STRATEGY)
 
     print('Starting portfolio value: %.2f' % cerebro.broker.getvalue())
 

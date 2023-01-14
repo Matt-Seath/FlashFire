@@ -113,7 +113,7 @@ class ETL():
 class StockInfoETL(ETL):
 
     def extract(self):
-        for i in tqdm(range(self.iterations), desc="Retrieving stock info from yfinance"):
+        for i in tqdm(range(self.iterations), desc="Scraping stock data from Yahoo Finance"):
             time.sleep(self.sleeper)
             self.df_latest_entry = (pd.DataFrame(
                 [yf.Ticker(self.symbols[i]).info]))
@@ -189,7 +189,7 @@ class StockHistoryETL(ETL):
         self.print_range()
         self.print_iter_range()
 
-        for i in tqdm(range(self.iterations), desc="Retrieving stock history from yfinance"):
+        for i in tqdm(range(self.iterations), desc="Scraping stock history from Yahoo Finance"):
             time.sleep(self.sleeper)
             try:
                 with contextlib.redirect_stdout(io.StringIO()):

@@ -20,7 +20,7 @@ SLEEPER = 2.0  # Higher value slows api request frequency to avoid throttling.
 ITERATIONS = 1  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
 START_DATE = datetime(2022, 6, 11)
-END_DATE = datetime(2023, 1, 11)
+END_DATE = datetime(2023, 1, 14)
 PERIOD = "1d"
 INTERVAL = None
 ACTIONS = False
@@ -53,8 +53,6 @@ def main():
         PATH_TO_COLS_RENAME_CSV)
     cols_whitelist = assets_pls.get_cols_whitelist(
         PATH_TO_COLS_WHITELIST)  # Get column names for db
-
-    print(symbols)
 
     # ETL Pipeline
     etl = yfinance_pls.StockHistoryETL(symbols, all=GET_ALL_ASX_STOCKS, start=START_DATE, end=END_DATE,  # Initialize ETL object
