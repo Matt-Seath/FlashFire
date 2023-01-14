@@ -3,12 +3,12 @@ import datetime
 import time
 from backtrader.feeds.yahoo import YahooFinanceCSVData
 
-from backtest.strategies import TestStrategy
+from backtest.strategies import BuyTheDipStrategy
 from backtest.pipelines.backtrader_pls import DjangoDataFeed
 
 
 PATH = "assets/trader/datafeed.csv"
-FROMDATE = datetime.datetime(2000, 1, 1)
+FROMDATE = datetime.datetime(2000, 12, 31)
 TODATE = datetime.datetime(2001, 12, 31)
 
 
@@ -23,7 +23,7 @@ def countdown(text, dots=4, speed=1):
 def main():
     cerebro = bt.Cerebro()
 
-    cerebro.broker.set_cash(100000)
+    cerebro.broker.set_cash(10000)
 
     # data = DjangoDataFeed()
 
@@ -40,11 +40,11 @@ def main():
 
     cerebro.adddata(data)
 
-    cerebro.addstrategy(TestStrategy)
+    cerebro.addstrategy(BuyTheDipStrategy)
 
     print('Starting portfolio value: %.2f' % cerebro.broker.getvalue())
 
-    countdown("\nStarting Cerebro")
+    # countdown("\nStarting Cerebro")
     cerebro.run()
 
     print('Final portfolio value: %.2f' % cerebro.broker.getvalue())
