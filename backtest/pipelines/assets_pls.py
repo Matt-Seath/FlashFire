@@ -47,3 +47,12 @@ def get_cols_whitelist(csv_path):
             cols_whitelist.append(*row)
 
         return cols_whitelist
+
+
+def get_shared_values(list_1, list_2):
+    list_3 = []
+    for item in list_1:
+        if item not in list_2:
+            list_3.append(item)
+
+    return list_3

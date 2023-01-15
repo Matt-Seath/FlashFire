@@ -15,15 +15,28 @@ database.
 
 """
 
-GET_ALL_ASX_STOCKS = True  # Fully update the ASX stock table
+GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
+UPDATE_DB = True
 SLEEPER = 2.0  # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 1  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+ITERATIONS = 3  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
-START_DATE = datetime(2022, 6, 11)
-END_DATE = datetime(2023, 1, 14)
+START_DATE = [2022, 6, 11]
+END_DATE__ = [2023, 1, 14]
 PERIOD = "1d"
 INTERVAL = None
 ACTIONS = False
+
+ETL_KWARGS = {
+    "all": GET_ALL_ASX_STOCKS,
+    "update": UPDATE_DB,
+    "start": datetime(*START_DATE),
+    "end": datetime(*END_DATE__),
+    "actions": ACTIONS,
+    "period": PERIOD,
+    "iterations": ITERATIONS,
+    "sleeper": SLEEPER,
+    "interval": INTERVAL
+}
 
 # Paths to static assets
 # List of columns to be loaded into db
@@ -55,8 +68,7 @@ def main():
         PATH_TO_COLS_WHITELIST)  # Get column names for db
 
     # ETL Pipeline
-    etl = yfinance_pls.StockHistoryETL(symbols, all=GET_ALL_ASX_STOCKS, start=START_DATE, end=END_DATE,  # Initialize ETL object
-                                       actions=ACTIONS, period=PERIOD, iterations=ITERATIONS, sleeper=SLEEPER)
+    etl = yfinance_pls.StockHistoryETL(symbols, **ETL_KWARGS)
 
     etl.set_whitelist(cols_whitelist)  # ETL will only load these columns
     # ETL will change column names before loading into db

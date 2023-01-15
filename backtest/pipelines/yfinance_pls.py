@@ -1,5 +1,6 @@
 from django.db import connection
-from datetime import datetime
+from django.db.models import Max
+from datetime import datetime, timedelta
 from tqdm import tqdm
 import yfinance as yf
 import contextlib
@@ -7,7 +8,6 @@ import pandas as pd
 import numpy as np
 import time
 import io
-import sys
 
 from core.models import StockHistory, StockInfo
 
@@ -154,7 +154,7 @@ class StockInfoETL(ETL):
 class StockHistoryETL(ETL):
 
     def __init__(self, symbols_list, period=None, interval=None, start=None,
-                 end=None, sleeper=0, actions=True, all=True, iterations=1):
+                 end=None, sleeper=0, actions=True, all=True, iterations=1, update=True):
         if self.symbols == None and self.df == None and self.df_cols == None and \
                 self.df_latest_entry == None and self.df_cols_renamed == None and \
             self.skipped == None and self.added == None and self.queries == None and \
@@ -177,6 +177,7 @@ class StockHistoryETL(ETL):
             self.period = period
             self.interval = interval
             self.actions = actions
+            self.update = update
         else:
             raise Exception("YFStockETL could not be initialized")
 
@@ -184,17 +185,29 @@ class StockHistoryETL(ETL):
         print(
             f"Starting date: {self.start}, Ending date: {self.end}, period: {self.period}")
 
+    def get_latest_date(self, symbol):
+        queryset = StockHistory.objects.filter(stock_id=symbol)
+        date_max = queryset.aggregate(Max("datetime"))["datetime__max"]
+        self.start = date_max + timedelta(days=1)
+        self.end = datetime.today()
+
     def extract(self):
         print("Retrieving historical data")
         self.print_range()
         self.print_iter_range()
 
-        for i in tqdm(range(self.iterations), desc="Scraping stock history from Yahoo Finance"):
+        for i in range(self.iterations):
             time.sleep(self.sleeper)
             try:
+                if self.update:
+                    self.get_latest_date(self.symbols[i])
+                    print(self.start)
+                    print(self.end)
                 with contextlib.redirect_stdout(io.StringIO()):
                     self.df_latest_entry = yf.Ticker(self.symbols[i]).history(
                         start=self.start, end=self.end, period=self.period, actions=self.actions)
+                print(len(self.df_latest_entry.index))
+                print(self.df_latest_entry)
             except Exception as e:
                 self.skipped.append(self.symbols[i])
                 self.errors.append(

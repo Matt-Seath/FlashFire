@@ -1,5 +1,5 @@
 from loggers.temp_logger import TempLogger
-from backtest.pipelines import assets_pls, yfinance_pls
+from backtest.pipelines import assets_pls, yfinance_pls, mysql_pls
 
 """
 
@@ -16,6 +16,7 @@ database.
 GET_ALL_ASX_STOCKS = True  # Fully update the ASX stock table
 SLEEPER = 0.0  # Higher value slows api request frequency to avoid throttling.
 ITERATIONS = 3  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+UPDATE_EXISTING_STOCKS = False
 
 # Paths to static assets
 # List that contains all tickers on the ASX exchange
@@ -45,6 +46,9 @@ def main():
 
     symbols = assets_pls.get_list_of_symbols(   # Extract symbols from csv file to list
         PATH_TO_ASX_LIST, ASX_LIST_COLUMN, ASX_LIST_EXTENSION)
+    if not UPDATE_EXISTING_STOCKS:
+        symbols = assets_pls.get_shared_values(
+            symbols, mysql_pls.get_col_list_from_db("symbol"))
     cols_dict = assets_pls.get_cols_rename_dict(  # Get columns from csv file to dict
         PATH_TO_COLS_RENAME_CSV)
     cols_whitelist = assets_pls.get_cols_whitelist(

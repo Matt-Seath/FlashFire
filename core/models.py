@@ -146,4 +146,4 @@ class StockHistory(models.Model):
     low = models.FloatField(null=True)
     close = models.FloatField(null=True)
     volume = models.BigIntegerField(null=True)
-    datetime = models.DateTimeField(null=False)
+    datetime = models.DateField(null=False)
