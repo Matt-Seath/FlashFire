@@ -30,7 +30,7 @@ class StockInfo(models.Model):
     city = models.CharField(max_length=50, null=True)
     phone = models.CharField(max_length=20, null=True)
     state = models.CharField(max_length=20, null=True)
-    country = models.CharField(max_length=20, null=True)
+    country = models.CharField(max_length=30, null=True)
     website = models.URLField(null=True)
     max_age = models.PositiveIntegerField(null=True)
     address = models.CharField(max_length=100, null=True)
@@ -42,10 +42,8 @@ class StockInfo(models.Model):
     gross_margins = models.DecimalField(
         max_digits=9, decimal_places=4, null=True)
     operating_cashflow = models.BigIntegerField(null=True)
-    revenue_growth = models.DecimalField(
-        max_digits=10, decimal_places=4, null=True)
-    operating_margins = models.DecimalField(
-        max_digits=10, decimal_places=3, null=True)
+    revenue_growth = models.FloatField(null=True)
+    operating_margins = models.FloatField(null=True)
     ebitda = models.BigIntegerField(null=True)
     recommendation_key = models.CharField(max_length=15, null=True)
     gross_profits = models.BigIntegerField(null=True)
@@ -72,7 +70,7 @@ class StockInfo(models.Model):
         max_digits=9, decimal_places=3, null=True)
     exchange = models.CharField(max_length=5, null=True)
     short_name = models.CharField(max_length=30, null=True)
-    long_name = models.CharField(max_length=50, null=True)
+    long_name = models.CharField(max_length=70, null=True)
     exchange_timezone_name = models.CharField(max_length=30, null=True)
     exchange_timezone_short_name = models.CharField(max_length=20, null=True)
     is_esg_populated = models.BooleanField(null=True)

@@ -10,13 +10,13 @@ STOCK = "A2M"
 
 STRATEGY = BuyTheDipStrategy
 
-FROMDATE = [2002, 11, 1]
-TODATE__ = [2023, 1, 1]
+FROMDATE = [2022, 10, 1]
+TODATE__ = [9999, 1, 1]
 
 FILTERS = {
     "stock_id": STOCK + ".AX",
     "datetime__gte": datetime(*FROMDATE),
-    "datetime__lte": datetime(*TODATE__)
+    "datetime__lt": datetime(*TODATE__)
 }
 
 
