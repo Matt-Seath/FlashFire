@@ -17,11 +17,11 @@ database.
 
 GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
 UPDATE_DB = True
-SLEEPER = 2.0  # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 3  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+SLEEPER = 0.0  # Higher value slows api request frequency to avoid throttling.
+ITERATIONS = 20  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
 START_DATE = [2022, 6, 11]
-END_DATE__ = [2023, 1, 14]
+END_DATE__ = [2022, 1, 14]
 PERIOD = "1d"
 INTERVAL = None
 ACTIONS = False

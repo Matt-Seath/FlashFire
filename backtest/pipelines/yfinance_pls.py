@@ -1,6 +1,6 @@
 from django.db import connection
 from django.db.models import Max
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from tqdm import tqdm
 import yfinance as yf
 import contextlib
@@ -187,9 +187,9 @@ class StockHistoryETL(ETL):
 
     def get_latest_date(self, symbol):
         queryset = StockHistory.objects.filter(stock_id=symbol)
-        date_max = queryset.aggregate(Max("date"))["date__max"]
-        self.start = date_max + timedelta(days=1)
-        self.end = datetime.today()
+        self.start = queryset.aggregate(
+            Max("date"))["date__max"] + timedelta(days=1)
+        self.end = date.today()
 
     def extract(self):
         print("Retrieving historical data")
@@ -213,8 +213,19 @@ class StockHistoryETL(ETL):
                 self.skipped.append(self.symbols[i])
                 continue
 
+            try:
+                if (self.df_latest_entry.index.date < self.start).any():
+                    self.skipped.append(str(self.df_latest_entry.to_dict()))
+                    continue
+            except Exception as e:
+                self.skipped.append(str(self.df_latest_entry.to_dict()))
+                self.errors.append(
+                    f"{self.timestamp()}: {self.symbols[i]} Error, {e} \n")
+                continue
+
             self.df_latest_entry["stock_id"] = self.symbols[i]
             self.df = pd.concat([self.df, self.df_latest_entry], axis=0)
+
         return
 
     def transform(self):
