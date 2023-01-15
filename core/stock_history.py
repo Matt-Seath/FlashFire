@@ -1,7 +1,7 @@
 from loggers.temp_logger import TempLogger
 from backtest.pipelines import assets_pls, yfinance_pls, mysql_pls
 
-from datetime import datetime
+from datetime import date
 
 """
 
@@ -29,8 +29,8 @@ ACTIONS = False
 ETL_KWARGS = {
     "all": GET_ALL_ASX_STOCKS,
     "update": UPDATE_DB,
-    "start": datetime(*START_DATE),
-    "end": datetime(*END_DATE__),
+    "start": date(*START_DATE),
+    "end": date(*END_DATE__),
     "actions": ACTIONS,
     "period": PERIOD,
     "iterations": ITERATIONS,

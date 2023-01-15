@@ -113,7 +113,7 @@ class ETL():
 class StockInfoETL(ETL):
 
     def extract(self):
-        for i in tqdm(range(self.iterations), desc="Scraping stock data from Yahoo Finance"):
+        for i in tqdm(range(self.iterations), desc="Scraping stock data"):
             time.sleep(self.sleeper)
             self.df_latest_entry = (pd.DataFrame(
                 [yf.Ticker(self.symbols[i]).info]))
@@ -187,7 +187,7 @@ class StockHistoryETL(ETL):
 
     def get_latest_date(self, symbol):
         queryset = StockHistory.objects.filter(stock_id=symbol)
-        date_max = queryset.aggregate(Max("datetime"))["datetime__max"]
+        date_max = queryset.aggregate(Max("date"))["date__max"]
         self.start = date_max + timedelta(days=1)
         self.end = datetime.today()
 
@@ -196,18 +196,14 @@ class StockHistoryETL(ETL):
         self.print_range()
         self.print_iter_range()
 
-        for i in range(self.iterations):
+        for i in tqdm(range(self.iterations), desc="Scraping history data"):
             time.sleep(self.sleeper)
             try:
                 if self.update:
                     self.get_latest_date(self.symbols[i])
-                    print(self.start)
-                    print(self.end)
                 with contextlib.redirect_stdout(io.StringIO()):
                     self.df_latest_entry = yf.Ticker(self.symbols[i]).history(
                         start=self.start, end=self.end, period=self.period, actions=self.actions)
-                print(len(self.df_latest_entry.index))
-                print(self.df_latest_entry)
             except Exception as e:
                 self.skipped.append(self.symbols[i])
                 self.errors.append(
@@ -223,7 +219,8 @@ class StockHistoryETL(ETL):
 
     def transform(self):
         self.df = self.df.rename(columns=self.df_cols_renamed)
-        self.df["datetime"] = self.df.index
+        self.df["date"] = self.df.index
+        self.df['date'] = pd.to_datetime(self.df['date']).dt.date
         self.df = self.df.replace(np.nan, None)
 
         columns = list(self.df.columns.values)
@@ -236,7 +233,7 @@ class StockHistoryETL(ETL):
 
     def load(self):
         generator = self.df.iterrows()
-        for _ in tqdm(range(len(self.df.index)), desc="Loading stock history into database"):
+        for _ in tqdm(range(len(self.df.index)), desc="Loading history data into database"):
             _, row = next(generator)
             row_dict = row.to_dict()
             entry = StockHistory(**row_dict)

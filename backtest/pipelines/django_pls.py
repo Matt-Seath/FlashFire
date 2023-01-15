@@ -7,10 +7,10 @@ class DjangoDataFeed(PandasData):
 
     def __init__(self, queryset):
         self.queryset = queryset.values(
-            "datetime", "open", "close", "high", "low", "volume")
+            "date", "open", "close", "high", "low", "volume")
         df = read_frame(self.queryset)
-        df['datetime'] = pd.to_datetime(df['datetime'], unit='s')
-        df.set_index('datetime', inplace=True)
 
+        df['datetime'] = pd.to_datetime(df['date'])
+        df.set_index('datetime', inplace=True)
         self.p.dataname = df
         super().__init__()

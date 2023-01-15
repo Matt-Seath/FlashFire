@@ -1,5 +1,5 @@
 import backtrader as bt
-from datetime import datetime
+from datetime import date
 
 from backtest.strategies.all import *
 from backtest.pipelines.django_pls import DjangoDataFeed
@@ -11,12 +11,12 @@ STOCK = "A2M"
 STRATEGY = BuyTheDipStrategy
 
 FROMDATE = [2022, 10, 1]
-TODATE__ = [9999, 1, 1]
+TODATE__ = [2023, 1, 2]
 
 FILTERS = {
     "stock_id": STOCK + ".AX",
-    "datetime__gte": datetime(*FROMDATE),
-    "datetime__lt": datetime(*TODATE__)
+    "date__gte": date(*FROMDATE),
+    "date__lt": date(*TODATE__)
 }
 
 
@@ -25,6 +25,7 @@ def main():
 
     cerebro.broker.set_cash(10000)
     queryset = StockHistory.objects.filter(**FILTERS)
+
     data = DjangoDataFeed(queryset)
 
     cerebro.adddata(data)
