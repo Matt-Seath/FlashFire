@@ -190,7 +190,6 @@ class StockHistoryETL(ETL):
         queryset = StockHistory.objects.filter(stock_id=symbol)
         self.start = queryset.aggregate(
             Max("date"))["date__max"] + timedelta(days=1)
-        self.end = date.today()
 
     def drop_duplicates(self, symbol):
         queryset = StockHistory.objects.filter(stock_id=symbol)
@@ -215,6 +214,7 @@ class StockHistoryETL(ETL):
                 with contextlib.redirect_stdout(io.StringIO()):
                     self.df_latest_entry = yf.Ticker(self.symbols[i]).history(
                         start=self.start, end=self.end, period=self.period, actions=self.actions)
+                print(self.df_latest_entry)
             except Exception as e:
                 self.skipped.append(self.symbols[i])
                 self.errors.append(
