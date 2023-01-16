@@ -6,21 +6,20 @@ from backtest.pipelines.django_pls import DjangoDataFeed
 from core.models import StockHistory
 
 
-STOCK = "A2M"
-
 STRATEGY = BuyTheDipStrategy
 
-FROMDATE = [2022, 10, 1]
-TODATE__ = [2023, 1, 2]
-
-FILTERS = {
-    "stock_id": STOCK + ".AX",
-    "date__gte": date(*FROMDATE),
-    "date__lt": date(*TODATE__)
-}
+FROMDATE = [2022, 8, 13]
+TODATE__ = [2023, 1, 13]
 
 
-def main():
+def main(symbol):
+
+    FILTERS = {
+        "stock_id": symbol + ".AX",
+        "date__gte": date(*FROMDATE),
+        "date__lt": date(*TODATE__)
+    }
+
     cerebro = bt.Cerebro()
 
     cerebro.broker.set_cash(10000)

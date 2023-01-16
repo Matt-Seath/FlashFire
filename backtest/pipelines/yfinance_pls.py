@@ -153,7 +153,7 @@ class StockInfoETL(ETL):
 
 class StockHistoryETL(ETL):
 
-    def __init__(self, symbols_list, period=None, interval=None, start=None,
+    def __init__(self, symbols_list, period=None, interval=None, start=None, check_dup=True,
                  end=None, sleeper=0, actions=True, all=True, iterations=1, update=True):
         if self.symbols == None and self.df == None and self.df_cols == None and \
                 self.df_latest_entry == None and self.df_cols_renamed == None and \
@@ -178,6 +178,7 @@ class StockHistoryETL(ETL):
             self.interval = interval
             self.actions = actions
             self.update = update
+            self.check_dup = check_dup
         else:
             raise Exception("YFStockETL could not be initialized")
 
@@ -186,6 +187,12 @@ class StockHistoryETL(ETL):
             f"Starting date: {self.start}, Ending date: {self.end}, period: {self.period}")
 
     def get_latest_date(self, symbol):
+        queryset = StockHistory.objects.filter(stock_id=symbol)
+        self.start = queryset.aggregate(
+            Max("date"))["date__max"] + timedelta(days=1)
+        self.end = date.today()
+
+    def check_for_duplicates(self, symbol):
         queryset = StockHistory.objects.filter(stock_id=symbol)
         self.start = queryset.aggregate(
             Max("date"))["date__max"] + timedelta(days=1)
