@@ -31,6 +31,8 @@ def main(symbol):
 
     cerebro.addstrategy(STRATEGY)
 
+    cerebro.addsizer(bt.sizers.SizerFix, stake=100)
+
     print('Starting portfolio value: %.2f' % cerebro.broker.getvalue())
 
     cerebro.run()

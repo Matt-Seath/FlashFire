@@ -1,10 +1,6 @@
-2023/01/16, 00:32:19: EMUCA.AX Error, 'Index' object has no attribute 'date' 
+2023/01/16, 07:49:34: 14D.AX Error, 'Index' object has no attribute 'date' 
 , 
-2023/01/16, 01:18:04: PL3.AX Error, 'Index' object has no attribute 'date' 
+2023/01/16, 07:49:34: 1AD.AX Error, 'Index' object has no attribute 'date' 
 , 
-2023/01/16, 01:25:06: RG8.AX Error, 'Index' object has no attribute 'date' 
-, 
-2023/01/16, 01:41:42: TRE.AX Error, 'Index' object has no attribute 'date' 
-, 
-2023/01/16, 01:45:59: VTM.AX Error, 'Index' object has no attribute 'date' 
+2023/01/16, 07:49:34: 1AE.AX Error, 'Index' object has no attribute 'date' 
 , 

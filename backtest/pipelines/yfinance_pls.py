@@ -1,5 +1,5 @@
 from django.db import connection
-from django.db.models import Max
+from django.db.models import Max, Min
 from datetime import datetime, timedelta, date
 from tqdm import tqdm
 import yfinance as yf
@@ -153,8 +153,8 @@ class StockInfoETL(ETL):
 
 class StockHistoryETL(ETL):
 
-    def __init__(self, symbols_list, period=None, interval=None, start=None, check_dup=True,
-                 end=None, sleeper=0, actions=True, all=True, iterations=1, update=True):
+    def __init__(self, symbols_list, period=None, interval=None, start=None, update=True,
+                 end=None, sleeper=0, actions=True, all=True, iterations=1):
         if self.symbols == None and self.df == None and self.df_cols == None and \
                 self.df_latest_entry == None and self.df_cols_renamed == None and \
             self.skipped == None and self.added == None and self.queries == None and \
@@ -178,7 +178,7 @@ class StockHistoryETL(ETL):
             self.interval = interval
             self.actions = actions
             self.update = update
-            self.check_dup = check_dup
+
         else:
             raise Exception("YFStockETL could not be initialized")
 
@@ -192,11 +192,15 @@ class StockHistoryETL(ETL):
             Max("date"))["date__max"] + timedelta(days=1)
         self.end = date.today()
 
-    def check_for_duplicates(self, symbol):
+    def drop_duplicates(self, symbol):
         queryset = StockHistory.objects.filter(stock_id=symbol)
-        self.start = queryset.aggregate(
-            Max("date"))["date__max"] + timedelta(days=1)
-        self.end = date.today()
+        max_date = queryset.aggregate(
+            Max("date"))["date__max"]
+        min_date = queryset.aggregate(
+            Min("date"))["date__min"]
+
+        self.df_latest_entry = self.df_latest_entry.loc[(
+            self.df_latest_entry['date'] > max_date) | (self.df_latest_entry['date'] < min_date)]
 
     def extract(self):
         print("Retrieving historical data")
@@ -230,6 +234,10 @@ class StockHistoryETL(ETL):
                     f"{self.timestamp()}: {self.symbols[i]} Error, {e} \n")
                 continue
 
+            self.df_latest_entry["date"] = self.df_latest_entry.index
+            self.df_latest_entry['date'] = pd.to_datetime(
+                self.df_latest_entry['date']).dt.date
+            self.drop_duplicates(self.symbols[i])
             self.df_latest_entry["stock_id"] = self.symbols[i]
             self.df = pd.concat([self.df, self.df_latest_entry], axis=0)
 
@@ -237,8 +245,6 @@ class StockHistoryETL(ETL):
 
     def transform(self):
         self.df = self.df.rename(columns=self.df_cols_renamed)
-        self.df["date"] = self.df.index
-        self.df['date'] = pd.to_datetime(self.df['date']).dt.date
         self.df = self.df.replace(np.nan, None)
 
         columns = list(self.df.columns.values)

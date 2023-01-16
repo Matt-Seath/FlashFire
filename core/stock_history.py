@@ -15,27 +15,26 @@ database.
 
 """
 
-GET_ALL_ASX_STOCKS = True  # Fully update the ASX stock table
-UPDATE_DB = False
-SLEEPER = 2.5  # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 2  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
+UPDATE_DB = True
+SLEEPER = 0  # Higher value slows api request frequency to avoid throttling.
+ITERATIONS = 3  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
-START_DATE = [2018, 1, 1]
-END_DATE__ = [2022, 8, 11]
+START_DATE = date(2022, 1, 1)
 PERIOD = "1d"
 INTERVAL = None
 ACTIONS = False
 
 ETL_KWARGS = {
     "all": GET_ALL_ASX_STOCKS,
-    "update": UPDATE_DB,
-    "start": date(*START_DATE),
-    "end": date(*END_DATE__),
+    "start": START_DATE,
+    "end": None,
     "actions": ACTIONS,
     "period": PERIOD,
     "iterations": ITERATIONS,
     "sleeper": SLEEPER,
-    "interval": INTERVAL
+    "interval": INTERVAL,
+    "update": UPDATE_DB
 }
 
 # Paths to static assets
