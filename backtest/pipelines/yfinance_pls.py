@@ -1,6 +1,6 @@
 from django.db import connection
 from django.db.models import Max, Min
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 from tqdm import tqdm
 import yfinance as yf
 import contextlib
@@ -14,35 +14,23 @@ from core.models import StockHistory, StockInfo
 
 class ETL():
 
-    symbols = None
-    df = None
-    df_latest_entry = None
-    df_cols = None
-    df_cols_renamed = None
-    skipped = None
-    added = None
-    dropped = None
-    errors = None
-    queries = None
+    def __init__(self, *args, **kwargs):
 
-    def __init__(self, symbols_list, sleeper=0, all=True, iterations=1):
-        if self.symbols == None and self.df == None and self.df_cols == None and \
-                self.df_latest_entry == None and self.df_cols_renamed == None and \
-            self.skipped == None and self.added == None and self.queries == None and \
-                self.dropped == None and self.errors == None and symbols_list:
-
-            self.iterations = len(symbols_list) if all else iterations
-            self.symbols = symbols_list
+        if kwargs["symbols_list"]:
             self.df = pd.DataFrame()
             self.df_latest_entry = pd.DataFrame()
             self.df_cols = []
             self.df_cols_renamed = {}
-            self.sleeper = sleeper
             self.skipped = []
             self.dropped = []
             self.added = []
             self.errors = []
             self.queries = []
+            self.sleeper = kwargs["sleeper"]
+            self.iterations = len(
+                kwargs["symbols_list"]) if kwargs["all"] else kwargs["iterations"]
+            self.symbols = kwargs["symbols_list"]
+
         else:
             raise Exception("YFStockETL could not be initialized")
 
@@ -153,34 +141,16 @@ class StockInfoETL(ETL):
 
 class StockHistoryETL(ETL):
 
-    def __init__(self, symbols_list, period=None, interval=None, start=None, update=True,
-                 end=None, sleeper=0, actions=True, all=True, iterations=1):
-        if self.symbols == None and self.df == None and self.df_cols == None and \
-                self.df_latest_entry == None and self.df_cols_renamed == None and \
-            self.skipped == None and self.added == None and self.queries == None and \
-                self.dropped == None and self.errors == None and symbols_list:
+    def __init__(self, *args, **kwargs):
 
-            self.iterations = len(symbols_list) if all else iterations
-            self.symbols = symbols_list
-            self.df = pd.DataFrame()
-            self.df_latest_entry = pd.DataFrame()
-            self.df_cols = []
-            self.df_cols_renamed = {}
-            self.sleeper = sleeper
-            self.skipped = []
-            self.dropped = []
-            self.added = []
-            self.errors = []
-            self.queries = []
-            self.start = start
-            self.end = end
-            self.period = period
-            self.interval = interval
-            self.actions = actions
-            self.update = update
+        self.start = kwargs["start"]
+        self.end = kwargs["end"]
+        self.period = kwargs["period"]
+        self.interval = kwargs["interval"]
+        self.actions = kwargs["actions"]
+        self.update = kwargs["update"]
 
-        else:
-            raise Exception("YFStockETL could not be initialized")
+        super(StockHistoryETL, self).__init__(*args, **kwargs)
 
     def print_range(self):
         print(
