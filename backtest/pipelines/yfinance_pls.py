@@ -30,7 +30,6 @@ class ETL():
             self.iterations = len(
                 kwargs["symbols_list"]) if kwargs["all"] else kwargs["iterations"]
             self.symbols = kwargs["symbols_list"]
-
         else:
             raise Exception("YFStockETL could not be initialized")
 
@@ -139,7 +138,7 @@ class StockInfoETL(ETL):
         return
 
 
-class StockHistoryETL(ETL):
+class DayHistoryETL(ETL):
 
     def __init__(self, *args, **kwargs):
 
@@ -150,7 +149,7 @@ class StockHistoryETL(ETL):
         self.actions = kwargs["actions"]
         self.update = kwargs["update"]
 
-        super(StockHistoryETL, self).__init__(*args, **kwargs)
+        super(DayHistoryETL, self).__init__(*args, **kwargs)
 
     def print_range(self):
         print(
