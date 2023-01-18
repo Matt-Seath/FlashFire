@@ -6,7 +6,7 @@ from backtest.pipelines.django_pls import DjangoDataFeed
 from core.models import StockHistory
 
 
-STRATEGY = BuyTheDipStrategy
+STRATEGY = GoldenCrossStrategy
 
 FROMDATE = [2022, 8, 13]
 TODATE__ = [2023, 1, 13]
@@ -31,7 +31,7 @@ def main(symbol):
 
     cerebro.addstrategy(STRATEGY)
 
-    cerebro.addsizer(bt.sizers.SizerFix, stake=100)
+    cerebro.addsizer(bt.sizers.SizerFix, stake=1)
 
     print('Starting portfolio value: %.2f' % cerebro.broker.getvalue())
 
