@@ -52,3 +52,8 @@ class BuyTheDipStrategy(bt.Strategy):
                 self.log("SELL CREATED {}".format(self.dataclose[0]))
                 self.order = self.sell()
                 self.sell_created += 1
+
+
+class BuyHoldStrategy(bt.Strategy):
+    def next(self):
+        pass

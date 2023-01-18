@@ -33,10 +33,12 @@ def main(symbol):
 
     cerebro.addsizer(bt.sizers.SizerFix, stake=1)
 
-    print('Starting portfolio value: %.2f' % cerebro.broker.getvalue())
+    print('\033[92mStarting portfolio value:\033[95m %.2f' %
+          cerebro.broker.getvalue())
 
     cerebro.run()
 
-    print('Final portfolio value: %.2f' % cerebro.broker.getvalue())
+    print('\033[92mFinal portfolio value:\033[95m %.2f' %
+          cerebro.broker.getvalue())
 
     cerebro.plot()
