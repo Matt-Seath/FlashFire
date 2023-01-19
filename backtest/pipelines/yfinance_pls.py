@@ -239,3 +239,9 @@ class DayHistoryETL(ETL):
                     f"{self.timestamp()}: Could not insert {row['stock_id']}, {e} Value: {str(row_dict)}")
 
         return
+
+
+def get_dataframe(*args, **kwargs):
+    data = yf.Ticker(kwargs["stock_id"]).history(
+        start=kwargs["date__gte"], end=kwargs["date__lt"], period="1d")
+    print(data)

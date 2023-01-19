@@ -1,5 +1,6 @@
 import backtrader as bt
 import math
+from datetime import datetime
 
 
 class GoldenCrossStrategy(bt.Strategy):
@@ -20,18 +21,19 @@ class GoldenCrossStrategy(bt.Strategy):
             self.fast_moving_average, self.slow_moving_average)
 
     def next(self):
+        date = self.data.datetime.date()
         if self.position.size == 0:
             if self.crossover > 0:
                 amount_to_invest = (self.order_percentage * self.broker.cash)
                 self.size = math.floor(amount_to_invest / self.data.close)
 
                 print(
-                    f"\033[96mBuy \033[0m{self.size} shares at {self.data.close[0]:.2f}")
+                    f"\033[0m{date} \033[96mBuy \033[0m{self.size} shares at {self.data.close[0]:.2f}")
                 self.buy(size=self.size)
 
         if self.position.size > 0:
             if self.crossover < 0:
 
                 print(
-                    f"\033[93mSell \033[0m{self.size} shares at {self.data.close[0]:.2f}")
+                    f"\033[0m{date} \033[95mSell \033[0m{self.size} shares at {self.data.close[0]:.2f}")
                 self.close()
