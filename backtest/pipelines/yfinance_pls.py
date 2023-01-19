@@ -138,7 +138,7 @@ class StockInfoETL(ETL):
         return
 
 
-class DayHistoryETL(ETL):
+class StockHistoryETL(ETL):
 
     def __init__(self, *args, **kwargs):
 
@@ -149,7 +149,7 @@ class DayHistoryETL(ETL):
         self.actions = kwargs["actions"]
         self.update = kwargs["update"]
 
-        super(DayHistoryETL, self).__init__(*args, **kwargs)
+        super(StockHistoryETL, self).__init__(args, **kwargs)
 
     def print_range(self):
         print(
@@ -183,7 +183,6 @@ class DayHistoryETL(ETL):
                 with contextlib.redirect_stdout(io.StringIO()):
                     self.df_latest_entry = yf.Ticker(self.symbols[i]).history(
                         start=self.start, end=self.end, period=self.period, actions=self.actions)
-                print(self.df_latest_entry)
             except Exception as e:
                 self.skipped.append(self.symbols[i])
                 self.errors.append(

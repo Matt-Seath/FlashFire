@@ -45,10 +45,14 @@ def main(symbol):
         f"Start: {date(*FROMDATE)}, End: {date(*TODATE__)}, Span: {SPAN.months} months")
     print(f'{Colour.BOLD}{date(*FROMDATE)} Starting portfolio value: {Colour.WARNING}{cerebro.broker.getvalue():.2f}\n')
 
-    cerebro.run()
+    result = cerebro.run()
 
     net_change = (cerebro.broker.getvalue() - STARTING_CASH) / 100
     value_colour = Colour.OKGREEN if net_change >= 0 else Colour.FAIL
     print(
         f'\n{Colour.BOLD}{date(*FROMDATE)} Final portfolio value: {Colour.WARNING}{cerebro.broker.getvalue():.2f} {value_colour}({net_change:.2f}%)')
-    cerebro.plot()
+
+    if result[0].buy_alert:
+        pass
+    else:
+        cerebro.plot()

@@ -15,9 +15,9 @@ database.
 
 """
 
-GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
+GET_ALL_ASX_STOCKS = True  # Fully update the ASX stock table
 UPDATE_DB = True
-SLEEPER = 0  # Higher value slows api request frequency to avoid throttling.
+SLEEPER = 1.8  # Higher value slows api request frequency to avoid throttling.
 ITERATIONS = 8  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
 START_DATE = date(2022, 1, 1)
@@ -67,6 +67,7 @@ def main():
         "interval": INTERVAL,
         "update": UPDATE_DB
     }
+
     # ETL Pipeline
     etl = yfinance_pls.StockHistoryETL(**ETL_KWARGS)
 

@@ -1,11 +1,12 @@
 import backtrader as bt
 import math
-from datetime import datetime
+from datetime import date
 
 
 class GoldenCrossStrategy(bt.Strategy):
 
     def __init__(self):
+        self.buy_alert = False
         self.key = "gcs"
         self.fast = 5
         self.slow = 20
@@ -24,6 +25,8 @@ class GoldenCrossStrategy(bt.Strategy):
         date = self.data.datetime.date()
         if self.position.size == 0:
             if self.crossover > 0:
+                if date == date.today():
+                    self.buy_alert = True
                 amount_to_invest = (self.order_percentage * self.broker.cash)
                 self.size = math.floor(amount_to_invest / self.data.close)
 
