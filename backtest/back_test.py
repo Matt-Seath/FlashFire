@@ -1,5 +1,6 @@
 import backtrader as bt
 from datetime import date
+from dateutil.relativedelta import relativedelta
 
 from loggers.coloured_text import Colour
 from core.models import StockHistory
@@ -14,6 +15,7 @@ STARTING_CASH = 10000
 
 FROMDATE = [2022, 8, 13]
 TODATE__ = [2023, 1, 13]
+SPAN = relativedelta(date(*TODATE__), date(*FROMDATE))
 
 
 def main(symbol):
@@ -40,7 +42,8 @@ def main(symbol):
     cerebro.addsizer(bt.sizers.SizerFix, stake=1)
 
     print(
-        f'{Colour.BOLD}{date(*FROMDATE)} Starting portfolio value: {Colour.WARNING}{cerebro.broker.getvalue():.2f}\n')
+        f"Start: {date(*FROMDATE)}, End: {date(*TODATE__)}, Span: {SPAN.months} months")
+    print(f'{Colour.BOLD}{date(*FROMDATE)} Starting portfolio value: {Colour.WARNING}{cerebro.broker.getvalue():.2f}\n')
 
     cerebro.run()
 
