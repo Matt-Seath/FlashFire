@@ -52,7 +52,6 @@ def main(symbol):
     print(
         f'\n{Colour.BOLD}{date(*FROMDATE)} Final portfolio value: {Colour.WARNING}{cerebro.broker.getvalue():.2f} {value_colour}({net_change:.2f}%)')
 
-    if result[0].buy_alert:
-        pass
-    else:
-        cerebro.plot()
+    cerebro.plot()
+
+    return result, cerebro
