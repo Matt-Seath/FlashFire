@@ -52,7 +52,7 @@ def main(symbol):
     print(
         f'\n{Colour.BOLD}{date(*FROMDATE)} Final portfolio value: {Colour.WARNING}{cerebro.broker.getvalue():.2f} {value_colour}({net_change:.2f}{Colour.ENDC}%)')
 
-    print(f"\nBUY:  {result[0].buy_alert}")
-    print(f"SELL: {result[0].sell_alert}")
+    print(f"\nBUY:  {result[0].buy_alerts}")
+    print(f"SELL: {result[0].sell_alerts}")
 
     return result, cerebro, STARTING_CASH
