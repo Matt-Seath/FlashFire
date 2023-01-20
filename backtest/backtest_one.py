@@ -21,7 +21,7 @@ SPAN = relativedelta(date(*TODATE__), date(*FROMDATE))
 def main(symbol):
 
     FILTERS = {
-        "stock_id": symbol + ".AX",
+        "stock_id": symbol,
         "date__gte": date(*FROMDATE),
         "date__lt": date(*TODATE__)
     }
@@ -55,6 +55,4 @@ def main(symbol):
     print(f"\nBUY:  {result[0].buy_alert}")
     print(f"SELL: {result[0].sell_alert}")
 
-    cerebro.plot()
-
-    return result, cerebro
+    return result, cerebro, STARTING_CASH

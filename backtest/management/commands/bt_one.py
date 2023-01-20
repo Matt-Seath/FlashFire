@@ -10,7 +10,9 @@ class Command(BaseCommand):
         # return super().add_arguments(parser)
 
     def handle(self, *args, **options):
-        stock = options["stock"].upper()
-        backtest_one.main(stock)
+        stock = options["stock"].upper() + ".AX"
+        result, cerebro, cash = backtest_one.main(stock)
+
+        cerebro.plot()
 
         return 0
