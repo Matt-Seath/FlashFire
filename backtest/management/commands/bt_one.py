@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from backtest import back_test
+from backtest import backtest_one
 
 
 class Command(BaseCommand):
@@ -11,6 +11,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         stock = options["stock"].upper()
-        back_test.main(stock)
+        backtest_one.main(stock)
 
         return 0

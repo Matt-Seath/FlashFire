@@ -42,15 +42,18 @@ def main(symbol):
     cerebro.addsizer(bt.sizers.SizerFix, stake=1)
 
     print(
-        f"Start: {date(*FROMDATE)}, End: {date(*TODATE__)}, Span: {SPAN.months} months")
-    print(f'{Colour.BOLD}{date(*FROMDATE)} Starting portfolio value: {Colour.WARNING}{cerebro.broker.getvalue():.2f}\n')
+        f"\nStart: {date(*FROMDATE)}, End: {date(*TODATE__)}, Span: {SPAN.months} months")
+    print(f'{Colour.BOLD}{date(*FROMDATE)} Starting portfolio value: {Colour.WARNING}{cerebro.broker.getvalue():.2f}{Colour.ENDC}\n')
 
     result = cerebro.run()
 
     net_change = (cerebro.broker.getvalue() - STARTING_CASH) / 100
     value_colour = Colour.OKGREEN if net_change >= 0 else Colour.FAIL
     print(
-        f'\n{Colour.BOLD}{date(*FROMDATE)} Final portfolio value: {Colour.WARNING}{cerebro.broker.getvalue():.2f} {value_colour}({net_change:.2f}%)')
+        f'\n{Colour.BOLD}{date(*FROMDATE)} Final portfolio value: {Colour.WARNING}{cerebro.broker.getvalue():.2f} {value_colour}({net_change:.2f}{Colour.ENDC}%)')
+
+    print(f"\nBUY:  {result[0].buy_alert}")
+    print(f"SELL: {result[0].sell_alert}")
 
     cerebro.plot()
 
