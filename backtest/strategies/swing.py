@@ -1,29 +1,23 @@
 import backtrader as bt
 import math
-from datetime import date, timedelta
+
+from backtest.base_strategy import BaseStrategy
 
 
-class GoldenCrossStrategy(bt.Strategy):
+class GoldenCrossStrategy(bt.Strategy, BaseStrategy):
 
     def __init__(self):
-        self.alert_range = date.today() - timedelta(days=7)
-        self.buy_alerts = []
-        self.sell_alerts = []
-        self.key = "gcs"
         self.fast = 5
         self.slow = 20
-        self.total_buys = 0
-        self.total_sells = 0
         self.order_percentage = 0.95
-
         self.fast_moving_average = bt.indicators.SMA(
             self.data.close, period=self.fast, plotname="50 day moving average")
-
         self.slow_moving_average = bt.indicators.SMA(
             self.data.close, period=self.slow, plotname="200 day moving average")
-
         self.crossover = bt.indicators.CrossOver(
             self.fast_moving_average, self.slow_moving_average)
+
+        BaseStrategy.__init__(self)
 
     def next(self):
         data_date = self.data.datetime.date()

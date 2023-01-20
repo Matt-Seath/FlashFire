@@ -10,7 +10,7 @@ from core.models import StockInfo
 
 
 TEST_ALL_STOCKS = False
-CUSTOM_ITERATIONS = 6
+CUSTOM_ITERATIONS = 3
 
 
 def main():
