@@ -9,7 +9,7 @@ from backtest.pipelines.django_pls import DjangoDataFeed
 from backtest.pipelines.yfinance_pls import get_dataframe
 
 
-STRATEGY = BuyTheDipStrategy
+# STRATEGY = BuyTheDipStrategy
 SQL_DATAFEED = True
 STARTING_CASH = 10000
 
@@ -18,13 +18,18 @@ TODATE__ = [2023, 1, 13]
 SPAN = relativedelta(date(*TODATE__), date(*FROMDATE))
 
 
-def main(symbol):
+def main(strategy, symbol):
 
     FILTERS = {
         "stock_id": symbol,
         "date__gte": date(*FROMDATE),
         "date__lt": date(*TODATE__)
     }
+
+    valid_strategies = get_strategies()
+    if strategy not in valid_strategies:
+        raise Exception(
+            f"Strategy key {strategy} is not associated with any valid strategy")
 
     cerebro = bt.Cerebro()
 
@@ -38,7 +43,7 @@ def main(symbol):
         data = bt.feeds.PandasData(df)
 
     cerebro.adddata(data)
-    cerebro.addstrategy(STRATEGY)
+    cerebro.addstrategy(valid_strategies[strategy])
     cerebro.addsizer(bt.sizers.SizerFix, stake=1)
 
     print(
@@ -54,5 +59,4 @@ def main(symbol):
 
     print(f"\nBUY:  {result[0].buy_alerts}")
     print(f"SELL: {result[0].sell_alerts}")
-    print(get_strategies())
     return result, cerebro, STARTING_CASH

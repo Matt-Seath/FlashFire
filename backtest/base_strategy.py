@@ -27,11 +27,11 @@ class FFBaseStrategy(bt.Strategy):
 
     def log_buy_order(self):
         print(
-            f"{Colour.ENDC}{str(self.get_date()):<12}{'Buy Ordered':<15}{self.size} shares at {self.data.close[0]:.2f}")
+            f"{Colour.ENDC}{str(self.get_date()):<12}{'Buy Order':<15}{self.size} shares at {self.data.close[0]:.2f}")
 
     def log_sell_order(self):
         print(
-            f"{Colour.ENDC}{str(self.get_date()):<12}{'Sell Ordered':<15}{self.size} shares at {self.data.close[0]:.2f}")
+            f"{Colour.ENDC}{str(self.get_date()):<12}{'Sell Order':<15}{self.size} shares at {self.data.close[0]:.2f}")
 
     def log_exec(self, txt, txt_colour):
         print(
