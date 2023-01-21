@@ -11,9 +11,9 @@ class FFBaseStrategy(bt.Strategy):
     sell_alerts = None
     total_buys = 0
     total_sells = 0
+    key = "ffbs"
 
     def __init__(self):
-        self.key = "btds"
         self.dataclose = self.datas[0].close
         self.sell_created = 0
         self.sell_executed = 0

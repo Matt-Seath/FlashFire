@@ -9,7 +9,7 @@ from backtest.pipelines.django_pls import DjangoDataFeed
 from backtest.pipelines.yfinance_pls import get_dataframe
 
 
-STRATEGY = GoldenCrossStrategy
+STRATEGY = BuyTheDipStrategy
 SQL_DATAFEED = True
 STARTING_CASH = 10000
 
@@ -54,5 +54,5 @@ def main(symbol):
 
     print(f"\nBUY:  {result[0].buy_alerts}")
     print(f"SELL: {result[0].sell_alerts}")
-
+    print(get_strategies())
     return result, cerebro, STARTING_CASH

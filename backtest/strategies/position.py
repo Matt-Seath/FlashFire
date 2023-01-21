@@ -4,14 +4,12 @@ from backtest.base_strategy import FFBaseStrategy
 
 
 class BuyTheDipStrategy(FFBaseStrategy):
+    key = "btds"
 
     def __init__(self):
-        self.key = "btds"
-
         FFBaseStrategy.__init__(self)
 
     def next(self):
-        # Simply log the closing price of the series from the reference
         if self.order:
             return
 
@@ -31,8 +29,3 @@ class BuyTheDipStrategy(FFBaseStrategy):
                 self.order = self.close()
                 self.sell_created += 1
                 self.log_sell_order()
-
-
-class BuyHoldStrategy(FFBaseStrategy):
-    def next(self):
-        pass

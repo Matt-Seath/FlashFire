@@ -5,6 +5,7 @@ from backtest.base_strategy import FFBaseStrategy
 
 
 class GoldenCrossStrategy(FFBaseStrategy):
+    key = "gcs"
 
     def __init__(self):
         self.fast = 5
