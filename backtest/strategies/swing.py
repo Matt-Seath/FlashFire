@@ -1,15 +1,14 @@
 import backtrader as bt
 import math
 
-from backtest.base_strategy import BaseStrategy
+from backtest.base_strategy import FFBaseStrategy
 
 
-class GoldenCrossStrategy(bt.Strategy, BaseStrategy):
+class GoldenCrossStrategy(FFBaseStrategy):
 
     def __init__(self):
         self.fast = 5
         self.slow = 20
-        self.order_percentage = 0.95
         self.fast_moving_average = bt.indicators.SMA(
             self.data.close, period=self.fast, plotname="50 day moving average")
         self.slow_moving_average = bt.indicators.SMA(
@@ -17,10 +16,10 @@ class GoldenCrossStrategy(bt.Strategy, BaseStrategy):
         self.crossover = bt.indicators.CrossOver(
             self.fast_moving_average, self.slow_moving_average)
 
-        BaseStrategy.__init__(self)
+        FFBaseStrategy.__init__(self)
 
     def next(self):
-        data_date = self.data.datetime.date()
+        data_date = self.get_date()
         if self.position.size == 0:
             if self.crossover > 0:
 
@@ -29,10 +28,8 @@ class GoldenCrossStrategy(bt.Strategy, BaseStrategy):
 
                 amount_to_invest = (self.order_percentage * self.broker.cash)
                 self.size = math.floor(amount_to_invest / self.data.close)
-
-                print(
-                    f"\033[0m{data_date} \033[96mBuy \033[0m{self.size} shares at {self.data.close[0]:.2f}")
-                self.buy(size=self.size)
+                self.log_buy_order()
+                self.order = self.buy(size=self.size)
                 self.total_buys += 1
 
         if self.position.size > 0:
@@ -40,8 +37,6 @@ class GoldenCrossStrategy(bt.Strategy, BaseStrategy):
 
                 if data_date >= self.alert_range:
                     self.sell_alerts.append(data_date)
-
-                print(
-                    f"\033[0m{data_date} \033[95mSell \033[0m{self.size} shares at {self.data.close[0]:.2f}")
-                self.close()
+                self.log_sell_order()
+                self.order = self.close()
                 self.total_sells += 1

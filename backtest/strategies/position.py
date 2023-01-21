@@ -1,41 +1,17 @@
-import backtrader as bt
+import math
+
+from backtest.base_strategy import FFBaseStrategy
 
 
-class BuyTheDipStrategy(bt.Strategy):
-
-    def log(self, txt, dt=None):
-        ''' Logging function for this strategy'''
-        dt = dt or self.datas[0].datetime.date(0)
-        print('%s, %s' % (dt.isoformat(), txt))
+class BuyTheDipStrategy(FFBaseStrategy):
 
     def __init__(self):
-        # Keep a reference to the "close" line in the data[0] dataseries
         self.key = "btds"
-        self.dataclose = self.datas[0].close
-        self.order = None
-        self.sell_created = 0
-        self.sell_executed = 0
-        self.buy_created = 0
-        self.buy_executed = 0
 
-    def notify_order(self, order):
-        if order.status in [order.Submitted, order.Accepted]:
-            return
-
-        if order.status in [order.Completed]:
-            if order.isbuy():
-                self.log("BUY EXECUTED {}".format(order.executed.price))
-                self.buy_executed += 1
-            elif order.issell():
-                self.log("SELL EXECUTED {}".format(order.executed.price))
-                self.sell_executed += 1
-            self.bar_executed = len(self)
-
-        self.order = None
+        FFBaseStrategy.__init__(self)
 
     def next(self):
         # Simply log the closing price of the series from the reference
-        self.log('Close, %.2f' % self.dataclose[0])
         if self.order:
             return
 
@@ -44,16 +20,19 @@ class BuyTheDipStrategy(bt.Strategy):
 
                 if self.dataclose[-1] < self.dataclose[-2]:
 
-                    self.log("BUY CREATED, %.2f" % self.dataclose[0])
-                    self.order = self.buy()
+                    amount_to_invest = (
+                        self.order_percentage * self.broker.cash)
+                    self.size = math.floor(amount_to_invest / self.data.close)
+                    self.log_buy_order()
+                    self.order = self.buy(size=self.size)
                     self.buy_created += 1
         else:
             if len(self) >= (self.bar_executed + 5):
-                self.log("SELL CREATED {}".format(self.dataclose[0]))
-                self.order = self.sell()
+                self.order = self.close()
                 self.sell_created += 1
+                self.log_sell_order()
 
 
-class BuyHoldStrategy(bt.Strategy):
+class BuyHoldStrategy(FFBaseStrategy):
     def next(self):
         pass
