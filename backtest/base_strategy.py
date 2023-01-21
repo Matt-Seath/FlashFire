@@ -23,6 +23,7 @@ class FFBaseStrategy(bt.Strategy):
         self.order = None
         self.buy_alerts = []
         self.sell_alerts = []
+        self.counter = 0
         self.strategy_name = self.__class__.__name__
 
     def log_buy_order(self):
