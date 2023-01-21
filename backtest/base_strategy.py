@@ -1,10 +1,12 @@
 from datetime import date, timedelta
 import backtrader as bt
 
+from loggers.coloured_text import Colour
+
 
 class FFBaseStrategy(bt.Strategy):
 
-    alert_range = date.today() - timedelta(days=100)
+    alert_range = date.today() - timedelta(days=3)
     buy_alerts = None
     sell_alerts = None
     total_buys = 0
@@ -23,26 +25,17 @@ class FFBaseStrategy(bt.Strategy):
         self.sell_alerts = []
         self.strategy_name = self.__class__.__name__
 
-    def log(self, txt, dt=None):
-        ''' Logging function for this strategy'''
-        dt = dt or self.datas[0].datetime.date(0)
-        print('%s, %s' % (dt.isoformat(), txt))
-
     def log_buy_order(self):
         print(
-            f"\033[0m{self.get_date()} - Buy Order Placed - {self.size} shares at {self.data.close[0]:.2f}")
+            f"{Colour.ENDC}{str(self.get_date()):<12}{'Buy Ordered':<15}{self.size} shares at {self.data.close[0]:.2f}")
 
     def log_sell_order(self):
         print(
-            f"\033[0m{self.get_date()} - Sell Order Placed - {self.size} shares at {self.data.close[0]:.2f}")
+            f"{Colour.ENDC}{str(self.get_date()):<12}{'Sell Ordered':<15}{self.size} shares at {self.data.close[0]:.2f}")
 
-    def log_buy_exec(self):
+    def log_exec(self, txt, txt_colour):
         print(
-            f"\033[0m{self.get_date()} - \033[96mBuy Executed\033[0m - {self.size} shares at {self.order.executed.price:.2f}")
-
-    def log_sell_exec(self):
-        print(
-            f"\033[0m{self.get_date()} - \033[95mSell Executed\033[0m - {self.size} shares at {self.order.executed.price:.2f}")
+            f"{Colour.ENDC}{str(self.get_date()):<12}{txt_colour}{txt:<15}{Colour.ENDC}{self.size} shares at {txt_colour}{self.order.executed.price:.2f}{Colour.ENDC}")
 
     def get_date(self):
         return self.data.datetime.date()
@@ -53,10 +46,10 @@ class FFBaseStrategy(bt.Strategy):
 
         if order.status in [order.Completed]:
             if order.isbuy():
-                self.log_buy_exec()
+                self.log_exec("BUY EXECUTED", Colour.OKBLUE)
                 self.buy_executed += 1
             elif order.issell():
-                self.log_sell_exec()
+                self.log_exec("SELL EXECUTED", Colour.HEADER)
                 self.sell_executed += 1
             self.bar_executed = len(self)
 
