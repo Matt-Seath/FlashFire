@@ -7,7 +7,7 @@ from .swing import *
 from .scalping import *
 
 
-def get_strategies():
+def validate_strategy(strategy):
     strategies = {}
     members = inspect.getmembers(sys.modules[__name__], inspect.isclass)
 
@@ -15,4 +15,11 @@ def get_strategies():
         short_name = member[1].key
         strategies[short_name] = member[1]
 
-    return strategies
+    if strategy in strategies:
+        strategy = strategies[strategy]
+
+        return strategy
+
+    else:
+        raise Exception(
+            f"Strategy key {strategy} is not associated with any valid strategy")

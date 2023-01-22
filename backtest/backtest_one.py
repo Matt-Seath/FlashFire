@@ -26,11 +26,6 @@ def main(strategy, symbol):
         "date__lt": date(*TODATE__)
     }
 
-    valid_strategies = get_strategies()
-    if strategy not in valid_strategies:
-        raise Exception(
-            f"Strategy key {strategy} is not associated with any valid strategy")
-
     cerebro = bt.Cerebro()
 
     cerebro.broker.set_cash(STARTING_CASH)
@@ -43,7 +38,7 @@ def main(strategy, symbol):
         data = bt.feeds.PandasData(df)
 
     cerebro.adddata(data)
-    cerebro.addstrategy(valid_strategies[strategy])
+    cerebro.addstrategy(validate_strategy(strategy))
     cerebro.addsizer(bt.sizers.SizerFix, stake=1)
 
     print(

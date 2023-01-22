@@ -2,6 +2,7 @@ from tqdm import tqdm
 import contextlib
 import io
 
+from backtest.strategies.all import validate_strategy
 from backtest import backtest_one
 from backtest.pipelines import mysql_pls
 from loggers.coloured_text import Colour, int_colour
@@ -10,6 +11,7 @@ from core.models import StockInfo
 
 TEST_ALL_STOCKS = True
 CUSTOM_ITERATIONS = 600
+USE_FILTERS = True
 
 FILTERS = {
     "current_price__gt": 5,
@@ -18,7 +20,10 @@ FILTERS = {
 
 
 def main(strategy):
-    stocks = mysql_pls.get_col_list_from_db("symbol", FILTERS)
+
+    validate_strategy(strategy)
+    filters = FILTERS if USE_FILTERS else None
+    stocks = mysql_pls.get_col_list_from_db("symbol", filters)
     iterations = len(stocks) if TEST_ALL_STOCKS else CUSTOM_ITERATIONS
     results = {}
     change_sum = 0
@@ -30,8 +35,10 @@ def main(strategy):
             with contextlib.redirect_stdout(io.StringIO()):
                 data, cerebro, cash = backtest_one.main(strategy, stocks[i])
                 tested += 1
+                print(tested)
         except Exception as e:
             skipped += 1
+            print(e)
             continue
 
         net_change = (cerebro.broker.getvalue() - cash) / 100
@@ -62,3 +69,5 @@ def main(strategy):
         f"\nAverage Profit: {int_colour(avg_change_value)}{avg_change_value:.2f}%\n{Colour.ENDC}")
     print(f"Stocks Tested: {tested}")
     print(f"Stocks Skipped: {skipped}")
+
+    return results
