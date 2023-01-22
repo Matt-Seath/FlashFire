@@ -1,6 +1,5 @@
 from tqdm import tqdm
 import contextlib
-import time
 import io
 
 from backtest import backtest_one
@@ -9,14 +8,19 @@ from loggers.coloured_text import Colour
 from core.models import StockInfo
 
 
-TEST_ALL_STOCKS = False
+TEST_ALL_STOCKS = True
 CUSTOM_ITERATIONS = 600
 
+FILTERS = {
+    "current_price__gt": 5,
+    "sector": "Consumer Cyclical"
+}
 
-def main():
-    stocks = mysql_pls.get_col_list_from_db("symbol")
+
+def main(strategy):
+    stocks = mysql_pls.get_col_list_from_db("symbol", FILTERS)
     iterations = len(stocks) if TEST_ALL_STOCKS else CUSTOM_ITERATIONS
-    result = {}
+    results = {}
     change_sum = 0
     tested = 0
     skipped = 0
@@ -24,7 +28,7 @@ def main():
     for i in tqdm(range(iterations), desc=f"Testing Strategy: "):
         try:
             with contextlib.redirect_stdout(io.StringIO()):
-                data, cerebro, cash = backtest_one.main(stocks[i])
+                data, cerebro, cash = backtest_one.main(strategy, stocks[i])
                 tested += 1
         except Exception as e:
             skipped += 1
@@ -34,7 +38,7 @@ def main():
         change_sum += net_change
         stock_info = StockInfo.objects.filter(symbol=stocks[i])[0]
 
-        result[stocks[i]] = {
+        results[stocks[i]] = {
             "symbol": stocks[i].replace(".AX", ""),
             "change": net_change,
             "name": stock_info.long_name,
@@ -46,12 +50,20 @@ def main():
             "avg_volume": stock_info.average_volume,
             "avg_price": stock_info.fifty_day_average
         }
-        # value_colour = Colour.OKGREEN if net_change >= 0 else Colour.FAIL
         # print(
         #     f"\n{'Stock:':<10}{stock_info.long_name} {Colour.WARNING}{stocks[i]}{Colour.ENDC}")
         # print(f"{'Change:':<10}{value_colour}{net_change:.2f}%{Colour.ENDC}")
 
-    average_change = change_sum / tested
-    print(f"\nAverage Change: {average_change:.2f}%\n")
+    for result in results.items():
+        value_colour = Colour.OKGREEN if result[1]['change'] >= 0 else Colour.FAIL
+        print(f"{'Stock:':<8}{result[1]['name']} ({result[1]['symbol']})")
+        print(f"{'Price:':<8}{result[1]['avg_price']}")
+        print(
+            f"{'Profit:':<8}{value_colour}{result[1]['change']:.2f}%{Colour.ENDC}\n")
+
+    avg_change_value = change_sum / tested
+    value_colour = Colour.OKGREEN if avg_change_value >= 0 else Colour.FAIL
+    print(
+        f"\nAverage Profit: {value_colour}{avg_change_value:.2f}%\n{Colour.ENDC}")
     print(f"Stocks Tested: {tested}")
     print(f"Stocks Skipped: {skipped}")
