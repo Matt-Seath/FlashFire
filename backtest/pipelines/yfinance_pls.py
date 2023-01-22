@@ -113,12 +113,13 @@ class StockInfoETL(ETL):
                     self.errors.append(
                         f"{self.timestamp()}: {self.symbols[i]} Error, {e} \n")
                     continue
-            if len(self.df_latest_entry.columns) < 130:
+            if len(self.df_latest_entry.columns) < 90:
                 self.skipped.append(self.symbols[i])
+                self.errors.append(f"{self.symbols[i]} insufficient columns")
                 continue
 
             self.df = pd.concat([self.df, self.df_latest_entry], axis=0)
-
+        print(self.df)
         return
 
     def load(self):

@@ -41,7 +41,7 @@ def main():
     logger.clear_logs(all=True)  # Clear logs if they already exist
 
     # Extract symbols from csv file to list
-    symbols = assets_pls.get_master_list()
+    symbols = assets_pls.get_master_list(None)
 
     if not UPDATE_EXISTING_STOCKS:
         symbols = assets_pls.get_shared_values(

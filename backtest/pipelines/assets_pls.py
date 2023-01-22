@@ -2,7 +2,8 @@ from pathlib import Path
 import csv
 
 
-DEFAULT_MASTER = "assets/asx/asx_list.csv"
+DEFAULT_MASTER_PATH = "assets/asx/asx_list.csv"
+DEFAULT_DELISTED_PATH = "assets/asx/delisted.csv"
 DEFAULT_FILE_PATH = "assets/asx/companies-list.csv"
 DEFAULT_COLUMN = "Code"
 DEFAULT_REPLACE = "ASX:"
@@ -24,7 +25,7 @@ def get_list_of_symbols(**kwargs):
         f"\nGenerating list of Symbols with extension: '{extension}'   ", end="")
     with open(file_path, newline='') as csvfile:
         data = csv.DictReader(csvfile)
-        for row in data:
+        for row in data:    # ddsymbols = ["VTS.AX", "VAE.AX"]
             if column not in row:
                 print(f"{column} column does not exist.")
                 return 1
@@ -38,15 +39,15 @@ def get_list_of_symbols(**kwargs):
 
 
 def write_to_master(list_to_add):
-    master_list = Path(DEFAULT_MASTER)
+    master_list = Path(DEFAULT_MASTER_PATH)
     with open(master_list, "w") as csvfile:
         writer = csv.writer(csvfile)
         for item in list_to_add:
             writer.writerow([item])
 
 
-def get_master_list():
-    master_path = Path(DEFAULT_MASTER)
+def get_master_list(file_path):
+    master_path = Path(file_path) if file_path else Path(DEFAULT_MASTER_PATH)
     master_list = []
     if not master_path.exists():
         print("csv path does not exist.")
@@ -59,12 +60,15 @@ def get_master_list():
     return master_list
 
 
-def append_csv_to_master(**kwargs):
+def update_master(**kwargs):
 
-    list_to_add = get_list_of_symbols(**kwargs)
-    master_list = get_master_list()
-    joined_list = list_to_add + master_list
-    final_list = list(dict.fromkeys(joined_list))
+    master_list = get_master_list(DEFAULT_MASTER_PATH)
+    if "file" in kwargs:
+        list_to_add = get_list_of_symbols(**kwargs)
+        joined_list = list_to_add + master_list
+    delisted_list = get_master_list(DEFAULT_DELISTED_PATH)
+    amended_list = get_shared_values(delisted_list, joined_list)
+    final_list = list(dict.fromkeys(amended_list))
     write_to_master(final_list)
 
 
