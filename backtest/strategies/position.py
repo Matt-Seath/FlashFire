@@ -4,7 +4,7 @@ from backtest.base_strategy import FFBaseStrategy
 
 
 class BuyTheDipStrategy(FFBaseStrategy):
-    key = "btds"
+    key = "btd"
 
     def __init__(self):
         FFBaseStrategy.__init__(self)

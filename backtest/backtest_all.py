@@ -4,7 +4,7 @@ import io
 
 from backtest import backtest_one
 from backtest.pipelines import mysql_pls
-from loggers.coloured_text import Colour
+from loggers.coloured_text import Colour, int_colour
 from core.models import StockInfo
 
 
@@ -25,7 +25,7 @@ def main(strategy):
     tested = 0
     skipped = 0
 
-    for i in tqdm(range(iterations), desc=f"Testing Strategy: "):
+    for i in tqdm(range(iterations), desc=f"Testing {strategy.upper()} Strategy: "):
         try:
             with contextlib.redirect_stdout(io.StringIO()):
                 data, cerebro, cash = backtest_one.main(strategy, stocks[i])
@@ -50,20 +50,15 @@ def main(strategy):
             "avg_volume": stock_info.average_volume,
             "avg_price": stock_info.fifty_day_average
         }
-        # print(
-        #     f"\n{'Stock:':<10}{stock_info.long_name} {Colour.WARNING}{stocks[i]}{Colour.ENDC}")
-        # print(f"{'Change:':<10}{value_colour}{net_change:.2f}%{Colour.ENDC}")
 
     for result in results.items():
-        value_colour = Colour.OKGREEN if result[1]['change'] >= 0 else Colour.FAIL
         print(f"{'Stock:':<8}{result[1]['name']} ({result[1]['symbol']})")
         print(f"{'Price:':<8}{result[1]['avg_price']}")
         print(
-            f"{'Profit:':<8}{value_colour}{result[1]['change']:.2f}%{Colour.ENDC}\n")
+            f"{'Profit:':<8}{int_colour(result[1]['change'])}{result[1]['change']:.2f}%{Colour.ENDC}\n")
 
     avg_change_value = change_sum / tested
-    value_colour = Colour.OKGREEN if avg_change_value >= 0 else Colour.FAIL
     print(
-        f"\nAverage Profit: {value_colour}{avg_change_value:.2f}%\n{Colour.ENDC}")
+        f"\nAverage Profit: {int_colour(avg_change_value)}{avg_change_value:.2f}%\n{Colour.ENDC}")
     print(f"Stocks Tested: {tested}")
     print(f"Stocks Skipped: {skipped}")

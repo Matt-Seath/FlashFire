@@ -8,3 +8,7 @@ class Colour:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
+
+def int_colour(value):
+    return Colour.OKGREEN if value >= 0 else Colour.FAIL
