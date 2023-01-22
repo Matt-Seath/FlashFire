@@ -1,10 +1,10 @@
 from django.core.management.base import BaseCommand
-from core import test
+from core import update_asx
 
 
 class Command(BaseCommand):
     help = 'Populates the database with ASX stock data'
 
     def handle(self, *args, **options):
-        test.main()
+        update_asx.main()
         return 0

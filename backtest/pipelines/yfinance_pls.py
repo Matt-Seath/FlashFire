@@ -104,15 +104,15 @@ class StockInfoETL(ETL):
             time.sleep(self.sleeper)
             self.df_latest_entry = (pd.DataFrame(
                 [yf.Ticker(self.symbols[i]).info]))
-            try:
-                with contextlib.redirect_stdout(io.StringIO()):
+            with contextlib.redirect_stdout(io.StringIO()):
+                try:
                     self.df_latest_entry = (pd.DataFrame(
                         [yf.Ticker(self.symbols[i]).info]))
-            except Exception as e:
-                self.skipped.append(self.symbols[i])
-                self.errors.append(
-                    f"{self.timestamp()}: {self.symbols[i]} Error, {e} \n")
-                continue
+                except Exception as e:
+                    self.skipped.append(self.symbols[i])
+                    self.errors.append(
+                        f"{self.timestamp()}: {self.symbols[i]} Error, {e} \n")
+                    continue
             if len(self.df_latest_entry.columns) < 130:
                 self.skipped.append(self.symbols[i])
                 continue

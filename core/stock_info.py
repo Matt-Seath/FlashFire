@@ -15,20 +15,16 @@ database.
 
 GET_ALL_ASX_STOCKS = True  # Fully update the ASX stock table
 SLEEPER = 0.0  # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 3  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+ITERATIONS = 30  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 UPDATE_EXISTING_STOCKS = False
 
 # Paths to static assets
 # List that contains all tickers on the ASX exchange
-PATH_TO_ASX_LIST = "assets/asx/companies-list.csv"
+PATH_TO_ASX_LIST = "assets/asx/asx_list.csv"
 # List of columns to be loaded into db
 PATH_TO_COLS_WHITELIST = "assets/stockinfo/cols_whitelist.csv"
 # Key-Value pairs of column names, camel-case for yfinance, then to snake-case when loaded to db
 PATH_TO_COLS_RENAME_CSV = "assets/stockinfo/cols_rename.csv"
-
-# Variables to format csv to list for yfinance API
-ASX_LIST_COLUMN = "ASX code"  # Only append values from this column to list
-ASX_LIST_EXTENSION = ".AX"  # Add this extension to end of each value for asx stocks
 
 # Logger Configuration
 LOGS = ["errors", "added", "dropped",
@@ -44,19 +40,26 @@ def main():
     logger.base_dir(LOGGER_BASE_DIR)  # Set base directory
     logger.clear_logs(all=True)  # Clear logs if they already exist
 
-    symbols = assets_pls.get_list_of_symbols(   # Extract symbols from csv file to list
-        PATH_TO_ASX_LIST, ASX_LIST_COLUMN, ASX_LIST_EXTENSION)
+    # Extract symbols from csv file to list
+    symbols = assets_pls.get_master_list()
+
     if not UPDATE_EXISTING_STOCKS:
         symbols = assets_pls.get_shared_values(
-            symbols, mysql_pls.get_col_list_from_db("symbol"))
+            symbols, mysql_pls.get_col_list_from_db("symbol", None))
     cols_dict = assets_pls.get_cols_rename_dict(  # Get columns from csv file to dict
         PATH_TO_COLS_RENAME_CSV)
     cols_whitelist = assets_pls.get_cols_whitelist(
         PATH_TO_COLS_WHITELIST)  # Get column names for db
 
+    params = {
+        "symbols_list": symbols,
+        "all": GET_ALL_ASX_STOCKS,
+        "iterations": ITERATIONS,
+        "sleeper": SLEEPER
+    }
+
     # ETL Pipeline
-    etl = yfinance_pls.StockInfoETL(symbols, all=GET_ALL_ASX_STOCKS,  # Initialize ETL
-                                    iterations=ITERATIONS, sleeper=SLEEPER)
+    etl = yfinance_pls.StockInfoETL(**params)
 
     etl.set_whitelist(cols_whitelist)  # ETL will only load these columns
     # ETL will change column names before loading into db

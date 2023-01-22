@@ -1,4 +1,4 @@
-from core import asx_list
+from backtest.pipelines.assets_pls import append_csv_to_master
 
 PARAMS = {
     "file": "assets/asx/old_asx_list.csv",
@@ -9,4 +9,4 @@ PARAMS = {
 
 
 def main():
-    asx_list.append_csv_to_csv(**PARAMS)
+    append_csv_to_master(**PARAMS)

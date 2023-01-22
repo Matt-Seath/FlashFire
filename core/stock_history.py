@@ -55,7 +55,7 @@ def main():
     cols_whitelist = assets_pls.get_cols_whitelist(
         PATH_TO_COLS_WHITELIST)  # Get column names for db
 
-    ETL_KWARGS = {
+    params = {
         "symbols_list": symbols,
         "all": GET_ALL_ASX_STOCKS,
         "start": START_DATE,
@@ -69,7 +69,7 @@ def main():
     }
 
     # ETL Pipeline
-    etl = yfinance_pls.StockHistoryETL(**ETL_KWARGS)
+    etl = yfinance_pls.StockHistoryETL(**params)
 
     etl.set_whitelist(cols_whitelist)  # ETL will only load these columns
     # ETL will change column names before loading into db
