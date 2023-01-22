@@ -16,10 +16,10 @@ def validate_strategy(strategy):
         strategies[short_name] = member[1]
 
     if strategy in strategies:
-        strategy = strategies[strategy]
+        strategy_object = strategies[strategy]
 
-        return strategy
+        return strategy_object
 
     else:
         raise Exception(
-            f"Strategy key {strategy} is not associated with any valid strategy")
+            f"The strategy key provided ({strategy.upper()}) is not associated with any valid strategy")
