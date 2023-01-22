@@ -9,12 +9,12 @@ from backtest.pipelines.django_pls import DjangoDataFeed
 from backtest.pipelines.yfinance_pls import get_dataframe
 
 
-# STRATEGY = BuyTheDipStrategy
 SQL_DATAFEED = True
 STARTING_CASH = 10000
 
 FROMDATE = [2022, 8, 13]
 TODATE__ = [2023, 1, 13]
+
 SPAN = relativedelta(date(*TODATE__), date(*FROMDATE))
 
 
@@ -54,4 +54,5 @@ def main(strategy, symbol):
 
     print(f"\nBUY:  {result[0].buy_alerts}")
     print(f"SELL: {result[0].sell_alerts}")
+
     return result, cerebro, STARTING_CASH

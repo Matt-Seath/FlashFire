@@ -10,8 +10,8 @@ from core.models import StockInfo
 
 
 TEST_ALL_STOCKS = True
-CUSTOM_ITERATIONS = 600
-USE_FILTERS = True
+ITERATION_LIMIT = 600
+APPLY_FILTERS = True
 
 FILTERS = {
     "current_price__gt": 5,
@@ -22,9 +22,9 @@ FILTERS = {
 def main(strategy):
 
     validate_strategy(strategy)
-    filters = FILTERS if USE_FILTERS else None
+    filters = FILTERS if APPLY_FILTERS else None
     stocks = mysql_pls.get_col_list_from_db("symbol", filters)
-    iterations = len(stocks) if TEST_ALL_STOCKS else CUSTOM_ITERATIONS
+    iterations = len(stocks) if TEST_ALL_STOCKS else ITERATION_LIMIT
     results = {}
     change_sum = 0
     tested = 0

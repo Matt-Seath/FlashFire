@@ -20,7 +20,7 @@ UPDATE_EXISTING_STOCKS = False
 
 # Paths to static assets
 # List that contains all tickers on the ASX exchange
-PATH_TO_ASX_LIST = "assets/asx/asx_list.csv"
+PATH_TO_ASX_LIST = "assets/asx/companies-list.csv"
 # List of columns to be loaded into db
 PATH_TO_COLS_WHITELIST = "assets/stockinfo/cols_whitelist.csv"
 # Key-Value pairs of column names, camel-case for yfinance, then to snake-case when loaded to db
