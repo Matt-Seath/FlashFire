@@ -2,6 +2,7 @@ __pycache__/
 instance/
 .env
 venv/
+logs/
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
