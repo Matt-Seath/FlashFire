@@ -16,8 +16,8 @@ database.
 """
 
 GET_ALL_ASX_STOCKS = True  # Fully update the ASX stock table
-UPDATE_DB = True
-SLEEPER = 1.8  # Higher value slows api request frequency to avoid throttling.
+UPDATE_DB = False
+SLEEPER = 2.1  # Higher value slows api request frequency to avoid throttling.
 ITERATIONS = 8  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
 START_DATE = date(2022, 1, 1)
@@ -49,7 +49,7 @@ def main():
     logger.clear_logs(all=True)  # Clear logs if they already exist
 
     symbols = mysql_pls.get_col_list_from_db(
-        DB_COLUMN, all=GET_ALL_ASX_STOCKS, limit=ITERATIONS)
+        DB_COLUMN, None, all=GET_ALL_ASX_STOCKS, limit=ITERATIONS)
     cols_dict = assets_pls.get_cols_rename_dict(  # Get columns from csv file to dict
         PATH_TO_COLS_RENAME_CSV)
     cols_whitelist = assets_pls.get_cols_whitelist(

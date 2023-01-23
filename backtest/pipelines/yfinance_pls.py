@@ -158,11 +158,15 @@ class StockHistoryETL(ETL):
 
     def get_latest_date(self, symbol):
         queryset = StockHistory.objects.filter(stock_id=symbol)
+        if not queryset:
+            return
         self.start = queryset.aggregate(
             Max("date"))["date__max"] + timedelta(days=1)
 
     def drop_duplicates(self, symbol):
         queryset = StockHistory.objects.filter(stock_id=symbol)
+        if not queryset:
+            return
         max_date = queryset.aggregate(
             Max("date"))["date__max"]
         min_date = queryset.aggregate(
@@ -202,7 +206,6 @@ class StockHistoryETL(ETL):
                 self.errors.append(
                     f"{self.timestamp()}: {self.symbols[i]} Error, {e} \n")
                 continue
-
             self.df_latest_entry["date"] = self.df_latest_entry.index
             self.df_latest_entry['date'] = pd.to_datetime(
                 self.df_latest_entry['date']).dt.date

@@ -15,6 +15,7 @@ RUN apk update \
 
 RUN python3 -m ensurepip
 RUN pip3 install --no-cache --upgrade pip setuptools wheel
+RUN apk add --update nodejs npm
 
 COPY requirements.txt /app
 RUN pip3 install -r requirements.txt --no-cache-dir
