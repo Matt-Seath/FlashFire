@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'backtest.apps.BacktestConfig',
     'core.apps.CoreConfig',
-    'frontend.apps.FrontendConfig',
     'loggers.apps.LoggersConfig',
 ]
 
@@ -64,7 +63,7 @@ ROOT_URLCONF = 'flashfire.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,6 +75,12 @@ TEMPLATES = [
         },
     },
 ]
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    # update the STATICFILES_DIRS
+    os.path.join(BASE_DIR, 'frontend', "build", "static"),
+)
 
 WSGI_APPLICATION = 'flashfire.wsgi.application'
 
