@@ -4,7 +4,7 @@ import * as ReactDOM from "react-dom";
 function Root() {
     return (
         <div>
-
+            Right
         </div>
     )
 }

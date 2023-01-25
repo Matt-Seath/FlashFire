@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -79,9 +79,9 @@ TEMPLATES = [
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    # update the STATICFILES_DIRS
-    os.path.join(BASE_DIR, "frontend", "build", "static"),
+    os.path.join(BASE_DIR, 'frontend/static'),
 )
+
 
 WSGI_APPLICATION = 'flashfire.wsgi.application'
 
