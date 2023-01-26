@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'backtest.apps.BacktestConfig',
     'core.apps.CoreConfig',
-    'frontend.apps.FrontendConfig',
     'loggers.apps.LoggersConfig',
 ]
 
