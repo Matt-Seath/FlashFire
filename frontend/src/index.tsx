@@ -1,10 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import App from "./components/App";
 
 function Root() {
     return (
         <div>
-            Rightooo
+            <App />
         </div>
     )
 }

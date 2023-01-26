@@ -100,13 +100,33 @@ eval("\n\nif (false) {} else {\n  module.exports = __webpack_require__(/*! ./cjs
 
 /***/ }),
 
+/***/ "./src/components/App.tsx":
+/*!********************************!*\
+  !*** ./src/components/App.tsx ***!
+  \********************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar React = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nvar HomePage_1 = __webpack_require__(/*! ./HomePage */ \"./src/components/HomePage.tsx\");\nvar App = function () {\n    return (React.createElement(\"div\", { className: \"center\" },\n        React.createElement(\"p\", null, \"dfgvcvd\"),\n        React.createElement(HomePage_1.default, null)));\n};\nexports[\"default\"] = App;\n\n\n//# sourceURL=webpack://frontend/./src/components/App.tsx?");
+
+/***/ }),
+
+/***/ "./src/components/HomePage.tsx":
+/*!*************************************!*\
+  !*** ./src/components/HomePage.tsx ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar React = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nvar HomePage = function () {\n    return (React.createElement(\"div\", null,\n        React.createElement(\"h2\", null, \"Name\"),\n        React.createElement(\"p\", null, \"Hi thvcvcere\")));\n};\nexports[\"default\"] = HomePage;\n\n\n//# sourceURL=webpack://frontend/./src/components/HomePage.tsx?");
+
+/***/ }),
+
 /***/ "./src/index.tsx":
 /*!***********************!*\
   !*** ./src/index.tsx ***!
   \***********************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar React = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nvar ReactDOM = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\nfunction Root() {\n    return (React.createElement(\"div\", null, \"Rightooo\"));\n}\nReactDOM.render(React.createElement(Root, null), document.getElementById('root'));\n\n\n//# sourceURL=webpack://frontend/./src/index.tsx?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar React = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nvar ReactDOM = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\nvar App_1 = __webpack_require__(/*! ./components/App */ \"./src/components/App.tsx\");\nfunction Root() {\n    return (React.createElement(\"div\", null,\n        React.createElement(App_1.default, null)));\n}\nReactDOM.render(React.createElement(Root, null), document.getElementById('root'));\n\n\n//# sourceURL=webpack://frontend/./src/index.tsx?");
 
 /***/ })
 
