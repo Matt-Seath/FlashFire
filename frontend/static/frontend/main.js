@@ -106,7 +106,7 @@ eval("\n\nif (false) {} else {\n  module.exports = __webpack_require__(/*! ./cjs
   \***********************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar React = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nvar ReactDOM = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\nfunction Root() {\n    return (React.createElement(\"div\", null, \"Right\"));\n}\nReactDOM.render(React.createElement(Root, null), document.getElementById('root'));\n\n\n//# sourceURL=webpack://frontend/./src/index.tsx?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar React = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nvar ReactDOM = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\nfunction Root() {\n    return (React.createElement(\"div\", null, \"Rightooo\"));\n}\nReactDOM.render(React.createElement(Root, null), document.getElementById('root'));\n\n\n//# sourceURL=webpack://frontend/./src/index.tsx?");
 
 /***/ })
 
