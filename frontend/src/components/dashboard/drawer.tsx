@@ -3,6 +3,7 @@ import {
   styled,
   alpha,
   useTheme,
+  makeStyles,
   Theme,
   CSSObject,
 } from "@mui/material/styles";
@@ -15,6 +16,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import { Icon } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -27,7 +29,6 @@ import MailIcon from "@mui/icons-material/Mail";
 import MyAppBar from "./appbar";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import { width } from "@mui/system";
 
 const drawerWidth = 240;
 
@@ -139,6 +140,13 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+const styles = {
+  largeIcon: {
+    width: 60,
+    height: 60,
+  },
+};
+
 export default function FFDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -191,25 +199,35 @@ export default function FFDrawer() {
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <List>
-          {["Inbox"].map((text, index) => (
+          {["FlashFire"].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
+                  MaxHeight: 2,
+                  justifyContent: "left",
+                  px: 2,
                 }}
               >
-                <ListItemIcon
+                <Box
+                  component="img"
                   sx={{
-                    minWidth: 0,
+                    maxHeight: 32,
                     mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    justifyContent: open ? "initial" : "center",
                   }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                  alt="FlashFire Logo"
+                  src="/FF_Logo.svg"
+                />
+                <Box
+                  component="img"
+                  sx={{
+                    maxWidth: 90,
+                    justifyContent: open ? "initial" : "center",
+                    opacity: open ? 1 : 0,
+                  }}
+                  alt="FlashFire Logo"
+                  src="/FF_Text.svg"
+                />
               </ListItemButton>
             </ListItem>
           ))}
@@ -282,6 +300,13 @@ export default function FFDrawer() {
           lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
           faucibus et molestie ac.
         </Typography>
+        <Box component="img" alt="FlashFire Logo" src="/Logo.svg" />
+        <Box
+          component="img"
+          sx={{ height: 233, width: 350 }}
+          alt="FlashFire Logo"
+          src="/Logo.svg"
+        />
         <Typography paragraph>
           Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
           ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
