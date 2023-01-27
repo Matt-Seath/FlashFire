@@ -6,8 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import theme from "../theme";
 import createEmotionCache from "../createEmotionCache";
-import PrimarySearchAppBar from "@/components/Header";
-import MiniDrawer from "@/components/Drawer";
+import FFDashboardNav from "@/components/dashboard/layout";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -26,7 +25,7 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <MiniDrawer />
+        <FFDashboardNav />
         <Component {...pageProps} />
       </ThemeProvider>
     </CacheProvider>
