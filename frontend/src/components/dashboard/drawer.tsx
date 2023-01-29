@@ -15,6 +15,7 @@ import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import Button from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { Icon } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -31,6 +32,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 
 const drawerWidth = 240;
+
+type HomeProps = {
+  toggleTheme?: React.MouseEventHandler<HTMLButtonElement>;
+};
+
+const Home = (props: HomeProps) => {};
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
