@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 # Create your models here.
 
 
@@ -131,13 +132,6 @@ class StockInfo(models.Model):
         return u'%s' % (self.long_name)
 
 
-class WatchList(models.Model):
-    user_id = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="watchlist")
-    stock_id = models.ForeignKey(
-        StockInfo, on_delete=models.CASCADE, related_name="watchlist")
-
-
 class StockHistory(models.Model):
     stock = models.ForeignKey(
         StockInfo, on_delete=models.CASCADE, related_name="history")
@@ -147,3 +141,10 @@ class StockHistory(models.Model):
     close = models.FloatField(null=True)
     volume = models.BigIntegerField(null=True)
     date = models.DateField(null=False)
+
+
+class Watchlist(models.Model):
+    user_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="watchlist")
+    name = models.CharField(max_length=30, null=False)
+    date_created = models.DateTimeField(auto_now_add=True)
