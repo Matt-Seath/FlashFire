@@ -1,8 +1,8 @@
-from django.urls import path
-from .views import index
+from django.urls import path, include
 from rest_framework_nested import routers
 
-from api.views import StockInfoViewSet
+from .views import *
+
 
 router = routers.DefaultRouter()
 router.register("", StockInfoViewSet)
