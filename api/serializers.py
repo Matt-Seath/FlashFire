@@ -8,10 +8,11 @@ class StockInfoSerializer(serializers.ModelSerializer):
         model = StockInfo
         fields = [
             "symbol",
-            "average_volume",
+            "long_name",
             "sector",
-            "long_business_summary",
+            "average_volume",
             "volume",
             "market_cap",
             "current_price",
+            "last_updated",
         ]

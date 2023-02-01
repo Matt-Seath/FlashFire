@@ -11,7 +11,7 @@ from rest_framework.viewsets import ModelViewSet
 
 
 class StockInfoViewSet(ModelViewSet):
-    queryset = StockInfo.objects.all()
+    queryset = StockInfo.objects.values(*StockInfoSerializer.Meta.fields)
     serializer_class = StockInfoSerializer
 
 
