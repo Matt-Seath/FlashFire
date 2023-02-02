@@ -1,4 +1,3 @@
-from django.urls import path
 from .views import index
 from rest_framework_nested import routers
 
