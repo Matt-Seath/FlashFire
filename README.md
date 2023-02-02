@@ -9,6 +9,9 @@ FlashFire achieves these feats as a full-stack algorithmic trading platform that
 -   Backend: Django
 -   Frontend: Next.js
 
+![architecture](https://user-images.githubusercontent.com/100132940/216245475-fa3c80d7-8152-4267-ab60-a2bfa5ed678b.png)
+
+
 ## Installation Instructions
 
 These instructions will help you to set up the project locally on your machine for development and testing purposes.
