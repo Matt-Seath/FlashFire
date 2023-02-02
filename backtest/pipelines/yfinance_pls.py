@@ -134,7 +134,7 @@ class StockInfoETL(ETL):
             except Exception as e:
                 self.skipped.append(str(row_dict))
                 self.errors.append(
-                    f"{self.timestamp()}: Could not insert {row['symbol']}, {e} Value: {str(row_dict)}")
+                    f"{self.timestamp()}: Could not insert column, {e} Value: {str(row_dict)}")
 
         return
 

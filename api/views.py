@@ -1,4 +1,4 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import JsonResponse
@@ -15,9 +15,34 @@ class StockInfoViewSet(ModelViewSet):
     serializer_class = StockInfoSerializer
 
 
-class StockHistoryViewSet(ModelViewSet):
-    queryset = StockHistory.objects.all().select_related("stock").filter(id__lt=24222)
-    serializer_class = StockHistorySerializer
+class StockHistoryViewSet(viewsets.ViewSet):
+    # queryset = StockInfo.objects.prefetch_related(
+    #     "history").all().filter(pk="A2M.AX")
+    # serializer_class = SimpleStockInfoSerializer
+    def list(self, request):
+        queryset = StockInfo.objects.prefetch_related(
+            "history").all()
+        stocks = []
+        # for stock in queryset:
+        print(queryset.history)
+        print("")
+        print("")
+        #     history = qw.filter(stock=stock)
+        #     data = [
+        #     for record in history:
+        #         data.append({
+        #             "date": record.date,
+        #             "open": record.open,
+        #             "close": record.close,
+        #             "high": record.high,
+        #             "low": record.low,
+        #         })
+        #     stocks.append({
+        #         "symbol": stock.symbol,
+        #         "data": data
+        #     })
+        # return Response(stocks)
+
 
 # class UserInRoom(APIView):
 #     def get(self, request, format=None):

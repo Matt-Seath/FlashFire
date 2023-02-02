@@ -4,6 +4,6 @@ from .views import *
 
 
 router = routers.DefaultRouter()
-router.register("", StockHistoryViewSet)
+router.register("", StockHistoryViewSet, basename="history")
 
 urlpatterns = router.urls
