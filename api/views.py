@@ -2,12 +2,11 @@ from rest_framework import generics, status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import JsonResponse
+from django.db.models import Prefetch
+from rest_framework.viewsets import ModelViewSet
 
 from core.models import StockInfo, StockHistory
 from .serializers import *
-
-from rest_framework.viewsets import ModelViewSet
-# Create your views here.
 
 
 class StockInfoViewSet(ModelViewSet):
@@ -16,32 +15,32 @@ class StockInfoViewSet(ModelViewSet):
 
 
 class StockHistoryViewSet(viewsets.ViewSet):
-    # queryset = StockInfo.objects.prefetch_related(
-    #     "history").all().filter(pk="A2M.AX")
-    # serializer_class = SimpleStockInfoSerializer
+
     def list(self, request):
-        queryset = StockInfo.objects.prefetch_related(
-            "history").all()
+        queryset = StockInfo.objects.prefetch_related(Prefetch(
+            "history", queryset=StockHistory.objects.filter(
+                date__gt="2023-1-1", date__lt="2023-1-10"))).only(
+            "symbol", "long_name", "sector").order_by("symbol")[:4]
         stocks = []
-        # for stock in queryset:
-        print(queryset.history)
-        print("")
-        print("")
-        #     history = qw.filter(stock=stock)
-        #     data = [
-        #     for record in history:
-        #         data.append({
-        #             "date": record.date,
-        #             "open": record.open,
-        #             "close": record.close,
-        #             "high": record.high,
-        #             "low": record.low,
-        #         })
-        #     stocks.append({
-        #         "symbol": stock.symbol,
-        #         "data": data
-        #     })
-        # return Response(stocks)
+        for stock in queryset:
+            history = stock.history.all()
+            data = []
+            for record in history:
+                data.append({
+                    "date": record.date,
+                    "open": record.open,
+                    "close": record.close,
+                    "high": record.high,
+                    "low": record.low,
+                })
+            stocks.append({
+                "symbol": stock.symbol,
+                "long_name": stock.long_name,
+                "sector": stock.sector,
+                "history": data
+            })
+
+        return Response(stocks)
 
 
 # class UserInRoom(APIView):
