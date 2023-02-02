@@ -2,12 +2,14 @@
 
 Hey you! Looking for a surefire way to turn your hard-earned savings into ash? Look no further than FlashFire, the algorithmic trading app that's hot, hot, hot! With its cutting-edge technology and scorching performance, FlashFire will light a fire under your portfolio and watch it burn to a crisp. Want to see your investment strategy go up in smoke? Download FlashFire today and watch the magic happen!
 
-FlashFire achieves these feats as a full-stack algorithmic trading platform that automates the process of backtesting and regression analysis of stocks listed on the ASX. The platform uses historical financial data scraped from Yahoo Finance and live data from Interactive Brokers TWS API to find profitable trade opportunities.
+FlashFire achieves these feats as a full-stack algorithmic trading platform that automates the process of backtesting and regression analysis of stocks listed on the ASX. The platform uses historical financial data scraped from Yahoo Finance and live data from Interactive Brokers TWS API to find and buy into profitable trade opportunities.
 
 ## Technologies Used
 
 -   Backend: Django
 -   Frontend: Next.js
+-   Broker: IBKR TWS
+-   Database: MySQL
 
 ![architecture](https://user-images.githubusercontent.com/100132940/216249234-55b637ea-260a-4138-9c69-d24addc3def6.png)
 
@@ -17,7 +19,7 @@ FlashFire achieves these feats as a full-stack algorithmic trading platform that
 These instructions will help you to set up the project locally on your machine for development and testing purposes.
 
 ### Prerequisites
-
+-   **Requires an active Interactive Brokers account to connect to the TWS API**
 -   [Django](https://www.djangoproject.com/download/)
 -   [Next.js](https://nextjs.org/docs#getting-started)
 -   [Interactive Brokers TWS API](https://interactivebrokers.github.io/#tws-api-documentation)
