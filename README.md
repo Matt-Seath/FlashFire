@@ -1,6 +1,6 @@
 ## FlashFire - Algorithmic Trading Platform
 
-Looking for a surefire way to turn your hard-earned savings into ash? Look no further than FlashFire, the algorithmic trading app that's hot, hot, hot! With its cutting-edge technology and scorching performance, FlashFire will light a fire under your portfolio and watch it burn to a crisp. Want to see your investment strategy go up in smoke? Download FlashFire today and watch the magic happen!
+Hey you! Looking for a surefire way to turn your hard-earned savings into ash? Look no further than FlashFire, the algorithmic trading app that's hot, hot, hot! With its cutting-edge technology and scorching performance, FlashFire will light a fire under your portfolio and watch it burn to a crisp. Want to see your investment strategy go up in smoke? Download FlashFire today and watch the magic happen!
 
 FlashFire achieves these feats as a full-stack algorithmic trading platform that automates the process of backtesting and regression analysis of stocks listed on the ASX. The platform uses historical financial data scraped from Yahoo Finance and live data from Interactive Brokers TWS API to find profitable trade opportunities.
 
@@ -9,7 +9,7 @@ FlashFire achieves these feats as a full-stack algorithmic trading platform that
 -   Backend: Django
 -   Frontend: Next.js
 
-![architecture](https://user-images.githubusercontent.com/100132940/216245475-fa3c80d7-8152-4267-ab60-a2bfa5ed678b.png)
+![architecture](https://user-images.githubusercontent.com/100132940/216249234-55b637ea-260a-4138-9c69-d24addc3def6.png)
 
 
 ## Installation Instructions
