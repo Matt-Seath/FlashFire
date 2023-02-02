@@ -2,7 +2,7 @@
 
 Looking for a surefire way to turn your hard-earned savings into ash? Look no further than FlashFire, the algorithmic trading app that's hot, hot, hot! With its cutting-edge technology and scorching performance, FlashFire will light a fire under your portfolio and watch it burn to a crisp. Want to see your investment strategy go up in smoke? Download FlashFire today and watch the magic happen!
 
-FlashFire is a full-stack algorithmic trading platform that automates the process of backtesting and regression analysis of stocks listed on the ASX. The platform uses historical financial data scraped from Yahoo Finance and live data from Interactive Brokers TWS API to find profitable trade opportunities.
+FlashFire achieves these feats as a full-stack algorithmic trading platform that automates the process of backtesting and regression analysis of stocks listed on the ASX. The platform uses historical financial data scraped from Yahoo Finance and live data from Interactive Brokers TWS API to find profitable trade opportunities.
 
 ## Technologies Used
 
