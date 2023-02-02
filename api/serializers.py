@@ -8,10 +8,37 @@ class StockInfoSerializer(serializers.ModelSerializer):
         model = StockInfo
         fields = [
             "symbol",
-            "average_volume",
+            "long_name",
             "sector",
-            "long_business_summary",
+            "average_volume",
             "volume",
             "market_cap",
             "current_price",
+            "last_updated",
+        ]
+
+
+class SimpleStockInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StockInfo
+        fields = [
+            "symbol",
+            "long_name",
+            "sector",
+        ]
+
+
+class StockHistorySerializer(serializers.ModelSerializer):
+    stock = SimpleStockInfoSerializer()
+
+    class Meta:
+        model = StockHistory
+        fields = [
+            "stock",
+            "date",
+            "open",
+            "close",
+            "high",
+            "low",
+            "close",
         ]
