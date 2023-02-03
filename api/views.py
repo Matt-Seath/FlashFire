@@ -26,14 +26,14 @@ class StockHistoryViewSet(viewsets.ViewSet):
             history = stock.history.all()
             data = []
             for record in history:
-                data.append({
-                    "date": record.date,
-                    "open": record.open,
-                    "close": record.close,
-                    "high": record.high,
-                    "low": record.low,
-                    "volume": record.volume,
-                })
+                data.append([
+                    record.date,
+                    record.open,
+                    record.close,
+                    record.high,
+                    record.low,
+                    record.volume,
+                ])
             stocks.append({
                 "symbol": stock.symbol,
                 "long_name": stock.long_name,

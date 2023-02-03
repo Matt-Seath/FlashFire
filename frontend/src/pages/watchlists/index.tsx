@@ -16,7 +16,7 @@ export default function Watchlists() {
         }}
       >
         <Typography variant="h4" component="h1" gutterBottom>
-          Watchlist Page
+          Watchlists Page
         </Typography>
       </Box>
     </Container>
