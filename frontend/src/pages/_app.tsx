@@ -10,6 +10,7 @@ import createEmotionCache from "../createEmotionCache";
 import "../styles/globals.css";
 import { useRouter } from "next/router";
 import FFDashboardNav from "@/components/dashboard/layout";
+import Layout from "@/components/dashboard/layout";
 
 const lightTheme = createTheme({
   palette: {
@@ -56,8 +57,9 @@ export default function MyApp(props: MyAppProps) {
       </Head>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        {router.pathname !== "/auth/login" && <FFDashboardNav />}
-        <Component {...pageProps} toggleTheme={toggleTheme} />
+        <Layout>
+          <Component {...pageProps} toggleTheme={toggleTheme} />
+        </Layout>
       </ThemeProvider>
     </CacheProvider>
   );

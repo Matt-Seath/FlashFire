@@ -200,34 +200,36 @@ export default function FFNav() {
         <List>
           {["FlashFire"].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  MaxHeight: 2,
-                  justifyContent: "left",
-                  px: 2,
-                }}
-              >
-                <Box
-                  component="img"
+              <Link href="/" passHref>
+                <ListItemButton
                   sx={{
-                    maxHeight: 32,
-                    mr: open ? 3 : "auto",
-                    justifyContent: open ? "initial" : "center",
+                    MaxHeight: 2,
+                    justifyContent: "left",
+                    px: 2,
                   }}
-                  alt="FlashFire Logo"
-                  src="/FF_Logo.svg"
-                />
-                <Box
-                  component="img"
-                  sx={{
-                    maxWidth: 90,
-                    justifyContent: open ? "initial" : "center",
-                    opacity: open ? 1 : 0,
-                  }}
-                  alt="FlashFire Logo"
-                  src="/FF_Text.svg"
-                />
-              </ListItemButton>
+                >
+                  <Box
+                    component="img"
+                    sx={{
+                      maxHeight: 32,
+                      mr: open ? 3 : "auto",
+                      justifyContent: open ? "initial" : "center",
+                    }}
+                    alt="FlashFire Logo"
+                    src="/FF_Logo.svg"
+                  />
+                  <Box
+                    component="img"
+                    sx={{
+                      maxWidth: 90,
+                      justifyContent: open ? "initial" : "center",
+                      opacity: open ? 1 : 0,
+                    }}
+                    alt="FlashFire Logo"
+                    src="/FF_Text.svg"
+                  />
+                </ListItemButton>
+              </Link>
             </ListItem>
           ))}
         </List>
