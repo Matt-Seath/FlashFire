@@ -1,11 +1,9 @@
 import * as React from "react";
 import Container from "@mui/material/Container";
-import FFDashboardNav from "@/components/dashboard/layout";
 
 function Home({ posts }: { posts: any }) {
   return (
     <Container>
-      <FFDashboardNav />
 
       <div>
         {console.log(typeof posts)}

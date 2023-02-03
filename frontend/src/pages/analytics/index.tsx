@@ -3,7 +3,7 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
-export default function BackTest() {
+export default function Analytics() {
   return (
     <Container maxWidth="lg">
       <Box
@@ -16,7 +16,7 @@ export default function BackTest() {
         }}
       >
         <Typography variant="h4" component="h1" gutterBottom>
-          Backtest Page
+          Analytics Page
         </Typography>
       </Box>
     </Container>

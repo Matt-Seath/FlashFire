@@ -5,21 +5,21 @@ import Typography from "@mui/material/Typography";
 import Link from "../Link";
 
 function PlaceHolder() {
-  const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+  // const [data, setData] = useState(null);
+  // const [isLoading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setLoading(true);
-    fetch("http://127.0.0.1:8000/api/")
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   fetch("http://127.0.0.1:8000/api/")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setData(data);
+  //       setLoading(false);
+  //     });
+  // }, []);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No profile data</p>;
+  // if (isLoading) return <p>Loading...</p>;
+  // if (!data) return <p>No profile data</p>;
 
   return (
     <Container>
@@ -27,7 +27,7 @@ function PlaceHolder() {
         MUI v5 + Next.js with TypeScript example
       </Typography>
       <div>
-        <h1>{data.long_name}</h1>
+        <h1>hi</h1>
       </div>
       <Link href="/about" color="secondary">
         Go to the about page

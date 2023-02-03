@@ -8,6 +8,8 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import theme from "../theme";
 import createEmotionCache from "../createEmotionCache";
 import "../styles/globals.css";
+import { useRouter } from "next/router";
+import FFDashboardNav from "@/components/dashboard/layout";
 
 const lightTheme = createTheme({
   palette: {
@@ -36,6 +38,7 @@ export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [activeTheme, setActiveTheme] = useState(lightTheme);
   const [selectedTheme, setSelectedTheme] = useState<"light" | "dark">("light");
+  const router = useRouter();
 
   const toggleTheme: React.MouseEventHandler<HTMLAnchorElement> = () => {
     const desiredTheme = selectedTheme === "light" ? "dark" : "light";
@@ -53,9 +56,8 @@ export default function MyApp(props: MyAppProps) {
       </Head>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
+        {router.pathname !== "/auth/login" && <FFDashboardNav />}
         <Component {...pageProps} toggleTheme={toggleTheme} />
-
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
       </ThemeProvider>
     </CacheProvider>
   );

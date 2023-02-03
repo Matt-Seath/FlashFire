@@ -31,6 +31,7 @@ import MyAppBar from "./appbar";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const drawerWidth = 240;
 
