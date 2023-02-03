@@ -27,7 +27,7 @@ class StockHistorySerializer(serializers.ModelSerializer):
             "close",
             "high",
             "low",
-            "close",
+            "volume",
         ]
 
 

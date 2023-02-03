@@ -32,6 +32,7 @@ class StockHistoryViewSet(viewsets.ViewSet):
                     "close": record.close,
                     "high": record.high,
                     "low": record.low,
+                    "volume": record.volume,
                 })
             stocks.append({
                 "symbol": stock.symbol,

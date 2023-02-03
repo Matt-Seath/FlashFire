@@ -235,7 +235,7 @@ export default function FFNav() {
         </List>
         <Divider />
         <List>
-          {["Portfolio", "Analytics", "Watchlists", "Backtest"].map(
+          {["Portfolio", "Trader", "Transactions", "Watchlists", "Backtest"].map(
             (text, index) => (
               <ListItem key={text} disablePadding sx={{ display: "block" }}>
                 <Link href={("/" + text).toLowerCase()} passHref>
@@ -267,8 +267,9 @@ export default function FFNav() {
         </List>
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
+          {["Analytics", "Reports", "Settings"].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
+                <Link href={("/" + text).toLowerCase()} passHref>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -287,6 +288,7 @@ export default function FFNav() {
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
+              </Link>
             </ListItem>
           ))}
         </List>
