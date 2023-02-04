@@ -14,6 +14,8 @@ from core.models import StockHistory, StockInfo
 
 class ETL():
 
+    pd.set_option('display.max_columns', None)
+
     def __init__(self, *args, **kwargs):
 
         if kwargs["symbols_list"]:
@@ -61,41 +63,6 @@ class ETL():
         print("User Defined Function")
         return
 
-    def transform(self):
-        self.df = self.df.rename(columns=self.df_cols_renamed)
-        self.df = self.df.reset_index(drop=True).replace(np.nan, None)
-
-        columns = list(self.df.columns.values)
-        for column in columns:
-            if column not in self.df_cols:
-                self.df.drop(column, axis=1, inplace=True, errors="ignore")
-                self.dropped.append(column)
-
-        return
-
-    def load(self):
-        added_symbols = []
-        cols = "`,`".join([str(i) for i in self.df.columns.tolist()])
-
-        with connection.cursor() as cursor:
-            for i, row in tqdm(self.df.iterrows(), desc="Inserting stockinfo into database"):
-                sql_operation = "REPLACE INTO `core_stockinfo` (`" + \
-                    cols + "`)"
-                sql_values = "VALUES (" + "%s,"*(len(row)-1) + "%s)"
-                sql = sql_operation + sql_values
-                query = f"{sql_operation} VALUES {tuple(row)}; \n"
-                try:
-                    cursor.execute(sql, tuple(row))
-                    added_symbols.append(row["symbol"] + ", ")
-                    self.added.append(row["symbol"])
-                except Exception as e:
-                    self.queries.append(query)
-                    self.skipped.append(row["symbol"])
-                    self.errors.append(
-                        f"{self.timestamp()}: Could not insert {row['symbol']}, {e}")
-
-        return
-
 
 class StockInfoETL(ETL):
 
@@ -118,8 +85,21 @@ class StockInfoETL(ETL):
                 self.errors.append(f"{self.symbols[i]} insufficient columns")
                 continue
 
+            self.df_latest_entry["symbol"] = self.symbols[i]
             self.df = pd.concat([self.df, self.df_latest_entry], axis=0)
-        print(self.df)
+
+        return
+
+    def transform(self):
+        self.df = self.df.rename(columns=self.df_cols_renamed)
+        self.df = self.df.reset_index(drop=True).replace(np.nan, None)
+
+        columns = list(self.df.columns.values)
+        for column in columns:
+            if column not in self.df_cols:
+                self.df.drop(column, axis=1, inplace=True, errors="ignore")
+                self.dropped.append(column)
+
         return
 
     def load(self):

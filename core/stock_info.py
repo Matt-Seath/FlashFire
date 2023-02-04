@@ -15,7 +15,7 @@ database.
 
 GET_ALL_ASX_STOCKS = True  # Fully update the ASX stock table
 SLEEPER = 0.0  # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 30  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+ITERATIONS = 3  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 UPDATE_EXISTING_STOCKS = False
 
 # Paths to static assets
