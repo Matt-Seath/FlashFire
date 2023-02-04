@@ -7,11 +7,16 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { drawerWidth } from "./drawer";
 import SearchBar from "./searchbar";
 
-export interface AppBarProps extends MuiAppBarProps {
+interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-export const AppBar = styled(MuiAppBar, {
+interface DrawerProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
   width: `calc(100% - ${65}px)`,
@@ -28,13 +33,7 @@ export const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function FFAppBar({
-  open,
-  setOpen,
-}: {
-  open: boolean;
-  setOpen: any;
-}) {
+export default function FFAppBar({ open, setOpen }: DrawerProps) {
   const theme = useTheme();
 
   const handleDrawerOpen = () => {

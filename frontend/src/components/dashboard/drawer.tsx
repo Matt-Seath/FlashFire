@@ -8,8 +8,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
+import WhatshotIcon from "@mui/icons-material/Whatshot";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
+import TroubleshootIcon from "@mui/icons-material/Troubleshoot";
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
+import SettingsIcon from "@mui/icons-material/Settings";
+
 import Link from "next/link";
 
 export const drawerWidth = 240;
@@ -130,7 +137,11 @@ export default function FFDrawer({ open }: { open: boolean }) {
                       justifyContent: "center",
                     }}
                   >
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {text === "Portfolio" && <EqualizerIcon />}
+                    {text === "Trader" && <WhatshotIcon />}
+                    {text === "Transactions" && <ReceiptLongIcon />}
+                    {text === "Watchlists" && <CandlestickChartIcon />}
+                    {text === "Backtest" && <TroubleshootIcon />}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
@@ -158,7 +169,9 @@ export default function FFDrawer({ open }: { open: boolean }) {
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {text === "Analytics" && <QueryStatsIcon />}
+                  {text === "Reports" && <ContentPasteSearchIcon />}
+                  {text === "Settings" && <SettingsIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
