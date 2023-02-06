@@ -6,6 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import CircularProgress from "@mui/material/CircularProgress";
 import { InputAdornment } from "@mui/material";
+import StocksJSON from "@/pages/api/stocks.json";
 
 export const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -47,9 +48,9 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-interface Film {
-  title: string;
-  year: number;
+interface Stock {
+  stock: string;
+  sector: string;
 }
 
 function sleep(delay = 0) {
@@ -60,7 +61,7 @@ function sleep(delay = 0) {
 
 export default function SearchBar() {
   const [open, setOpen] = React.useState(false);
-  const [options, setOptions] = React.useState<readonly Film[]>([]);
+  const [options, setOptions] = React.useState<readonly Stock[]>([]);
   const loading = open && options.length === 0;
 
   React.useEffect(() => {
@@ -71,10 +72,8 @@ export default function SearchBar() {
     }
 
     (async () => {
-      await sleep(1e3); // For demo purposes.
-
       if (active) {
-        setOptions([...topFilms]);
+        setOptions([...StocksJSON]);
       }
     })();
 
@@ -103,8 +102,8 @@ export default function SearchBar() {
           onClose={() => {
             setOpen(false);
           }}
-          isOptionEqualToValue={(option, value) => option.title === value.title}
-          getOptionLabel={(option) => option.title}
+          isOptionEqualToValue={(option, value) => option.stock === value.stock}
+          getOptionLabel={(option) => option.stock}
           options={options}
           loading={loading}
           renderInput={(params) => (

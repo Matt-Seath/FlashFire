@@ -88,7 +88,7 @@ class Command(BaseCommand):
 
         default_colors()
 
-        saveplots(cerebro, file_path='savefig.png',
+        saveplots(cerebro, file_path=f'media/plots/{}.png',
                   linevalues=False,
                   valuetags=False,
                   loc='white',
