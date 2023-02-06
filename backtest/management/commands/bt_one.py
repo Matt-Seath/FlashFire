@@ -1,10 +1,7 @@
-import plotly.io
 import matplotlib
 import matplotlib.pyplot as plt
 from django.core.management.base import BaseCommand
 from backtest import backtest_one
-from backtrader_plotly.plotter import BacktraderPlotly
-from backtrader_plotly.scheme import PlotScheme
 
 
 class Command(BaseCommand):
@@ -67,11 +64,32 @@ class Command(BaseCommand):
 
             plt.ioff()
 
-        default_colors()
-        cerebro.plot(
-            linevalues=False,
-            valuetags=False,
-            loc='white',  # changes color for 'line on close' plot otherwise it will plot black on black
-            grid=False  # the default gridlines didn't look good w/ dark background
+        def saveplots(cerebro, numfigs=1, iplot=True, start=None, end=None,
+                      width=16, height=9, dpi=300, tight=True, use=None, file_path='', **kwargs):
 
-        )
+            from backtrader import plot
+            if cerebro.p.oldsync:
+                plotter = plot.Plot_OldSync(**kwargs)
+            else:
+                plotter = plot.Plot(**kwargs)
+
+            figs = []
+            for stratlist in cerebro.runstrats:
+                for si, strat in enumerate(stratlist):
+                    rfig = plotter.plot(strat, figid=si * 100,
+                                        numfigs=numfigs, iplot=iplot,
+                                        start=start, end=end, use=use)
+                    figs.append(rfig)
+
+            for fig in figs:
+                for f in fig:
+                    f.savefig(file_path, bbox_inches='tight')
+            return figs
+
+        default_colors()
+
+        saveplots(cerebro, file_path='savefig.png',
+                  linevalues=False,
+                  valuetags=False,
+                  loc='white',
+                  grid=False,)
