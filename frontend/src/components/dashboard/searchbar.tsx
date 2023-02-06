@@ -7,6 +7,7 @@ import InputBase from "@mui/material/InputBase";
 import CircularProgress from "@mui/material/CircularProgress";
 import { InputAdornment } from "@mui/material";
 import StocksJSON from "@/pages/api/stocks.json";
+import { useRouter } from "next/router";
 
 export const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -53,16 +54,17 @@ interface Stock {
   sector: string;
 }
 
-function sleep(delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
-
 export default function SearchBar() {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState<readonly Stock[]>([]);
   const loading = open && options.length === 0;
+  const router = useRouter();
+
+  const handleOptionSelection = (option: Stock) => {
+    const index = option.stock.indexOf(" ");
+    const result = option.stock.substring(0, index);
+    router.push("/stocks/" + result);
+  };
 
   React.useEffect(() => {
     let active = true;
@@ -99,7 +101,7 @@ export default function SearchBar() {
           clearOnEscape
           clearOnBlur
           popupIcon={""}
-          sx={{ width: 600 }}
+          sx={{ width: 500 }}
           open={open}
           onOpen={() => {
             setOpen(true);
@@ -111,6 +113,7 @@ export default function SearchBar() {
           getOptionLabel={(option) => option.stock}
           options={options}
           loading={loading}
+          onChange={(event, option) => option && handleOptionSelection(option)}
           renderInput={(params) => (
             <TextField
               {...params}
