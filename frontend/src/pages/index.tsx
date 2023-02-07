@@ -2,9 +2,10 @@ import * as React from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import TVStockMarket from "@/components/tradingview/stock_market";
+import TVStockMarket from "@/components/TradingView/StockMarket";
 
 const rounded = (num: any) => (Math.round(num * 100) / 100).toFixed(2);
+
 
 function Home({ posts }: { posts: any }) {
   return (

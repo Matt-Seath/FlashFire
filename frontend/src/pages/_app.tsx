@@ -8,9 +8,7 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import theme from "../theme";
 import createEmotionCache from "../createEmotionCache";
 import "../styles/globals.css";
-import { useRouter } from "next/router";
-import FFDashboardNav from "@/components/dashboard/layout";
-import Layout from "@/components/dashboard/layout";
+import Layout from "@/components/Layout/Layout";
 
 const lightTheme = createTheme({
   palette: {

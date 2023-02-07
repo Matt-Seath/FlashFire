@@ -1,8 +1,8 @@
 import * as React from "react";
-import FFDrawer from "./drawer";
-import FFAppBar from "./appbar";
+import FFDrawer from "./Drawer";
+import FFAppBar from "./AppBar";
 
-export default function FFNavigation() {
+export default function Navigation() {
   const [open, setOpen] = React.useState(true);
 
   return (

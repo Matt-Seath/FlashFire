@@ -6,19 +6,31 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
-import TVProfile from "@/components/tradingview/company_profile";
-import TVStockData from "@/components/tradingview/stock_data";
-import TVTimeline from "@/components/tradingview/timeline";
+import TVProfile from "@/components/TradingView/Profile";
+import TVStockData from "@/components/TradingView/StockData";
+import TVTimeline from "@/components/TradingView/Timeline";
 
 const LazyChart = dynamic(
-  () => import("@/components/tradingview/real_time_chart"),
+  () => import("@/components/TradingView/RealTimeChart"),
   { ssr: false }
 );
 
 export default function Stock() {
   const router = useRouter();
-  const { symbol } = (router.query as { symbol: string });
-  const ticker = "ASX:" + symbol
+  const { symbol } = router.query as { symbol: string };
+  const ticker = "ASX:" + symbol;
+
+  React.useEffect(() => {
+    const logo = document.querySelector(
+      "label__link-w6JJhLCp"
+    ) as HTMLInputElement | null;
+    if (logo != null) {
+      console.log(logo);
+    } else {
+      console.log("No");
+    }
+  });
+
   return (
     <React.Fragment>
       <Box

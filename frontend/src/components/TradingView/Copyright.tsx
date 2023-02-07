@@ -1,6 +1,6 @@
 import { Ticker, CopyrightStyles } from "react-ts-tradingview-widgets";
 
-export const Example = () => {
+export const TVCopyright = () => {
   const styles: CopyrightStyles = {
     parent: {
       fontSize: "24px",
