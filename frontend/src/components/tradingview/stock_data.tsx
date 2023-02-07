@@ -8,7 +8,7 @@ export default function TVStockData({ symbol }: { symbol: any }) {
       <FundamentalData
         width={"100%"}
         height={500}
-        symbol={"ASX:" + symbol}
+        symbol={symbol}
         colorTheme="dark"
       ></FundamentalData>
     </Box>

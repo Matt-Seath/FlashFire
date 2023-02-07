@@ -14,7 +14,7 @@ export default function TVRealTimeChart({ symbol }: { symbol: any }) {
         hide_legend={true}
         hide_side_toolbar={true}
         hide_top_toolbar={true}
-        symbol={"ASX:" + symbol}
+        symbol={symbol}
       ></AdvancedRealTimeChart>
     </Box>
   );

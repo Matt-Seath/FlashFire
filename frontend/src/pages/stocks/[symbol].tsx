@@ -5,9 +5,10 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
-import TVStockData from "@/components/tradingview/stock_data";
 import dynamic from "next/dynamic";
-import { Height } from "@mui/icons-material";
+import TVProfile from "@/components/tradingview/company_profile";
+import TVStockData from "@/components/tradingview/stock_data";
+import TVTimeline from "@/components/tradingview/timeline";
 
 const LazyChart = dynamic(
   () => import("@/components/tradingview/real_time_chart"),
@@ -16,12 +17,18 @@ const LazyChart = dynamic(
 
 export default function Stock() {
   const router = useRouter();
-  const { symbol } = router.query;
-
+  const { symbol } = (router.query as { symbol: string });
+  const ticker = "ASX:" + symbol
   return (
     <React.Fragment>
-      <Box sx={{height: 380 }}>
-        <Typography>Ticker: {symbol}</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          height: 510,
+        }}
+      >
+        <LazyChart symbol={ticker} />
+        <TVStockData symbol={ticker} />
       </Box>
       <Box
         sx={{
@@ -29,8 +36,8 @@ export default function Stock() {
           height: 510,
         }}
       >
-        <LazyChart symbol={symbol} />
-        <TVStockData symbol={symbol} />
+        <TVTimeline symbol={ticker} />
+        <TVProfile symbol={ticker} />
       </Box>
     </React.Fragment>
   );
