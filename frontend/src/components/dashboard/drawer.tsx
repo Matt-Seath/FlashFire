@@ -77,7 +77,6 @@ const styles = {
 
 export default function FFDrawer({ open }: { open: any }) {
   const theme = useTheme();
-  console.log(typeof open);
 
   return (
     <Drawer variant="permanent" open={open}>
