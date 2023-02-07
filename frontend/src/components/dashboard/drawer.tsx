@@ -75,7 +75,7 @@ const styles = {
   },
 };
 
-export default function FFDrawer({ open }: { open: boolean }) {
+export default function FFDrawer({ open }: { open: any }) {
   const theme = useTheme();
   console.log(typeof open);
 

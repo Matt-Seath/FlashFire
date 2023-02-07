@@ -39,7 +39,6 @@ export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [activeTheme, setActiveTheme] = useState(lightTheme);
   const [selectedTheme, setSelectedTheme] = useState<"light" | "dark">("light");
-  const router = useRouter();
 
   const toggleTheme: React.MouseEventHandler<HTMLAnchorElement> = () => {
     const desiredTheme = selectedTheme === "light" ? "dark" : "light";

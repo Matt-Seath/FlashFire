@@ -3,25 +3,10 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
+import TWRealTimeChart from "@/components/tradingview/real_time_chart";
 
 export default function Stock() {
   const router = useRouter();
   const { symbol } = router.query;
-  return (
-    <Container maxWidth="lg">
-      <Box
-        sx={{
-          my: 4,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="h4" component="h1" gutterBottom>
-          {symbol} Page
-        </Typography>
-      </Box>
-    </Container>
-  );
+  return <TWRealTimeChart symbol={symbol} />;
 }

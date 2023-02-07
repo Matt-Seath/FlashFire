@@ -63,7 +63,7 @@ export default function SearchBar() {
   const handleOptionSelection = (option: Stock) => {
     const index = option.stock.indexOf(" ");
     const result = option.stock.substring(0, index);
-    router.push("/stocks/" + result.toLowerCase());
+    router.push("/stocks/" + result);
   };
 
   React.useEffect(() => {
