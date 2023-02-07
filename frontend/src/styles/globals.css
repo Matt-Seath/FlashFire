@@ -103,6 +103,7 @@ a {
 }
 
 #__next {
+  background: #110e206e;
   position: absolute;
   top: 0;
   bottom: 0;
