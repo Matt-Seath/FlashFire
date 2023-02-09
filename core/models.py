@@ -27,6 +27,7 @@ class Account(models.Model):
     MaintMarginReq = models.FloatField()
     NetLiquidation = models.FloatField()
     TotalCashValue = models.FloatField()
+    last_updated = models.DateTimeField(auto_now=True)
 
 
 class StockInfo(models.Model):
@@ -168,3 +169,19 @@ class Watchlist(models.Model):
         Account, on_delete=models.CASCADE, related_name="watchlist")
     name = models.CharField(max_length=30, null=False)
     date_created = models.DateTimeField(auto_now_add=True)
+
+
+class WatchlistItem(models.Model):
+    watchlist_id = models.ForeignKey(
+        Watchlist, on_delete=models.CASCADE, related_name="items")
+    stock_id = models.ForeignKey(
+        StockInfo, on_delete=models.CASCADE, related_name="watched")
+    date_added = models.DateTimeField(auto_now_add=True)
+
+
+class Position(models.Model):
+    account_id = models.ForeignKey(
+        Account, on_delete=models.CASCADE, related_name="positions")
+    stock_id = models.ForeignKey(
+        StockInfo, on_delete=models.PROTECT, related_name="positions")
+    date_added = models.DateTimeField(auto_now_add=True)
