@@ -1,9 +1,24 @@
-## FlashFire - Algorithmic Trading Platform
+## FlashFire - Algorithmic Trading Platform 🔥💸  
+Are you tired of making sensible, well-informed investment decisions and watching your money grow slowly over time? With FlashFire, you can say goodbye to all that tedious market research and analysis, and say hello to unpredictable and volatile trades that are guaranteed to keep you on the edge of your seat! FlashFires top-of-the-line, state-of-the-art, never-been-tested algorithms use cutting edge technology like random number generation and astrology to execute large, quick trades using your hard-earned cash!
 
-Hey you! Looking for a surefire way to turn your hard-earned savings into ash? Look no further than FlashFire, the algorithmic trading app that's hot, hot, hot! With its cutting-edge technology and scorching performance, FlashFire will light a fire under your portfolio and watch it burn to a crisp. Want to see your investment strategy go up in smoke? Download FlashFire today and watch the magic happen!
+## How it works:
 
-FlashFire achieves these feats as a full-stack algorithmic trading platform that automates the process of backtesting and regression analysis of stocks listed on the ASX. The platform uses historical financial data scraped from Yahoo Finance and live data from Interactive Brokers TWS API to find and buy into profitable trade opportunities.
+-   Enter all your banking details and account information into our "secure" server
+-   Choose your preferred horoscope sign
+-   Press the big red button labeled "IGNITE" 🔥
+-   Sit back and experience an all-new level of stress as you watch your savings go up in flames!
 
+So what are you waiting for? Download FlashFire today and start your journey towards financial ruin! 💸 
+<br>
+<br>
+## How it really works:
+
+FlashFire is a full-stack algorithmic trading platform designed to automate the process of backtesting and regression analysis of stocks listed on the ASX. The system uses historical financial data scraped from Yahoo Finance for backtesting strategies and utilizes websocket API connections for live datafeeds from Interactive Brokers TWS to identify and buy into profitable trade opportunities based on a confidence rating that is produced by a dynamic series of algorithms. 
+<br>
+<br>
+**UNLESS YOU ARE SERIOUS ABOUT LOSING MONEY, YOU SHOULD ONLY LINK PAPER ACCOUNTS TO THIS APP.**
+<br>
+<br>
 ## Technologies Used
 
 -   Backend: Django
