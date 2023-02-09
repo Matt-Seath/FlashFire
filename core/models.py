@@ -1,12 +1,32 @@
 from django.db import models
 from django.conf import settings
-# Create your models here.
 
 
-class User(models.Model):
-    name = models.CharField(max_length=255)
-    email = models.EmailField()
-    cash = models.DecimalField(default=0.00, decimal_places=2, max_digits=15)
+class Account(models.Model):
+    id = models.CharField(primary_key=True, max_length=20)
+    user_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="account")
+    AccountType = models.CharField(max_length=20)
+    Cushion = models.SmallIntegerField()
+    LookAheadNextChange = models.IntegerField()
+    AccruedCash = models.FloatField()
+    AvailableFunds = models.FloatField()
+    BuyingPower = models.FloatField()
+    EquityWithLoanValue = models.FloatField()
+    ExcessLiquidity = models.FloatField()
+    FullAvailableFunds = models.FloatField()
+    FullExcessLiquidity = models.FloatField()
+    FullInitMarginReq = models.FloatField()
+    FullMaintMarginReq = models.FloatField()
+    GrossPositionValue = models.FloatField()
+    InitMarginReq = models.FloatField()
+    LookAheadAvailableFunds = models.FloatField()
+    LookAheadExcessLiquidity = models.FloatField()
+    LookAheadInitMarginReq = models.FloatField()
+    LookAheadMaintMarginReq = models.FloatField()
+    MaintMarginReq = models.FloatField()
+    NetLiquidation = models.FloatField()
+    TotalCashValue = models.FloatField()
 
 
 class StockInfo(models.Model):
@@ -144,7 +164,7 @@ class StockHistory(models.Model):
 
 
 class Watchlist(models.Model):
-    user_id = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="watchlist")
+    account_id = models.ForeignKey(
+        Account, on_delete=models.CASCADE, related_name="watchlist")
     name = models.CharField(max_length=30, null=False)
     date_created = models.DateTimeField(auto_now_add=True)
