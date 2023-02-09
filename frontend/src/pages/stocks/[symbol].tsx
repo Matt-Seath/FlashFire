@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import TVProfile from "@/components/TradingView/Profile";
 import TVStockData from "@/components/TradingView/StockData";
-import TVTimeline from "@/components/TradingView/Timeline";
 
 const LazyChart = dynamic(
   () => import("@/components/TradingView/RealTimeChart"),
@@ -48,7 +47,6 @@ export default function Stock() {
           height: 510,
         }}
       >
-        <TVTimeline symbol={ticker} />
         <TVProfile symbol={ticker} />
       </Box>
     </React.Fragment>
