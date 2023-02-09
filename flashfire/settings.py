@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'backtest.apps.BacktestConfig',
     'core.apps.CoreConfig',
     'loggers.apps.LoggersConfig',
+    'tws.apps.TwsConfig',
 ]
 
 MIDDLEWARE = [

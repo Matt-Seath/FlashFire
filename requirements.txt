@@ -41,6 +41,7 @@ djoser==2.1.0
 docopt==0.6.2
 drf-nested-routers==0.93.4
 et-xmlfile==1.1.0
+eventkit==1.0.0
 exceptiongroup==1.1.0
 fake-useragent==1.1.1
 feedparser==6.0.10
@@ -55,6 +56,7 @@ gprof2dot==2022.7.29
 greenlet==2.0.2
 html5lib==1.1
 humanize==4.5.0
+ib-insync==0.9.81
 idna==3.4
 importlib-metadata==6.0.0
 iniconfig==2.0.0
@@ -71,6 +73,7 @@ model-bakery==1.9.0
 msgpack==1.0.4
 multitasking==0.0.11
 mysqlclient==2.1.1
+nest-asyncio==1.5.6
 numpy==1.24.1
 oauthlib==3.2.2
 openai==0.25.0
