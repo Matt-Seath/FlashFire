@@ -43,7 +43,7 @@ These instructions will help you to set up the project locally on your machine f
 
 ### Installing
 
-1.  Clone the repository:
+1.  From a command prompt, clone the repository:
 
 ```
 git clone https://github.com/Matt-Seath/FlashFire.git
@@ -57,7 +57,7 @@ pip install -r requirements.txt
 
 ```
 
-3.  Set up environment variables:
+3.  Set up environment variables by running this script:
 
 ```
 python manage.py setup
@@ -66,6 +66,10 @@ python manage.py setup
     
 4.  Run migrations:
     
+```
+python manage.py migrate
+
+```
 
 7.  Start the Django development server:
 
@@ -74,7 +78,7 @@ python manage.py runserver
 
 ```
 
-6.  Change into the `frontend` directory and install the required packages:
+6.  In a new command prompt, "cd" into the `frontend` directory and install the required packages:
 
 ```
 cd frontend
