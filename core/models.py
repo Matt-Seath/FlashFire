@@ -7,7 +7,7 @@ class Account(models.Model):
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="account")
     AccountType = models.CharField(max_length=20)
-    Cushion = models.SmallIntegerField()
+    Cushion = models.FloatField()
     LookAheadNextChange = models.IntegerField()
     AccruedCash = models.FloatField()
     AvailableFunds = models.FloatField()
