@@ -1,14 +1,14 @@
 ## FlashFire - Algorithmic Trading Platform 🔥💸  
-Are you tired of making sensible, well-informed investment decisions and watching your money grow slowly over time? With FlashFire, you can say goodbye to all that tedious market research and analysis, and say hello to unpredictable and volatile trades that are guaranteed to keep you on the edge of your seat! FlashFires top-of-the-line, state-of-the-art, never-been-tested algorithms use cutting edge technology like random number generation and astrology to execute large, quick trades using your hard-earned cash!
+<em>Are you tired of making sensible, well-informed investment decisions and watching your money grow slowly over time? With FlashFire, you can say goodbye to all that tedious market research and analysis, and say hello to unpredictable and volatile trades that are guaranteed to keep you on the edge of your seat! FlashFires top-of-the-line, state-of-the-art, never-been-tested algorithms use cutting edge technology like random number generation and astrology to execute large, quick trades using your hard-earned cash!
 
 ## How it works:
 
--   Enter all your banking details and account information into our "secure" server
+-   Enter all your banking details and account information
 -   Choose your preferred horoscope sign
 -   Press the big red button labeled "IGNITE" 🔥
 -   Sit back and experience an all-new level of stress as you watch your savings go up in flames!
 
-So what are you waiting for? Download FlashFire today and start your journey towards financial ruin! 💸 
+So what are you waiting for? Download FlashFire today and start your journey towards financial ruin! 💸 </em>
 <br>
 <br>
 ## How it really works:
@@ -46,7 +46,7 @@ These instructions will help you to set up the project locally on your machine f
 1.  Clone the repository:
 
 ```
-bashgit clone https://github.com/Matt-Seath/FlashFire.git
+git clone https://github.com/Matt-Seath/FlashFire.git
 
 ```
 
@@ -57,12 +57,17 @@ pip install -r requirements.txt
 
 ```
 
-3.  Set up environment variables for Interactive Brokers TWS API.
+3.  Set up environment variables:
+
+```
+python manage.py setup
+
+```
     
 4.  Run migrations:
     
 
-5.  Start the Django development server:
+7.  Start the Django development server:
 
 ```
 python manage.py runserver
@@ -72,12 +77,20 @@ python manage.py runserver
 6.  Change into the `frontend` directory and install the required packages:
 
 ```
-bashcd frontend
+cd frontend
 npm install
 
 ```
 
-7.  Start the Next.js development server:
+7.  Start the Next.js server:
+
+```
+npm run dev
+
+```
+
+8.  Run TWS and log into your account:
+
 
 ## Usage
 
