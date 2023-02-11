@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from core.models import *
 
 
-class UserSerializer(serializers.ModelSerializer):
+class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
@@ -13,13 +13,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=True, read_only=True)
 
     class Meta:
-        model = User
+        model = Account
         fields = [
             "id",
-            "user",
             "account_type",
             "cushion",
             "look_ahead_next_change",
@@ -37,11 +35,45 @@ class AccountSerializer(serializers.ModelSerializer):
             "look_ahead_available_funds",
             "look_ahead_excess_liquidity",
             "look_ahead_init_margin_req",
-            "look_ahead_main_margin_req",
+            "look_ahead_main_t_margin_req",
             "main_t_margin_req",
             "net_liquidation",
             "total_cash_value",
             "last_updated",
+        ]
+
+
+class SimpleAccountSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Account
+        fields = [
+            "id",
+            "account_type",
+            "accrued_cash",
+            "available_funds",
+            "buying_power",
+            "excess_liquidity",
+            "full_available_funds",
+            "full_excess_liquidity",
+            "gross_position_value",
+            "net_liquidation",
+            "total_cash_value",
+            "last_updated",
+        ]
+
+
+class UserSerializer(serializers.ModelSerializer):
+    accounts = SimpleAccountSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = User
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "accounts",
         ]
 
 

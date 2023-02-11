@@ -1,6 +1,5 @@
 import subprocess
 import sys
-import os
 from django.core.management.base import BaseCommand
 from pathlib import Path
 
@@ -18,13 +17,9 @@ def setup_packages():
 
 
 def edit_env():
-    username = input("IBKR username:  ").strip()
-    password = input("IBKR password:  ").strip()
     account_no = input("IBKR acc number:  ").strip()
 
     file = open(".env", "w+", newline="\n")
-    file.write(f"USERNAME='{username}'\n")
-    file.write(f"PASSWORD='{password}'\n")
     file.write(f"ACCOUNT_NO='{account_no}'\n")
     file.close()
     print("Done.")

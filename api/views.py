@@ -4,9 +4,22 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 from django.db.models import Prefetch
 from rest_framework.viewsets import ModelViewSet
+from django.contrib.auth.models import User
 
 from core.models import StockInfo, StockHistory
 from .serializers import *
+
+
+class UserViewSet(ModelViewSet):
+    queryset = User.objects.get(pk=1)
+    serializer_class = UserSerializer
+
+
+class AccountViewSet(ModelViewSet):
+    serializer_class = AccountSerializer
+
+    def get_queryset(self):
+        return Account.objects.filter(user_id=1)
 
 
 class StockInfoViewSet(ModelViewSet):

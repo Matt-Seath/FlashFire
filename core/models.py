@@ -23,7 +23,7 @@ class Account(models.Model):
     look_ahead_available_funds = models.FloatField()
     look_ahead_excess_liquidity = models.FloatField()
     look_ahead_init_margin_req = models.FloatField()
-    look_ahead_maint_margin_req = models.FloatField()
+    look_ahead_main_t_margin_req = models.FloatField()
     main_t_margin_req = models.FloatField()
     net_liquidation = models.FloatField()
     total_cash_value = models.FloatField()

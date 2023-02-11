@@ -9,6 +9,31 @@ load_dotenv()
 ACCOUNT_NO = os.environ["ACCOUNT_NO"]
 
 
+labels_to_snake_case = {
+    'AccountType': 'account_type',
+    'Cushion': 'cushion',
+    'LookAheadNextChange': 'look_ahead_next_change',
+    'AccruedCash': 'accrued_cash',
+    'AvailableFunds': 'available_funds',
+    'BuyingPower': 'buying_power',
+    'EquityWithLoanValue': 'equity_with_loan_value',
+    'ExcessLiquidity': 'excess_liquidity',
+    'FullAvailableFunds': 'full_available_funds',
+    'FullExcessLiquidity': 'full_excess_liquidity',
+    'FullInitMarginReq': 'full_init_margin_req',
+    'FullMaintMarginReq': 'full_main_t_margin_req',
+    'GrossPositionValue': 'gross_position_value',
+    'InitMarginReq': 'init_margin_req',
+    'LookAheadAvailableFunds': 'look_ahead_available_funds',
+    'LookAheadExcessLiquidity': 'look_ahead_excess_liquidity',
+    'LookAheadInitMarginReq': 'look_ahead_init_margin_req',
+    'LookAheadMaintMarginReq': 'look_ahead_main_t_margin_req',
+    'MaintMarginReq': 'main_t_margin_req',
+    'NetLiquidation': 'net_liquidation',
+    'TotalCashValue': 'total_cash_value'
+}
+
+
 def update_account():
     # util.startLoop()  # uncomment this line when in a notebook
 
@@ -22,7 +47,7 @@ def update_account():
     data["user_id"] = user
 
     for item in account:
-        data[item.tag] = item.value
+        data[labels_to_snake_case[item.tag]] = item.value
 
     entry = Account(**data)
     try:
