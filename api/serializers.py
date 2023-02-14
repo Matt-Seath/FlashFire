@@ -3,6 +3,28 @@ from django.contrib.auth.models import User
 from core.models import *
 
 
+class WatchlistItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WatchlistItem
+        fields = [
+            "watchlist_id",
+            "stock_id",
+            "date_added",
+        ]
+
+
+class WatchlistSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Watchlist
+        fields = [
+            "accound_id",
+            "name",
+            "date_created",
+            "items",
+        ]
+
+
 class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
