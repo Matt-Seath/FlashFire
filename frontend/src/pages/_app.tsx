@@ -69,7 +69,7 @@ export default function MyApp(props: MyAppProps) {
   }, [selectedTheme]);
 
   if (!isLoggedIn) {
-    return <Login />;
+    return <Login setIsLoggedIn={setIsLoggedIn} />;
   }
 
   return (
