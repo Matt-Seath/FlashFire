@@ -55,7 +55,7 @@ export default function MyApp(props: MyAppProps) {
         if (response.ok) {
           setIsLoggedIn(true);
         } else {
-          router.push("/login");
+          router.push("/auth/login");
         }
       } catch (error) {
         console.error(error);
