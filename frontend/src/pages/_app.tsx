@@ -9,6 +9,8 @@ import theme from "../theme";
 import createEmotionCache from "../createEmotionCache";
 import "../styles/globals.css";
 import Layout from "@/components/Layout/Layout";
+import { useRouter } from "next/router";
+import Login from "@/components/Auth/Login";
 
 const lightTheme = createTheme({
   palette: {
@@ -37,6 +39,8 @@ export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [activeTheme, setActiveTheme] = useState(lightTheme);
   const [selectedTheme, setSelectedTheme] = useState<"light" | "dark">("light");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
 
   const toggleTheme: React.MouseEventHandler<HTMLAnchorElement> = () => {
     const desiredTheme = selectedTheme === "light" ? "dark" : "light";
@@ -45,8 +49,29 @@ export default function MyApp(props: MyAppProps) {
   };
 
   useEffect(() => {
+    async function checkLogin() {
+      try {
+        const response = await fetch("/api/check-login");
+        if (response.ok) {
+          setIsLoggedIn(true);
+        } else {
+          router.push("/login");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    checkLogin();
+  }, []);
+
+  useEffect(() => {
     setActiveTheme(getActiveTheme(selectedTheme));
   }, [selectedTheme]);
+
+  if (!isLoggedIn) {
+    return <Login />;
+  }
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
