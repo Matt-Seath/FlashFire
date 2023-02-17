@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import * as React from "react";
-import { StockMarket } from "react-ts-tradingview-widgets";
+import { StockMarket } from "widgets/react-ts-tradingview-widgets/dist";
 
 export default function TVStockMarket() {
   return (

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { MarketOverview } from "react-ts-tradingview-widgets";
+import { MarketOverview } from "widgets/react-ts-tradingview-widgets/dist";
 
 <MarketOverview
   colorTheme="dark"

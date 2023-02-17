@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Screener } from "react-ts-tradingview-widgets";
+import { Screener } from "widgets/react-ts-tradingview-widgets/dist";
 import Box from "@mui/material/Box";
 
 export default function TVScreener() {

@@ -1,0 +1,49 @@
+{
+  "name": "react-ts-tradingview-widgets",
+  "version": "1.0.14",
+  "description": "This is a React component library for TradingView Widgets. TypeScript is fully supported for every component!",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "start": "rollup -c -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JorrinKievit/react-ts-tradingview-widgets.git"
+  },
+  "keywords": [
+    "TradingView",
+    "React",
+    "Widgets",
+    "TypeScript",
+    "Embed"
+  ],
+  "author": "JorrinKievit",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JorrinKievit/react-ts-tradingview-widgets/issues"
+  },
+  "homepage": "https://github.com/JorrinKievit/react-ts-tradingview-widgets#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "@babel/preset-react": "^7.13.13",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@types/react": "^17.0.8",
+    "@types/react-dom": "^17.0.5",
+    "babel-core": "^6.26.3",
+    "babel-runtime": "^6.26.0",
+    "rollup": "^2.50.4",
+    "rollup-plugin-sass": "^1.2.2",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "typescript": "^4.3.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2 || ^18.1.0",
+    "react-dom": "^17.0.2 || ^18.1.0"
+  },
+  "files": [
+    "dist"
+  ]
+}

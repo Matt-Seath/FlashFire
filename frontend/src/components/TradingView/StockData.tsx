@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import * as React from "react";
-import { FundamentalData } from "react-ts-tradingview-widgets";
+import { FundamentalData } from "widgets/react-ts-tradingview-widgets/dist";
 
 export default function TVStockData({ symbol }: { symbol: any }) {
   return (

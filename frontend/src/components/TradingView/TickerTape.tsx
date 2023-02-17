@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TickerTape } from "react-ts-tradingview-widgets";
+import { TickerTape } from "widgets/react-ts-tradingview-widgets/dist";
 import Box from "@mui/material/Box";
 
 export default function TVTickerTape() {

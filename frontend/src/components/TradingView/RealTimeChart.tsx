@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import * as React from "react";
-import { AdvancedRealTimeChart } from "react-ts-tradingview-widgets";
+import { AdvancedRealTimeChart } from "widgets/react-ts-tradingview-widgets/dist";
 
 export default function TVRealTimeChart({ symbol }: { symbol: any }) {
   return (

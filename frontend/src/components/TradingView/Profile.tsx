@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CompanyProfile } from "react-ts-tradingview-widgets";
+import { CompanyProfile } from "widgets/react-ts-tradingview-widgets/dist";
 import Box from "@mui/material/Box";
 
 export default function TVProfile({ symbol }: { symbol: string }) {

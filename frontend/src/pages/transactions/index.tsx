@@ -2,6 +2,7 @@ import * as React from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import TvTest from "@/components/TradingView/Copyright";
 
 export default function Transactions() {
   return (
@@ -18,6 +19,7 @@ export default function Transactions() {
         <Typography variant="h4" component="h1" gutterBottom>
           Transactions Page
         </Typography>
+        <TvTest />
       </Box>
     </Container>
   );
