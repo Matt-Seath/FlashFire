@@ -50,8 +50,9 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 interface Stock {
-  stock: string;
-  sector: string;
+  symbol: string;
+  long_name: string;
+  sector: string | null;
 }
 
 export default function SearchBar() {
@@ -61,9 +62,7 @@ export default function SearchBar() {
   const router = useRouter();
 
   const handleOptionSelection = (option: Stock) => {
-    const index = option.stock.indexOf(" ");
-    const result = option.stock.substring(0, index);
-    router.push("/stocks/" + result);
+    router.push("/stocks/" + option.symbol);
   };
 
   React.useEffect(() => {
@@ -109,8 +108,10 @@ export default function SearchBar() {
           onClose={() => {
             setOpen(false);
           }}
-          isOptionEqualToValue={(option, value) => option.stock === value.stock}
-          getOptionLabel={(option) => option.stock}
+          isOptionEqualToValue={(option, value) =>
+            option.symbol === value.symbol
+          }
+          getOptionLabel={(option) => option.symbol + " : " + option.long_name}
           options={options}
           loading={loading}
           onChange={(event, option) => option && handleOptionSelection(option)}
