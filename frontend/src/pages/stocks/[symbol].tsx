@@ -8,16 +8,25 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import TVProfile from "@/components/TradingView/Profile";
 import TVStockData from "@/components/TradingView/StockData";
+import StocksJSON from "@/pages/api/stocks.json";
 
 const LazyChart = dynamic(
   () => import("@/components/TradingView/RealTimeChart"),
   { ssr: false }
 );
 
+interface Stock {
+  symbol: string;
+  long_name: string;
+  sector: string | null;
+}
+
 export default function Stock() {
   const router = useRouter();
   const { symbol } = router.query as { symbol: string };
   const ticker = "ASX:" + symbol;
+  const stocks = [...StocksJSON];
+  const title = stocks.find((e) => e.symbol == symbol);
 
   React.useEffect(() => {
     const logo = document.querySelector(
@@ -32,6 +41,14 @@ export default function Stock() {
 
   return (
     <React.Fragment>
+      <Box
+        sx={{
+          display: "flex",
+          height: 80,
+        }}
+      >
+        <h1>{title?.symbol + ": " + title?.long_name}</h1>
+      </Box>
       <Box
         sx={{
           display: "flex",

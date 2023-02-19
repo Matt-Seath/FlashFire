@@ -6,8 +6,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import CircularProgress from "@mui/material/CircularProgress";
 import { InputAdornment } from "@mui/material";
-import StocksJSON from "@/pages/api/stocks.json";
 import { useRouter } from "next/router";
+import StocksJSON from "@/pages/api/stocks.json";
 
 export const Search = styled("div")(({ theme }) => ({
   position: "relative",
