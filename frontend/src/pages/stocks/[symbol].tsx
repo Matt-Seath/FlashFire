@@ -4,6 +4,7 @@ import { styled, useTheme, Theme } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import TVProfile from "@/components/TradingView/Profile";
@@ -44,10 +45,23 @@ export default function Stock() {
       <Box
         sx={{
           display: "flex",
+          justifyContent: "space-between",
           height: 80,
         }}
       >
         <h1>{title?.symbol + ": " + title?.long_name}</h1>
+        <Box
+          sx={{
+            display: "flex",
+          }}
+        >
+          <Button variant="contained" color="success">
+            BUY
+          </Button>
+          <Button variant="contained" color="error">
+            SELL
+          </Button>
+        </Box>
       </Box>
       <Box
         sx={{
