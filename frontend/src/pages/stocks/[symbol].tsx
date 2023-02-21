@@ -46,19 +46,26 @@ export default function Stock() {
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          height: 80,
+          height: 70,
         }}
       >
-        <h1>{title?.symbol + ": " + title?.long_name}</h1>
+        <Typography variant="h4" textAlign={"center"} gutterBottom>
+          {title?.symbol + ": " + title?.long_name}
+        </Typography>
         <Box
           sx={{
             display: "flex",
+            paddingBottom: 3,
           }}
         >
-          <Button variant="contained" color="success">
+          <Button variant="outlined" color="success" sx={{ width: "120px" }}>
             BUY
           </Button>
-          <Button variant="contained" color="error">
+          <Button
+            variant="outlined"
+            color="error"
+            sx={{ width: "120px", marginLeft: "15px" }}
+          >
             SELL
           </Button>
         </Box>
@@ -69,8 +76,10 @@ export default function Stock() {
           height: 510,
         }}
       >
+        <Box sx={{ width: "66%" }}>
+          <Typography>Hi</Typography>
+        </Box>
         <LazyChart symbol={ticker} />
-        <TVStockData symbol={ticker} />
       </Box>
       <Box
         sx={{
@@ -79,6 +88,7 @@ export default function Stock() {
         }}
       >
         <TVProfile symbol={ticker} />
+        <TVStockData symbol={ticker} />
       </Box>
     </React.Fragment>
   );
