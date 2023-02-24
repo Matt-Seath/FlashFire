@@ -13,10 +13,12 @@ So what are you waiting for? Download FlashFire today and start your journey tow
 <br>
 ## How it really works:
 
-For those genuinely interested in my app, FlashFire is a full-stack algorithmic trading platform designed to automate the process of backtesting and regression analysis of stocks listed on the ASX. The system uses historical financial data scraped from Yahoo Finance for backtesting strategies and utilizes websocket API connections for live datafeeds from Interactive Brokers TWS to identify and buy into profitable trade opportunities based on a confidence rating that is produced by a dynamic series of algorithms. 
+For those genuinely interested in my app, FlashFire is a serious full-stack algorithmic trading platform designed to automate the process of backtesting and regression analysis of stocks listed on the ASX. The system uses historical financial data scraped from Yahoo Finance for backtesting strategies and utilizes websocket API connections for live datafeeds from Interactive Brokers TWS to identify and buy into profitable trade opportunities based on a confidence rating that is produced by a dynamic series of algorithms. 
 <br>
 <br>
-**UNLESS YOU ARE SERIOUS ABOUT LOSING MONEY, YOU SHOULD ONLY LINK PAPER ACCOUNTS TO THIS APP.**
+
+## Disclaimer:
+**TO ENSURE THE APP FUNCTIONS WITHOUT GIVING UP MY PERSONAL TRADING STRATEGIES, ONLY BASIC ALGORITHMS ARE PUBLIC IN THIS REPO! SO UNLESS YOU ARE SERIOUS ABOUT LOSING MONEY, YOU SHOULD ONLY LINK PAPER ACCOUNTS TO THIS APP.**
 <br>
 <br>
 ## Technologies Used
