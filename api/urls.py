@@ -5,6 +5,6 @@ from .views import *
 router = routers.DefaultRouter()
 router.register("history", StockHistoryViewSet, basename="history")
 router.register("account", AccountViewSet, basename="account")
-router.register("user", UserViewSet, basename="user")
+# router.register("user", UserViewSet, basename="user")
 
 urlpatterns = router.urls

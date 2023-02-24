@@ -1,11 +1,14 @@
 from django.db import models
-from django.conf import settings
+from django.contrib.auth.models import AbstractUser
+
+
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
 
 
 class Account(models.Model):
     id = models.CharField(primary_key=True, max_length=20)
-    user_id = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="account")
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     account_type = models.CharField(max_length=20)
     cushion = models.FloatField()
     look_ahead_next_change = models.IntegerField()
