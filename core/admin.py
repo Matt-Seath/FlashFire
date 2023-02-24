@@ -21,6 +21,9 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
-# @admin.register(StockInfo)
-# class StockInfoAdmin():
-#     pass
+@admin.register(StockInfo)
+class StockInfoAdmin(admin.ModelAdmin):
+    list_display = ["symbol", "sector", "long_name"]
+    list_per_page = 20
+    ordering = ["symbol", "long_name"]
+    search_fields = ["symbol__istartswith"]

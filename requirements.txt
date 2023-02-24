@@ -131,7 +131,7 @@ websockets==10.4
 Werkzeug==2.2.2
 whitenoise==6.2.0
 yahoo-fin==0.8.9.1
-yfinance==0.2.9
+yfinance==0.2.12
 zipp==3.12.0
 zope.event==4.6
 zope.interface==5.5.2

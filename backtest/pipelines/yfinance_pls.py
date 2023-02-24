@@ -80,7 +80,7 @@ class StockInfoETL(ETL):
                     self.errors.append(
                         f"{self.timestamp()}: {self.symbols[i]} Error, {e} \n")
                     continue
-            if len(self.df_latest_entry.columns) < 90:
+            if (len(self.df_latest_entry.columns) < 90) or "sector" not in self.df_latest_entry.columns:
                 self.skipped.append(self.symbols[i])
                 self.errors.append(f"{self.symbols[i]} insufficient columns")
                 continue

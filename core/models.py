@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.hashers import make_password
 
 
 class User(AbstractUser):
@@ -9,27 +10,30 @@ class User(AbstractUser):
 class Account(models.Model):
     id = models.CharField(primary_key=True, max_length=20)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    account_type = models.CharField(max_length=20)
-    cushion = models.FloatField()
-    look_ahead_next_change = models.IntegerField()
-    accrued_cash = models.FloatField()
-    available_funds = models.FloatField()
-    buying_power = models.FloatField()
-    equity_with_loan_value = models.FloatField()
-    excess_liquidity = models.FloatField()
-    full_available_funds = models.FloatField()
-    full_excess_liquidity = models.FloatField()
-    full_init_margin_req = models.FloatField()
-    full_main_t_margin_req = models.FloatField()
-    gross_position_value = models.FloatField()
-    init_margin_req = models.FloatField()
-    look_ahead_available_funds = models.FloatField()
-    look_ahead_excess_liquidity = models.FloatField()
-    look_ahead_init_margin_req = models.FloatField()
-    look_ahead_main_t_margin_req = models.FloatField()
-    main_t_margin_req = models.FloatField()
-    net_liquidation = models.FloatField()
-    total_cash_value = models.FloatField()
+    account_username = models.CharField(max_length=50, null=False)
+    account_password = models.CharField(max_length=50, null=False)
+    is_verified = models.BooleanField(default=False)
+    account_type = models.CharField(max_length=20, null=True)
+    cushion = models.FloatField(null=True)
+    look_ahead_next_change = models.IntegerField(null=True)
+    accrued_cash = models.FloatField(null=True)
+    available_funds = models.FloatField(null=True)
+    buying_power = models.FloatField(null=True)
+    equity_with_loan_value = models.FloatField(null=True)
+    excess_liquidity = models.FloatField(null=True)
+    full_available_funds = models.FloatField(null=True)
+    full_excess_liquidity = models.FloatField(null=True)
+    full_init_margin_req = models.FloatField(null=True)
+    full_main_t_margin_req = models.FloatField(null=True)
+    gross_position_value = models.FloatField(null=True)
+    init_margin_req = models.FloatField(null=True)
+    look_ahead_available_funds = models.FloatField(null=True)
+    look_ahead_excess_liquidity = models.FloatField(null=True)
+    look_ahead_init_margin_req = models.FloatField(null=True)
+    look_ahead_main_t_margin_req = models.FloatField(null=True)
+    main_t_margin_req = models.FloatField(null=True)
+    net_liquidation = models.FloatField(null=True)
+    total_cash_value = models.FloatField(null=True)
     last_updated = models.DateTimeField(auto_now=True)
 
 
