@@ -115,6 +115,13 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
 }
 
+DJOSER = {
+    "SERIALIZERS": {
+        "user_create": "core.serializers.UserCreateSerializer"
+    }
+}
+
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
