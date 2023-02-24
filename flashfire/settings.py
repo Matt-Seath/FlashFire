@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'djoser',
     'debug_toolbar',
     'api.apps.ApiConfig',
     'backtest.apps.BacktestConfig',
@@ -109,6 +110,7 @@ CORS_ALLOWED_ORIGINS = [
 
 
 SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("JWT", ),
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
 }
