@@ -2,6 +2,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from django.core.management.base import BaseCommand
 from backtest import backtest_one
+from datetime import datetime
 
 
 class Command(BaseCommand):
@@ -16,6 +17,7 @@ class Command(BaseCommand):
         strategy = options["strategy"].lower()
         stock = options["stock"].upper() + ".AX"
         result, cerebro, cash = backtest_one.main(strategy, stock)
+        filename = f"{stock}_{strategy}_{datetime.now()}"
 
         SIZE = 6
         COLOR = 'white'
@@ -88,7 +90,7 @@ class Command(BaseCommand):
 
         default_colors()
 
-        saveplots(cerebro, file_path=f'media/plots/{}.png',
+        saveplots(cerebro, file_path=f'media/plots/{filename}.png',
                   linevalues=False,
                   valuetags=False,
                   loc='white',

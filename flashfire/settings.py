@@ -138,6 +138,7 @@ DATABASES = {
         'USER': "root",
         'PORT': 3306,
         'PASSWORD': "root",
+        'CONN_MAX_AGE': 3600,
     }
 }
 

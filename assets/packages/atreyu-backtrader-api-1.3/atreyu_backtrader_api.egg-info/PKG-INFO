@@ -1,9 +1,0 @@
-Metadata-Version: 2.1
-Name: atreyu-backtrader-api
-Version: 0.1.0
-Summary: Python IB API for backtrader
-Home-page: https://github.com/atreyuxtrading/atreyu-backtrader-api
-Author: Atreyu Trading
-Author-email: info@atreyugroup.com
-License: Simplified BSD license
-License-File: LICENSE
