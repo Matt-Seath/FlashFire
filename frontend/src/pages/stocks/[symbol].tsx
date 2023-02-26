@@ -23,7 +23,7 @@ interface Stock {
   sector: string | null;
 }
 
-Stock.getLayout = function getLayout(page) {
+Stock.getLayout = function getLayout(page: any) {
   return <Layout>{page}</Layout>;
 };
 
