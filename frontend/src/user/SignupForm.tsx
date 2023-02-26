@@ -14,6 +14,12 @@ interface FormData {
   password: string;
   confirmPassword: string;
 }
+const initialValues = {
+  username: "testy",
+  email: "testy@mail.com",
+  password: "Testy123",
+  confirmPassword: "Testy123",
+};
 
 // ----------------------------------------------------------------------
 
@@ -65,6 +71,7 @@ const Signup: FC = ({}) => {
   return (
     <Form
       onSubmit={onSubmit}
+      initialValues={initialValues}
       validate={validate}
       render={({ handleSubmit }) => (
         <form onSubmit={handleSubmit} noValidate>
