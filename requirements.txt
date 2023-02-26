@@ -28,6 +28,7 @@ cycler==0.11.0
 defusedxml==0.7.1
 Django==4.1.5
 django-cors-headers==3.13.0
+django-extensions==3.2.1
 django-filter==22.1
 django-pandas==0.6.6
 django-pytest==0.2.0
