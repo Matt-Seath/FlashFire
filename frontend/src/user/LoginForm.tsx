@@ -1,88 +1,79 @@
-import { FC } from "react";
-import { Form } from "react-final-form";
-import { TextField } from "mui-rff";
-import { Button, Stack } from "@mui/material";
+import {FC} from "react";
+import {Form} from 'react-final-form';
+import {TextField} from 'mui-rff';
+import {Button, Stack} from "@mui/material";
 import useAuth from "./useAuth";
 import Typography from "@mui/material/Typography";
-import { useSnackbar } from "notistack";
+import {useSnackbar} from "notistack";
 import useEffectUpdate from "../hooks/useEffectUpdate";
 
 // ----------------------------------------------------------------------
 
 const initialValues = {
-  email: "testy@mail.com",
-  password: "Testy123",
-};
+    email: "admin@mail.com",
+    password: "qwerty!12345"
+}
 
 // ----------------------------------------------------------------------
 
 interface FormData {
-  email: string;
-  password: string;
+    email: string;
+    password: string;
 }
 
 // ----------------------------------------------------------------------
 
 const LoginForm: FC = ({}) => {
-  const { enqueueSnackbar } = useSnackbar();
 
-  const {
-    login,
-    request: {
-      login: { status, error },
-    },
-  } = useAuth();
+    const {enqueueSnackbar} = useSnackbar();
 
-  const onSubmit = async (values: FormData) => login(values);
+    const {login, request: {login: {status, error}}} = useAuth();
 
-  const validate = async (values: FormData) => {
-    if (!values.email) return { email: "Email is required field" };
+    const onSubmit = async (values: FormData) => login(values);
 
-    if (!values.password) return { password: "Password is required field" };
+    const validate = async (values: FormData) => {
+        if (!values.email) return {email: 'Email is required field'};
 
-    return;
-  };
+        if (!values.password) return {password: 'Password is required field'};
 
-  useEffectUpdate(() => {
-    if (status === "failed" && error) {
-      enqueueSnackbar(error, { variant: "error" });
-    }
-  }, [error]);
+        return;
+    };
 
-  return (
-    <Form
-      onSubmit={onSubmit}
-      initialValues={initialValues}
-      validate={validate}
-      render={({ handleSubmit }) => (
-        <form onSubmit={handleSubmit} noValidate>
-          <Stack direction="column" spacing={2} width={300}>
-            <TextField label="Email" name="email" type="email" size="small" />
+    useEffectUpdate(() => {
+        if (status === 'failed' && error) {
+            enqueueSnackbar(error, {variant: "error"});
+        }
+    }, [error]);
 
-            <TextField
-              label="Password"
-              name="password"
-              type="password"
-              size="small"
-            />
+    return (
+        <Form
+            onSubmit={onSubmit}
+            initialValues={initialValues}
+            validate={validate}
+            render={({handleSubmit}) => (
+                <form onSubmit={handleSubmit} noValidate>
+                    <Stack direction="column" spacing={2} width={300}>
+                        <TextField label="Email" name="email" type="email" size="small"/>
 
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              sx={{ textTransform: "none" }}
-            >
-              Log in
-            </Button>
+                        <TextField label="Password" name="password" type="password" size="small"/>
 
-            <Typography>User: testy@mail.com</Typography>
+                        <Button type="submit" variant="contained" size="large" sx={{textTransform: 'none'}}>
+                            Log in
+                        </Button>
 
-            <Typography>password: Testy123</Typography>
-          </Stack>
-        </form>
-      )}
-    />
-  );
-};
+                        <Typography>
+                            User: admin@mail.com
+                        </Typography>
+
+                        <Typography>
+                            password: qwerty!12345
+                        </Typography>
+                    </Stack>
+                </form>
+            )}
+        />
+    );
+}
 
 export default LoginForm;
+
