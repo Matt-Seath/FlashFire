@@ -54,9 +54,11 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'loggers.apps.LoggersConfig',
     'tws.apps.TwsConfig',
+    'user.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -115,6 +117,7 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT", ),
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
+    "ROTATE_REFRESH_TOKENS": True,
 }
 
 DJOSER = {
