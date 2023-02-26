@@ -7,7 +7,7 @@ import InputBase from "@mui/material/InputBase";
 import CircularProgress from "@mui/material/CircularProgress";
 import { InputAdornment } from "@mui/material";
 import { useRouter } from "next/router";
-import StocksJSON from "@/pages/api/stocks.json";
+import StocksJSON from "../";
 
 export const Search = styled("div")(({ theme }) => ({
   position: "relative",

@@ -14,6 +14,7 @@ import darkThemeOptions from "theme";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 
+import "../styles/globals.css";
 // ----------------------------------------------------------------------
 
 const darkTheme = createTheme(darkThemeOptions);
