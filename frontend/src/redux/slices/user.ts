@@ -9,6 +9,7 @@ type User = {
 }
 
 type SignupRequestValidation = {
+    usernameErrors?: string[];
     emailErrors?: string[];
     passwordErrors?: string[];
 }
@@ -84,6 +85,7 @@ export const userSlice = createSlice({
         builder.addCase(signupRequest.pending, (state: UserState) => {
             state.request.signup.status = 'pending';
             state.request.signup.error = null;
+            delete state.request.signup.usernameErrors;
             delete state.request.signup.emailErrors;
             delete state.request.signup.passwordErrors;
         })
@@ -96,9 +98,10 @@ export const userSlice = createSlice({
             state.request.signup.status = 'failed';
 
             // @ts-ignore
-            const {email, password} = action.payload;
+            const {username, email, password} = action.payload;
 
-            if (password || email) {
+            if (username || password || email) {
+                state.request.signup.usernameErrors = username;
                 state.request.signup.passwordErrors = password;
                 state.request.signup.emailErrors = email;
             } else {

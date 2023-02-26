@@ -10,6 +10,7 @@ export type loginRequestArguments = {
 }
 
 export type signupRequestArguments = {
+    username: string;
     email: string;
     password: string;
 }
@@ -34,7 +35,7 @@ export const loginRequest = createAsyncThunk('user/login',
 export const signupRequest = createAsyncThunk('user/signup',
     async (data: signupRequestArguments, {rejectWithValue}) => {
         try {
-            const response = await axiosNext.post('api/user/signup', data);
+            const response = await axiosNext.post('auth/users/', data);
             const {user, access} = response.data;
 
             axiosBackend.defaults.headers.Authorization = `Bearer ${access}`;
