@@ -48,13 +48,29 @@ export default function MyApp(props: MyAppProps) {
     setSelectedTheme(desiredTheme);
   };
 
-
+  useEffect(() => {
+    async function checkLogin() {
+      try {
+        const response = await fetch("/api/check-login");
+        if (response.ok) {
+          setIsLoggedIn(true);
+        } else {
+          router.push("/auth/login");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    checkLogin();
+  }, []);
 
   useEffect(() => {
     setActiveTheme(getActiveTheme(selectedTheme));
   }, [selectedTheme]);
 
-
+  if (!isLoggedIn) {
+    return <Login setIsLoggedIn={setIsLoggedIn} />;
+  }
 
   return (
     <CacheProvider value={emotionCache}>
