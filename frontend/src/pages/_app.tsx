@@ -10,13 +10,13 @@ import { authentication, initialAuthGuard } from "../user/initialAuth";
 import AuthGuard from "../user/AuthGuard";
 import { axiosBackend } from "../utils/axios";
 // MUI Theme
-import lightThemeOptions from "theme";
+import darkThemeOptions from "theme";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 
 // ----------------------------------------------------------------------
 
-const lightTheme = createTheme(lightThemeOptions);
+const darkTheme = createTheme(darkThemeOptions);
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ const MyApp = ({ Component, ...rest }: AppProps) => {
 
   return (
     <ReduxProvider store={store}>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={darkTheme}>
         <SnackbarProvider maxSnack={5}>
           <AuthGuard>
             <CssBaseline />

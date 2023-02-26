@@ -1,72 +1,67 @@
-import { NextPage } from "next";
+import {NextPage} from "next";
 import Layout from "../layouts/Layout";
-import { axiosBackend } from "../utils/axios";
-import { useState } from "react";
-import { Button, Checkbox } from "@mui/material";
+import {axiosBackend} from "../utils/axios";
+import {useState} from "react";
+import {Button, Checkbox} from "@mui/material";
 import useEffectUpdate from "../hooks/useEffectUpdate";
 import Typography from "@mui/material/Typography";
-import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import {Favorite, FavoriteBorder} from "@mui/icons-material";
 
 // ----------------------------------------------------------------------
 
 type Task = {
-  id: number;
-  title: string;
-  done: boolean;
-  url: string;
-};
+    id: number;
+    title: string;
+    done: boolean;
+    url: string;
+}
 
 // ----------------------------------------------------------------------
 
 const HomePage: NextPage = ({}) => {
-  const [switcher, setSwitcher] = useState(false);
 
-  const [tasks, setTasks] = useState<Task[]>([]);
+    const [switcher, setSwitcher] = useState(false);
 
-  useEffectUpdate(() => {
-    (async () => {
-      try {
-        const response = await axiosBackend.get("api/todo");
+    const [tasks, setTasks] = useState<Task[]>([]);
 
-        console.log(response.data);
+    useEffectUpdate(() => {
+        (async () => {
+            try {
+                const response = await axiosBackend.get('api/todo');
 
-        setTasks(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, [switcher]);
+                console.log(response.data)
 
-  return (
-    <>
-      <h1>Main Page</h1>
-      <Button
-        onClick={() => setSwitcher((prevState) => !prevState)}
-        sx={{ mb: 2 }}
-      >
-        res
-      </Button>
+                setTasks(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+    }, [switcher])
 
-      {tasks?.map((task, index) => (
-        <Typography key={task.id}>
-          {++index}.
-          <Checkbox
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite />}
-            checked={task.done}
-          />
-          {task.title}
-        </Typography>
-      ))}
-    </>
-  );
-};
+    return (
+        <>
+            <h1>Main Page</h1>
+            <Button onClick={() => setSwitcher(prevState => !prevState)} sx={{mb: 2}}>res</Button>
+
+            {tasks?.map((task, index) =>
+                <Typography
+                    key={task.id}
+                >
+                    {++index}.
+                    <Checkbox icon={<FavoriteBorder/>} checkedIcon={<Favorite/>} checked={task.done}/>
+                    {task.title}
+                </Typography>
+            )}
+        </>
+    )
+}
 
 // ----------------------------------------------------------------------
 
 // @ts-ignore
 HomePage.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
+    return <Layout>{page}</Layout>;
 };
 
 export default HomePage;
+
