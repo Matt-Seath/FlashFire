@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-6%@v$3mk=al%)c^z)moo@i(8pu6e66fv88id-ybxy9ipmlm^$u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'djoser',
     'debug_toolbar',
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     'loggers.apps.LoggersConfig',
     'tws.apps.TwsConfig',
     'user',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +76,7 @@ ROOT_URLCONF = 'flashfire.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'frontend'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -98,9 +100,6 @@ MEDIA_ROOT = BASE_DIR / "media/"
 WSGI_APPLICATION = 'flashfire.wsgi.application'
 
 REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",
-    ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     )
@@ -109,21 +108,14 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = "user.User"
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"
+    "http://localhost:3000",
 ]
 
 
 SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": ("JWT", ),
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
     "ROTATE_REFRESH_TOKENS": True,
-}
-
-DJOSER = {
-    "SERIALIZERS": {
-        "user_create": "core.serializers.UserCreateSerializer"
-    }
 }
 
 
