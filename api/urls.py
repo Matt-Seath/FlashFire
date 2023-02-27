@@ -1,10 +1,13 @@
-from rest_framework_nested import routers
+from rest_framework import routers
+from django.urls import path, include
 from .views import *
 
 
 router = routers.DefaultRouter()
 router.register("history", StockHistoryViewSet, basename="history")
 router.register("account", AccountViewSet, basename="account")
-# router.register("user", UserViewSet, basename="user")
 
-urlpatterns = router.urls
+urlpatterns = [
+    path("", include(router.urls)),
+    path("user/", include("user.urls")),
+]
