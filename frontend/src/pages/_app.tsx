@@ -15,6 +15,7 @@ import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 
 import "../styles/globals.css";
+import Head from "next/head";
 // ----------------------------------------------------------------------
 
 const darkTheme = createTheme(darkThemeOptions);
@@ -34,6 +35,9 @@ const MyApp = ({ Component, ...rest }: AppProps) => {
 
   return (
     <ReduxProvider store={store}>
+      <Head>
+        <title>FlashFire</title>
+      </Head>
       <ThemeProvider theme={darkTheme}>
         <SnackbarProvider maxSnack={5}>
           <AuthGuard>
