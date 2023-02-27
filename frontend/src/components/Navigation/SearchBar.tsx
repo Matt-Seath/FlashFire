@@ -11,28 +11,18 @@ import StocksJSON from "../../assets/stocks.json";
 
 export const Search = styled("div")(({ theme }) => ({
   position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.01),
+  border: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0),
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0),
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
-  width: "100%",
+  width: 500,
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
-    width: "auto",
+    width: 500,
   },
-}));
-
-export const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
 }));
 
 export const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -100,7 +90,14 @@ export default function SearchBar() {
           clearOnEscape
           clearOnBlur
           popupIcon={""}
-          sx={{ width: 500 }}
+          sx={{
+            ".MuiOutlinedInput-notchedOutline": {
+              color: alpha("#fff", 0.2),
+              border: "none",
+              borderBottom: 1,
+              borderRadius: 0,
+            },
+          }}
           open={open}
           onOpen={() => {
             setOpen(true);
