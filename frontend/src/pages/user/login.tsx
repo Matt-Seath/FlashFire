@@ -1,14 +1,24 @@
 import { NextPage } from "next";
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import LoginForm from "../../user/LoginForm";
 import Link from "next/link";
 import { PATH_USER } from "../../routes/paths";
+import Image from "next/image";
+import Logo from "../../../public/Logo.svg";
+import styles from "../../styles/GradientBG.module.css";
 
 // ----------------------------------------------------------------------
 
 const LoginPage: NextPage = ({}) => {
   return (
-    <Stack justifyContent="center" alignItems="center" sx={{ height: "100vh" }}>
+    <Stack
+      className={styles.container}
+      alignItems="center"
+      sx={{ height: "100vh" }}
+    >
+      <Box justifyContent={"center"} mt={25} mb={5}>
+        <Image src={Logo} alt="sdd" width={300} />
+      </Box>
       <LoginForm />
 
       <Typography sx={{ mt: 2 }}>Don't have an account?</Typography>
