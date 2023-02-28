@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Logo from "../../../public/Logo.svg";
 import styles from "../../styles/GradientBG.module.css";
+import Footer from "components/Footer/Footer";
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +26,7 @@ const Signup: NextPage = ({}) => {
       <Link href={PATH_USER.login}>
         <Typography color={"lightBlue"}>Log in</Typography>
       </Link>
+      <Footer />
     </Stack>
   );
 };

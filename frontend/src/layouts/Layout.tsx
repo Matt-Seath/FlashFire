@@ -3,6 +3,7 @@ import { CssBaseline } from "@mui/material";
 import { FC, ReactNode } from "react";
 import FFNavigation from "../components/Navigation/Navigation";
 import { DrawerHeader } from "../components/Navigation/Drawer";
+import Footer from "components/Footer/Footer";
 
 // ----------------------------------------------------------------------
 
@@ -21,6 +22,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         <DrawerHeader />
         {children}
       </Box>
+      <Footer />
     </Box>
   );
 };
