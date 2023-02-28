@@ -32,23 +32,23 @@ const FFProfile = ({}) => {
       sx={{ display: "flex", justifyContent: "flex-end" }}
     >
       <Toolbar disableGutters>
-        <Typography
-          variant="h6"
-          noWrap
-          component={Link}
-          href={PATH_USER.root}
-          sx={{
-            mr: 2,
-            display: { xs: "none", md: "flex" },
-            fontFamily: "monospace",
-            fontWeight: 700,
-            letterSpacing: ".3rem",
-            color: "inherit",
-            textDecoration: "none",
-          }}
-        >
-          {user?.email}
-        </Typography>
+        <Button onClick={logout} sx={{height: "100%", width: "5rem", mr:1}}>
+          <Typography
+            variant="h6"
+            noWrap
+            sx={{
+              fontSize: "0.9rem",
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 500,
+              letterSpacing: ".1rem",
+              color: "grey",
+              textDecoration: "none",
+            }}
+          >
+            Logout
+          </Typography>
+        </Button>
         <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
         <Box sx={{ flexGrow: 0 }}>
           <IconButton
@@ -58,7 +58,7 @@ const FFProfile = ({}) => {
             href={PATH_USER.root}
             sx={{ p: 0 }}
           >
-            <AccountCircle />
+            <AccountCircle color="success" />
           </IconButton>
         </Box>
       </Toolbar>
