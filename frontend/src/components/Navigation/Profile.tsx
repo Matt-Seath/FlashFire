@@ -41,7 +41,7 @@ const FFProfile = ({}) => {
                 display: { xs: "none", md: "flex" },
                 fontFamily: "inherit",
                 fontWeight: 500,
-                color: "lightGreen",
+                color: "lightBlue",
                 letterSpacing: ".1rem",
                 textDecoration: "none",
                 textTransform: "none",
@@ -60,6 +60,7 @@ const FFProfile = ({}) => {
                 display: { xs: "none", md: "flex" },
                 fontFamily: "inherit",
                 fontWeight: 500,
+                color: "grey",
                 letterSpacing: ".1rem",
                 textDecoration: "none",
                 textTransform: "none",
@@ -76,7 +77,7 @@ const FFProfile = ({}) => {
             href={PATH_USER.root}
             sx={{ p: 0, m: 0 }}
           >
-            <AccountCircle color="success" sx={{fontSize: "2.2rem"}} />
+            <AccountCircle color="primary" sx={{fontSize: "2.2rem"}} />
           </IconButton>
         </Box>
       </Toolbar>
