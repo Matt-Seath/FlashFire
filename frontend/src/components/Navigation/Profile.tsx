@@ -32,33 +32,51 @@ const FFProfile = ({}) => {
       sx={{ display: "flex", justifyContent: "flex-end" }}
     >
       <Toolbar disableGutters>
-        <Button onClick={logout} sx={{height: "100%", width: "5rem", mr:1}}>
-          <Typography
-            variant="h6"
-            noWrap
-            sx={{
-              fontSize: "0.9rem",
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 500,
-              letterSpacing: ".1rem",
-              color: "grey",
-              textDecoration: "none",
-            }}
-          >
-            Logout
-          </Typography>
-        </Button>
-        <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-        <Box sx={{ flexGrow: 0 }}>
+        <Box display={"grid"} marginRight={2}>
+          <Button href={PATH_USER.root} sx={{m:0, p:0}}>
+            <Typography
+
+              sx={{
+                fontSize: "0.7rem",
+                display: { xs: "none", md: "flex" },
+                fontFamily: "inherit",
+                fontWeight: 500,
+                color: "lightGreen",
+                letterSpacing: ".1rem",
+                textDecoration: "none",
+                textTransform: "none",
+                direction: "rtl",
+                textAlign: "start",
+              }}
+            >
+              {user?.email}
+            </Typography>
+          </Button>
+
+          <Button onClick={logout} sx={{m:0, p:0, justifyContent: "end"}}>
+            <Typography
+              sx={{
+                fontSize: "0.7rem",
+                display: { xs: "none", md: "flex" },
+                fontFamily: "inherit",
+                fontWeight: 500,
+                letterSpacing: ".1rem",
+                textDecoration: "none",
+                textTransform: "none",
+              }}
+            >
+              Logout
+            </Typography>
+          </Button>
+        </Box>
+        <Box sx={{ flexGrow: 0, mr: -3 }}>
           <IconButton
             size="large"
-            color="inherit"
             component={Link}
             href={PATH_USER.root}
-            sx={{ p: 0 }}
+            sx={{ p: 0, m: 0 }}
           >
-            <AccountCircle color="success" />
+            <AccountCircle color="success" sx={{fontSize: "2.2rem"}} />
           </IconButton>
         </Box>
       </Toolbar>
