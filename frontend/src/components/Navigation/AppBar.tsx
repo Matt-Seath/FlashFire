@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { drawerWidth } from "./Drawer";
 import SearchBar from "./SearchBar";
+import FFProfile from "./Profile";
 import TVTickerTape from "../TradingView/TickerTape";
 
 interface AppBarProps extends MuiAppBarProps {
@@ -71,6 +72,7 @@ export default function FFAppBar({ open, setOpen }: DrawerProps) {
           <MenuIcon />
         </IconButton>
         <SearchBar />
+        <FFProfile />
       </Toolbar>
       <TVTickerTape />
     </AppBar>
