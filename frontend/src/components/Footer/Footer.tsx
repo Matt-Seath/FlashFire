@@ -9,7 +9,7 @@ export const Footer: FC = (): ReactElement => {
         bottom: 0,
         width: "100%",
         height: 50,
-        backgroundColor: "#060c13",
+        backgroundColor: "black",
         paddingTop: "0.9rem",
         paddingBottom: "0.7rem",
       }}
