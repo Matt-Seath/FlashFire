@@ -20,7 +20,7 @@ UPDATE_DB = False
 SLEEPER = 1.5  # Higher value slows api request frequency to avoid throttling.
 ITERATIONS = 8  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 
-START_DATE = date(2022, 1, 1)
+START_DATE = date(2021, 1, 1)
 PERIOD = "1d"
 INTERVAL = None
 ACTIONS = False

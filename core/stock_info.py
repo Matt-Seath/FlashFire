@@ -15,7 +15,7 @@ database.
 
 GET_ALL_ASX_STOCKS = False  # Fully update the ASX stock table
 SLEEPER = 0.0  # Higher value slows api request frequency to avoid throttling.
-ITERATIONS = 3  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
+ITERATIONS = 800  # How many stocks to retrieve whenever GET_ALL_ASX_STOCKS = False
 UPDATE_EXISTING_STOCKS = False
 
 # Paths to static assets
@@ -35,7 +35,7 @@ LOGGER_BASE_DIR = "logs/stockinfo/"  # Logs to be written into this directory
 # Microservice architecture was adapted for future projects.
 # Refer to each app for details on each component
 
-def main(): 
+def main():
     logger = TempLogger(*LOGS)  # Initialize Logger
     logger.base_dir(LOGGER_BASE_DIR)  # Set base directory
     logger.clear_logs(all=True)  # Clear logs if they already exist

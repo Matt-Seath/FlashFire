@@ -69,8 +69,12 @@ class StockInfoETL(ETL):
     def extract(self):
         for i in tqdm(range(self.iterations), desc="Scraping stock data"):
             time.sleep(self.sleeper)
-            self.df_latest_entry = (pd.DataFrame(
-                [yf.Ticker(self.symbols[i]).info]))
+            try:
+                self.df_latest_entry = (pd.DataFrame(
+                    [yf.Ticker(self.symbols[i]).info]))
+            except Exception as e:
+                print(e)
+                continue
             with contextlib.redirect_stdout(io.StringIO()):
                 try:
                     self.df_latest_entry = (pd.DataFrame(
