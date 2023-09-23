@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import TVProfile from "../../components/TradingView/Profile";
 import TVStockData from "../../components/TradingView/StockData";
+import TVSymbolOverview from "components/TradingView/SymbolOverwiew";
 import StocksJSON from "../../assets/stocks.json";
 import Layout from "layouts/Layout";
 
@@ -92,6 +93,7 @@ export default function Stock() {
           height: 510,
         }}
       >
+        <TVSymbolOverview
         <TVProfile symbol={ticker} />
         <TVStockData symbol={ticker} />
       </Box>
