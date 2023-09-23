@@ -1,7 +1,6 @@
 ## FlashFire - Algorithmic Trading Platform 🔥💸  
 
-![image](https://user-images.githubusercontent.com/100132940/222011833-43f9ffb3-39d2-4783-87da-7b5fe022aed5.png)
-
+![2023-09-24_00-41](https://github.com/Matt-Seath/FlashFire/assets/100132940/302468b2-61b6-4828-9b3e-ea2eaaafe352)
 
 <em>Are you tired of making sensible, well-informed investment decisions and watching your money grow slowly over time? With FlashFire, you can say goodbye to all that tedious market research and analysis, and say hello to unpredictable and volatile trades that are guaranteed to keep you on the edge of your seat! FlashFires top-of-the-line, state-of-the-art, never-been-tested algorithms use cutting edge technology like random number generation and astrology to execute large, quick trades using your hard-earned cash!
 
