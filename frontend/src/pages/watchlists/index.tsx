@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Layout from "layouts/Layout";
 import EnhancedTable from "components/Tables/WatchlistTable";
+import ScrollableTabsButtonAuto from "components/Tabs/WatchlistTabs";
 
 Watchlists.getLayout = function getLayout(page: any) {
   return <Layout>{page}</Layout>;
@@ -24,6 +25,7 @@ export default function Watchlists() {
         <Typography variant="h4" component="h1" gutterBottom>
           Watchlists Page
         </Typography>
+        <ScrollableTabsButtonAuto />
         <EnhancedTable />
       </Box>
     </Container>

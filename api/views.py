@@ -31,7 +31,7 @@ class StockHistoryViewSet(viewsets.ViewSet):
     def list(self, request):
         queryset = StockInfo.objects.prefetch_related(Prefetch(
             "history", queryset=StockHistory.objects.filter(
-                date__gt="2023-1-1", date__lt="2023-1-10"))).only(
+                date__gt="2023-1-1", date__lt="2023-8-10"))).only(
             "symbol", "long_name", "sector").order_by("symbol")[:4]
         stocks = []
         for stock in queryset:
@@ -54,14 +54,3 @@ class StockHistoryViewSet(viewsets.ViewSet):
             })
 
         return Response(stocks)
-
-
-# class UserInRoom(APIView):
-#     def get(self, request, format=None):
-#         if not self.request.session.exists(self.request.session.session_key):
-#             self.request.session.create()
-
-#         data = {
-#             'code': self.request.session.get("room_code")
-#         }
-#         return JsonResponse(data, status=status.HTTP_200_OK)
