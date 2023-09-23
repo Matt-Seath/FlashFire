@@ -18,7 +18,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <FFNavigation />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 0.5 }}>
         <DrawerHeader />
         {children}
       </Box>

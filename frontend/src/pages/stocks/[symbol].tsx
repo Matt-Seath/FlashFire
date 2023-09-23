@@ -58,9 +58,11 @@ export default function Stock() {
           display: "flex",
           justifyContent: "space-between",
           height: 70,
+          margin: 2,
+          marginBottom: 0,
         }}
       >
-        <Typography variant="h4" textAlign={"center"} gutterBottom>
+        <Typography marginTop={1.5} variant="h4" textAlign={"center"} gutterBottom>
           {title?.symbol + ": " + title?.long_name}
         </Typography>
         <Box
