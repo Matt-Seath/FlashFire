@@ -4,15 +4,13 @@ import { SymbolOverview } from "widgets/react-ts-tradingview-widgets/dist";
 
 export default function TVSymbolOverview({ symbol }: { symbol: string[][] }) {
   return (
-    <Box>
+    <Box sx={{ height: 500, width: "100%"}}>
       <SymbolOverview
         symbols={symbol}
         colorTheme="dark"
-        height={400}
-        width="100%"
+        autosize
         dateFormat="dd MMM 'yy"
       ></SymbolOverview>
-      ;
     </Box>
   );
 }

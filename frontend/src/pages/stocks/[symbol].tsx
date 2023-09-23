@@ -9,12 +9,16 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import TVProfile from "../../components/TradingView/Profile";
 import TVStockData from "../../components/TradingView/StockData";
-import TVSymbolOverview from "components/TradingView/SymbolOverwiew";
 import StocksJSON from "../../assets/stocks.json";
 import Layout from "layouts/Layout";
 
 const LazyChart = dynamic(
   () => import("../../components/TradingView/RealTimeChart"),
+  { ssr: false }
+);
+
+const LazyOverview = dynamic(
+  () => import("../../components/TradingView/SymbolOverview"),
   { ssr: false }
 );
 
@@ -79,22 +83,21 @@ export default function Stock() {
       <Box
         sx={{
           display: "flex",
-          height: 510,
+          height: 505,
         }}
       >
-        <Box sx={{ width: "66%" }}>
-          <Typography>Hi</Typography>
-        </Box>
+        <LazyOverview symbol={[["Apple", ticker + "|1D"]]} />
+        <Box sx={{ width: 10}} />
         <LazyChart symbol={ticker} />
       </Box>
       <Box
         sx={{
           display: "flex",
-          height: 510,
+          height: 800,
         }}
       >
-        <TVSymbolOverview
         <TVProfile symbol={ticker} />
+        <Box sx={{ width: 5}} />
         <TVStockData symbol={ticker} />
       </Box>
     </React.Fragment>
