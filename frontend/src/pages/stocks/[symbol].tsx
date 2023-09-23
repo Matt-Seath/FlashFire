@@ -62,9 +62,23 @@ export default function Stock() {
           marginBottom: 0,
         }}
       >
-        <Typography marginTop={1.5} variant="h4" textAlign={"center"} gutterBottom>
-          {title?.symbol + ": " + title?.long_name}
-        </Typography>
+        <Box sx={{ marginTop: 1.5, justifyContent: "left", display: "flex" }}>
+          <Typography
+            variant="h4"
+            gutterBottom
+            color={"yellowgreen"}
+          >
+            {title?.symbol + " :  "}
+          </Typography>
+          <Typography
+            variant="h4"
+            marginLeft={2}
+            color={"blue"}
+            gutterBottom
+          >
+            {title?.long_name}
+          </Typography>
+        </Box>
         <Box
           sx={{
             display: "flex",
