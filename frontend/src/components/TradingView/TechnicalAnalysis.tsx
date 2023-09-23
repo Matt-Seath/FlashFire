@@ -4,11 +4,11 @@ import Box from "@mui/material/Box";
 
 export default function TVTechnicalAnalysis({ symbol }: { symbol: string }) {
   return (
-    <Box sx={{ height: "100%", width: "30%" }}>
+    <Box sx={{ height: "100%", width: "100%" }}>
       <TechnicalAnalysis
         symbol={symbol}
         colorTheme="dark"
-        height={800}
+        height={370}
         width="100%"
       ></TechnicalAnalysis>
     </Box>

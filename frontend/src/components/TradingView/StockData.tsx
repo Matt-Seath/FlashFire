@@ -7,7 +7,7 @@ export default function TVStockData({ symbol }: { symbol: any }) {
     <Box sx={{ height: "100%", width: "70%" }}>
       <FundamentalData
         width={"100%"}
-        height={800}
+        height={875}
         symbol={symbol}
         colorTheme="dark"
       ></FundamentalData>

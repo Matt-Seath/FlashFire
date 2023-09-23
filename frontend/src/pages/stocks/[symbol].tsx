@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import TVTechnicalAnalysis from "components/TradingView/TechnicalAnalysis";
 import TVProfile from "../../components/TradingView/Profile";
 import TVStockData from "../../components/TradingView/StockData";
 import StocksJSON from "../../assets/stocks.json";
@@ -86,18 +87,21 @@ export default function Stock() {
           height: 505,
         }}
       >
-        <LazyOverview symbol={[["Apple", ticker + "|1D"]]} />
-        <Box sx={{ width: 10}} />
+        <LazyOverview symbol={[["ASX", ticker + "|1Y"]]} />
+        <Box sx={{ width: 10 }} />
         <LazyChart symbol={ticker} />
       </Box>
       <Box
         sx={{
           display: "flex",
-          height: 800,
+          height: 600,
         }}
       >
-        <TVProfile symbol={ticker} />
-        <Box sx={{ width: 5}} />
+        <Box sx={{ width: "35%", height: 375 }}>
+          <TVTechnicalAnalysis symbol={ticker} />
+          <TVProfile symbol={ticker} />
+        </Box>
+        <Box sx={{ width: 5 }} />
         <TVStockData symbol={ticker} />
       </Box>
     </React.Fragment>

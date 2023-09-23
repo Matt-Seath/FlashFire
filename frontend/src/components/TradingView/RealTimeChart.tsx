@@ -8,7 +8,7 @@ export default function TVRealTimeChart({ symbol }: { symbol: any }) {
       <AdvancedRealTimeChart
         theme="dark"
         autosize
-        style="3"
+        style="1"
         interval="3"
         timezone="Australia/Brisbane"
         hide_legend={true}
