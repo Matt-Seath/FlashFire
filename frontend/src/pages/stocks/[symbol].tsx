@@ -73,7 +73,7 @@ export default function Stock() {
           <Typography
             variant="h4"
             marginLeft={2}
-            color={"blue"}
+            color={"lightblue"}
             gutterBottom
           >
             {title?.long_name}
