@@ -33,9 +33,8 @@ const FFProfile = ({}) => {
     >
       <Toolbar disableGutters>
         <Box display={"grid"} marginRight={2}>
-          <Button href={PATH_USER.root} sx={{m:0, p:0}}>
+          <Button href={PATH_USER.root} sx={{ m: 0, p: 0 }}>
             <Typography
-
               sx={{
                 fontSize: "0.7rem",
                 display: { xs: "none", md: "flex" },
@@ -53,7 +52,7 @@ const FFProfile = ({}) => {
             </Typography>
           </Button>
 
-          <Button onClick={logout} sx={{m:0, p:0, justifyContent: "end"}}>
+          <Button onClick={logout} sx={{ m: 0, p: 0, justifyContent: "end" }}>
             <Typography
               sx={{
                 fontSize: "0.7rem",
@@ -77,7 +76,7 @@ const FFProfile = ({}) => {
             href={PATH_USER.root}
             sx={{ p: 0, m: 0 }}
           >
-            <AccountCircle color="primary" sx={{fontSize: "2.2rem"}} />
+            <AccountCircle color="primary" sx={{ fontSize: "2.2rem" }} />
           </IconButton>
         </Box>
       </Toolbar>

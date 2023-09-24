@@ -3,6 +3,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from api.serializers import WatchlistSerializer
 
 User = get_user_model()
 
@@ -36,9 +37,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    watchlists = WatchlistSerializer(many=True, read_only=True)
+
     class Meta:
         model = User
-        fields = ['email']
+        fields = ['email', 'watchlists']
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):

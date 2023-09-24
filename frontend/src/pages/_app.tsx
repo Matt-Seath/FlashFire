@@ -31,6 +31,7 @@ const MyApp = ({ Component, ...rest }: AppProps) => {
 
   if (accessToken) {
     axiosBackend.defaults.headers.Authorization = `Bearer ${accessToken}`;
+    
   }
 
   return (
@@ -67,6 +68,8 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
         });
 
         await initialAuthGuard({ req, res, isAuth: getState().user.isAuth });
+
+
 
         return { pageProps: { accessToken } };
       }
