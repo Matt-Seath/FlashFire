@@ -268,7 +268,12 @@ export default function EnhancedTable({ watchlists, currentWatchlist }: Props) {
   const watchlistRows: Data[] = watchlists[currentWatchlist].items.map((item) =>
     createData(item, 22, currentWatchlist, 44, "5%")
   );
-  const [rows, setTableData] = React.useState<Data[]>(watchlistRows);
+  const [rows, updateRows] = React.useState<Data[]>(watchlistRows);
+
+    React.useEffect(() => {
+      updateRows([...watchlistRows])
+  }, [currentWatchlist]);
+
   console.log(rows);
 
   const handleRequestSort = (
