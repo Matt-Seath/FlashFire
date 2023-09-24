@@ -3,9 +3,14 @@ import {loginRequest, logoutRequest, signupRequest} from "../thunk/user";
 import {Request} from "./types";
 
 // ----------------------------------------------------------------------
+type Watchlist = {
+  name: string;
+  items: string[];
+}
 
 type User = {
     email: string;
+    watchlists: Watchlist; 
 }
 
 type SignupRequestValidation = {

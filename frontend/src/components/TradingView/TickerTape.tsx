@@ -1,8 +1,7 @@
 import * as React from "react";
 import { TickerTape } from "widgets/react-ts-tradingview-widgets/dist";
 import Box from "@mui/material/Box";
-import useAuth from "user/useAuth";
-
+import { getUser } from "utils/getUser";
 interface Watchlist {
   name: string;
   items: string[];
@@ -11,7 +10,7 @@ interface Watchlist {
 export default function TVTickerTape() {
   const {
     user: { watchlists },
-  } = useAuth();
+  } = getUser();
 
   const symbols = watchlists.flatMap((watchlist: Watchlist) =>
     watchlist.items.map((item) => `ASX:${item.split(".")[0]}`)
