@@ -10,7 +10,7 @@ import useEffectUpdate from "../hooks/useEffectUpdate";
 
 const initialValues = {
   email: "admin@mail.com",
-  password: "qwerty!12345",
+  password: "qwerty!123",
 };
 
 // ----------------------------------------------------------------------
