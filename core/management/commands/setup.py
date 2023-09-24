@@ -50,4 +50,5 @@ class Command(BaseCommand):
     help = 'Installs packages not available in Pypi'
 
     def handle(self, *args, **options):
+        setup_packages()
         setup_env()

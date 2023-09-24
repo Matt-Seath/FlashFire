@@ -168,7 +168,7 @@ class StockHistory(models.Model):
 
 class Watchlist(models.Model):
     account_id = models.ForeignKey(
-        Account, on_delete=models.CASCADE, related_name="watchlist")
+        User, on_delete=models.CASCADE, related_name="watchlists")
     name = models.CharField(max_length=30, null=False)
     date_created = models.DateTimeField(auto_now_add=True)
 
