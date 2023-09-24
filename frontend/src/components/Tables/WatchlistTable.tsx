@@ -265,9 +265,11 @@ export default function EnhancedTable({ watchlists, currentWatchlist }: Props) {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const rows: Data[] = watchlists[currentWatchlist].items.map((item) =>
-    createData(item, 22, 33, 44, "5%")
+  const watchlistRows: Data[] = watchlists[currentWatchlist].items.map((item) =>
+    createData(item, 22, currentWatchlist, 44, "5%")
   );
+  const [rows, setTableData] = React.useState<Data[]>(watchlistRows);
+  console.log(rows);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -339,6 +341,7 @@ export default function EnhancedTable({ watchlists, currentWatchlist }: Props) {
 
   return (
     <Box sx={{ width: "100%" }}>
+      <Typography>{currentWatchlist}</Typography>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
