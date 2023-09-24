@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 interface Props {
   watchlists: string[];
   selected: number;
-  onSelect: (list: Number) => void;
+  onSelect: (list: number) => void;
 }
 
 export default function WatchlistTabs({
@@ -17,7 +17,6 @@ export default function WatchlistTabs({
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     onSelect(newValue);
   };
-  console.log(watchlists);
   return (
     <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: "background.paper" }}>
       <Tabs

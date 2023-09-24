@@ -7,7 +7,6 @@ import EnhancedTable from "components/Tables/WatchlistTable";
 import WatchlistTabs from "components/Tabs/WatchlistTabs";
 import { getUser } from "utils/getUser";
 import { Watchlist } from "redux/slices/user";
-import { List } from "@mui/icons-material";
 
 Watchlists.getLayout = function getLayout(page: any) {
   return <Layout>{page}</Layout>;
@@ -21,7 +20,8 @@ export default function Watchlists() {
   const watchlistNames: string[] = watchlists.map(
     (watchlist: Watchlist) => watchlist.name
   );
-  const [currentWatchlist, setCurrentWatchlist] = React.useState<Number>(0);
+
+  const [currentWatchlist, setCurrentWatchlist] = React.useState<number>(0);
   console.log(currentWatchlist);
 
   return (
@@ -44,7 +44,9 @@ export default function Watchlists() {
           onSelect={setCurrentWatchlist}
           watchlists={watchlistNames}
         />
-        <EnhancedTable />
+        <EnhancedTable 
+          currentWatchlist={currentWatchlist}
+          watchlists={watchlists} />
       </Box>
     </Container>
   );
