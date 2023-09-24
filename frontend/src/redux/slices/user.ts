@@ -3,12 +3,12 @@ import {loginRequest, logoutRequest, signupRequest} from "../thunk/user";
 import {Request} from "./types";
 
 // ----------------------------------------------------------------------
-type Watchlist = {
+export type Watchlist = {
   name: string;
   items: string[];
 }
 
-type User = {
+export type User = {
     email: string;
     watchlists: Watchlist; 
 }

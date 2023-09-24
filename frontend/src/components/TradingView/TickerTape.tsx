@@ -2,10 +2,7 @@ import * as React from "react";
 import { TickerTape } from "widgets/react-ts-tradingview-widgets/dist";
 import Box from "@mui/material/Box";
 import { getUser } from "utils/getUser";
-interface Watchlist {
-  name: string;
-  items: string[];
-}
+import { Watchlist } from "redux/slices/user";
 
 export default function TVTickerTape() {
   const {

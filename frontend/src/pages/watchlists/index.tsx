@@ -4,13 +4,26 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Layout from "layouts/Layout";
 import EnhancedTable from "components/Tables/WatchlistTable";
-import ScrollableTabsButtonAuto from "components/Tabs/WatchlistTabs";
+import WatchlistTabs from "components/Tabs/WatchlistTabs";
+import { getUser } from "utils/getUser";
+import { Watchlist } from "redux/slices/user";
+import { List } from "@mui/icons-material";
 
 Watchlists.getLayout = function getLayout(page: any) {
   return <Layout>{page}</Layout>;
 };
 
 export default function Watchlists() {
+  const {
+    user: { watchlists },
+  } = getUser();
+
+  const watchlistNames: string[] = watchlists.map(
+    (watchlist: Watchlist) => watchlist.name
+  );
+  const [currentWatchlist, setCurrentWatchlist] = React.useState<Number>(0);
+  console.log(currentWatchlist);
+
   return (
     <Container maxWidth="lg">
       <Box
@@ -23,9 +36,14 @@ export default function Watchlists() {
         }}
       >
         <Typography variant="h4" component="h1" gutterBottom>
-          Watchlists Page
+          {String(currentWatchlist)}
         </Typography>
-        <ScrollableTabsButtonAuto />
+
+        <WatchlistTabs
+          selected={currentWatchlist}
+          onSelect={setCurrentWatchlist}
+          watchlists={watchlistNames}
+        />
         <EnhancedTable />
       </Box>
     </Container>
