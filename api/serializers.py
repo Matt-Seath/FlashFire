@@ -17,7 +17,7 @@ class WatchlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Watchlist
         fields = [
-            "accound_id",
+            "user_id",
             "name",
             "date_created",
             "items",

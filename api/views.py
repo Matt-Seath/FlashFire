@@ -13,6 +13,9 @@ from .serializers import *
 #     queryset = User.objects.get(pk=1)
 #     serializer_class = UserSerializer
 
+class WatchlistViewSet(ModelViewSet):
+    serializer_class = WatchlistSerializer
+
 
 class AccountViewSet(ModelViewSet):
     serializer_class = AccountSerializer
