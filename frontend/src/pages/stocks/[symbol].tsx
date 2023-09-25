@@ -100,7 +100,7 @@ export default function Stock() {
       <Box
         sx={{
           display: "flex",
-          height: 505,
+          height: 520,
         }}
       >
         <LazyOverview symbol={[["ASX", ticker + "|1Y"]]} />
@@ -110,7 +110,6 @@ export default function Stock() {
       <Box
         sx={{
           display: "flex",
-          height: 600,
         }}
       >
         <Box sx={{ width: "35%", height: 375 }}>
