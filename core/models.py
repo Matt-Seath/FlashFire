@@ -182,6 +182,9 @@ class WatchlistItem(models.Model):
         StockInfo, on_delete=models.CASCADE, related_name="watched")
     date_added = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = [["watchlist_id", "stock_id"]]
+
 
 class Position(models.Model):
     account_id = models.ForeignKey(
