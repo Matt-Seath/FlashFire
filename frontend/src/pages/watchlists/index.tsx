@@ -22,7 +22,6 @@ export default function Watchlists() {
   );
 
   const [currentWatchlist, setCurrentWatchlist] = React.useState<number>(0);
-  console.log(currentWatchlist);
 
   return (
     <Container maxWidth="lg">
@@ -36,7 +35,7 @@ export default function Watchlists() {
         }}
       >
         <Typography variant="h4" component="h1" gutterBottom>
-          {String(currentWatchlist)}
+          Watchlists
         </Typography>
 
         <WatchlistTabs
@@ -44,9 +43,10 @@ export default function Watchlists() {
           onSelect={setCurrentWatchlist}
           watchlists={watchlistNames}
         />
-        <EnhancedTable 
+        <EnhancedTable
           currentWatchlist={currentWatchlist}
-          watchlists={watchlists} />
+          watchlists={watchlists}
+        />
       </Box>
     </Container>
   );
