@@ -6,15 +6,17 @@ class WatchlistItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = WatchlistItem
         fields = [
+            "watchlist_id",
             "stock_id",
         ]
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         return representation['stock_id']
-    
+
 
 class WatchlistSerializer(serializers.ModelSerializer):
+    id = serializers.UUIDField(read_only=True)
     items = WatchlistItemSerializer(many=True, read_only=True)
 
     class Meta:

@@ -69,7 +69,7 @@ kombu==5.2.4
 locust==2.14.0
 lxml==4.9.2
 MarkupSafe==2.1.2
-matplotlib==3.2.2
+matplotlib
 model-bakery==1.9.0
 msgpack==1.0.4
 multitasking==0.0.11
@@ -132,7 +132,7 @@ websockets==10.4
 Werkzeug==2.2.2
 whitenoise==6.2.0
 yahoo-fin==0.8.9.1
-yfinance==0.2.12
+yfinance
 zipp==3.12.0
 zope.event==4.6
 zope.interface==5.5.2
