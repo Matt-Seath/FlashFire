@@ -13,8 +13,8 @@ from .serializers import *
 #     queryset = User.objects.get(pk=1)
 #     serializer_class = UserSerializer
 class WatchlistItemViewSet(ModelViewSet):
-    queryset = WatchlistItem.objects.filter(watchlist_id=1)
-    serializer_class = WatchlistItemSerializer
+    def get_queryset(self):
+        return Watchlist.objects.filter(domain=self.kwargs["watchlist_pk"])
 
 
 class WatchlistViewSet(ModelViewSet):
