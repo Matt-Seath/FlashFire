@@ -18,11 +18,11 @@ class WatchlistItemViewSet(ModelViewSet):
     serializer_class = WatchlistItemSerializer
 
     def get_queryset(self):
-        return WatchlistItem.objects.filter(watchlist=self.kwargs["watchlist_pk"])
+        return WatchlistItem.objects.filter(watchlist=self.kwargs["watchlist_pk"]).select_related("stock")
 
 
 class WatchlistViewSet(ModelViewSet):
-    queryset = Watchlist.objects.prefetch_related("items").all()
+    queryset = Watchlist.objects.prefetch_related("items__stock").all()
     serializer_class = WatchlistSerializer
 
 
