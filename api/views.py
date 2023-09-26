@@ -15,10 +15,19 @@ from .serializers import *
 #     serializer_class = UserSerializer
 
 class WatchlistItemViewSet(ModelViewSet):
-    serializer_class = WatchlistItemSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return AddWatchlistItemSerializer
+        return WatchlistItemSerializer
+    
+    def get_serializer_context(self):
+        return {"watchlist": self.kwargs["watchlist_pk"]}
 
     def get_queryset(self):
-        return WatchlistItem.objects.filter(watchlist=self.kwargs["watchlist_pk"]).select_related("stock")
+        return WatchlistItem.objects \
+            .filter(watchlist=self.kwargs["watchlist_pk"]) \
+            .select_related("stock")
 
 
 class WatchlistViewSet(ModelViewSet):

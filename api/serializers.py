@@ -51,6 +51,27 @@ class WatchlistSerializer(serializers.ModelSerializer):
         ]
 
 
+class AddWatchlistItemSerializer(serializers.ModelSerializer):
+
+    def save(self, **kwargs):
+
+        watchlist = self.context["watchlist"]
+        stock = self.validated_data["stock"]
+
+        try:
+            WatchlistItem.objects.get(watchlist=watchlist, stock=stock)
+            raise serializers.ValidationError("Cannot add duplicates")
+        except WatchlistItem.DoesNotExist:
+            self.instance = WatchlistItem.objects.create(
+                watchlist=watchlist, **self.validated_data)
+
+        return self.instance
+
+    class Meta:
+        model = WatchlistItem
+        fields = ["stock"]
+
+
 class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
