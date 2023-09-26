@@ -13,22 +13,17 @@ from .serializers import *
 # class UserViewSet(ModelViewSet):
 #     queryset = User.objects.get(pk=1)
 #     serializer_class = UserSerializer
+
 class WatchlistItemViewSet(ModelViewSet):
+    serializer_class = WatchlistItemSerializer
+
     def get_queryset(self):
-        return Watchlist.objects.filter(domain=self.kwargs["watchlist_pk"])
+        return WatchlistItem.objects.filter(watchlist=self.kwargs["watchlist_pk"])
 
 
 class WatchlistViewSet(ModelViewSet):
-    queryset = Watchlist.objects.all()
+    queryset = Watchlist.objects.prefetch_related("items").all()
     serializer_class = WatchlistSerializer
-
-    def list(self, request, *args, **kwargs):
-        user = request.user
-        print(user)
-        watchlists = self.queryset.filter(user_id=1)
-        serialized_data = self.get_serializer(watchlists, many=True).data
-
-        return Response(serialized_data)
 
 
 class AccountViewSet(ModelViewSet):

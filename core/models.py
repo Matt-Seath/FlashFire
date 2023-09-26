@@ -5,7 +5,7 @@ from uuid import uuid4
 
 class Account(models.Model):
     id = models.CharField(primary_key=True, max_length=20)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     account_username = models.CharField(max_length=50, null=False)
     account_password = models.CharField(max_length=50, null=False)
     is_verified = models.BooleanField(default=False)
@@ -169,17 +169,17 @@ class StockHistory(models.Model):
 
 class Watchlist(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4)
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="watchlists")
     name = models.CharField(max_length=30, null=False)
     date_created = models.DateTimeField(auto_now_add=True)
 
 
 class WatchlistItem(models.Model):
-    watchlist_id = models.ForeignKey(
+    watchlist = models.ForeignKey(
         Watchlist, on_delete=models.CASCADE, related_name="items")
-    stock_id = models.ForeignKey(
-        StockInfo, on_delete=models.CASCADE, related_name="watched")
+    stock = models.ForeignKey(
+        StockInfo, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -187,8 +187,8 @@ class WatchlistItem(models.Model):
 
 
 class Position(models.Model):
-    account_id = models.ForeignKey(
+    account = models.ForeignKey(
         Account, on_delete=models.CASCADE, related_name="positions")
-    stock_id = models.ForeignKey(
+    stock = models.ForeignKey(
         StockInfo, on_delete=models.PROTECT, related_name="positions")
     date_added = models.DateTimeField(auto_now_add=True)

@@ -2,17 +2,39 @@ from rest_framework import serializers
 from core.models import *
 
 
+class StockHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StockHistory
+        fields = [
+            "stock",
+            "date",
+            "open",
+            "close",
+            "high",
+            "low",
+            "volume",
+        ]
+
+
+class SimpleStockInfoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = StockInfo
+        fields = [
+            "symbol",
+            "long_name",
+            "sector",
+        ]
+
+
 class WatchlistItemSerializer(serializers.ModelSerializer):
+    stock = SimpleStockInfoSerializer()
+
     class Meta:
         model = WatchlistItem
         fields = [
-            "watchlist_id",
-            "stock_id",
+            "stock",
         ]
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        return representation['stock_id']
 
 
 class WatchlistSerializer(serializers.ModelSerializer):
@@ -23,7 +45,7 @@ class WatchlistSerializer(serializers.ModelSerializer):
         model = Watchlist
         fields = [
             "id",
-            "user_id",
+            "user",
             "name",
             "items",
         ]
@@ -110,30 +132,4 @@ class StockInfoSerializer(serializers.ModelSerializer):
             "symbol",
             "long_name",
             "sector",
-        ]
-
-
-class StockHistorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = StockHistory
-        fields = [
-            "date",
-            "open",
-            "close",
-            "high",
-            "low",
-            "volume",
-        ]
-
-
-class SimpleStockInfoSerializer(serializers.ModelSerializer):
-    data = StockHistorySerializer(many=True, read_only=True)
-
-    class Meta:
-        model = StockInfo
-        fields = [
-            "symbol",
-            "long_name",
-            "sector",
-            "data",
         ]

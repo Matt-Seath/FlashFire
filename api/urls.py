@@ -11,8 +11,8 @@ router.register("account", AccountViewSet, basename="account")
 router.register("watchlist", WatchlistViewSet, basename="watchlist")
 
 watchlist_router = NestedSimpleRouter(router, r'watchlist', lookup='watchlist')
-watchlist_router.register(r'item', WatchlistItemViewSet,
-                       basename='watchlist-item')
+watchlist_router.register(r'items', WatchlistItemViewSet,
+                          basename='watchlist-items')
 
 urlpatterns = [
     path("", include(router.urls)),
