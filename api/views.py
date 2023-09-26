@@ -20,7 +20,7 @@ class WatchlistItemViewSet(ModelViewSet):
         if self.request.method == "POST":
             return AddWatchlistItemSerializer
         return WatchlistItemSerializer
-    
+
     def get_serializer_context(self):
         return {"watchlist": self.kwargs["watchlist_pk"]}
 

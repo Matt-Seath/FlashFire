@@ -55,7 +55,7 @@ class AddWatchlistItemSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
 
-        watchlist = self.context["watchlist"]
+        watchlist = Watchlist.objects.get(pk=self.context["watchlist"])
         stock = self.validated_data["stock"]
 
         try:
