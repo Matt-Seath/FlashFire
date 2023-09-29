@@ -3,9 +3,22 @@ import {loginRequest, logoutRequest, signupRequest} from "../thunk/user";
 import {Request} from "./types";
 
 // ----------------------------------------------------------------------
+
+type Stock = {
+    symbol: string;
+    sector: string;
+    longName: string;
+}
+
+type WatchlistItem = {
+    stock: Stock;
+}
+
 export type Watchlist = {
-  name: string;
-  items: string[];
+    id: string;
+    user: number;
+    name: string;
+    items: WatchlistItem[];
 }
 
 export type User = {

@@ -7,10 +7,10 @@ import { Watchlist } from "redux/slices/user";
 export default function TVTickerTape() {
   const {
     user: { watchlists },
-  } = getUser();
+  }: { user: { watchlists: Watchlist[] } } = getUser();
 
-  const symbols = watchlists.flatMap((watchlist: Watchlist) =>
-    watchlist.items.map((item) => `ASX:${item.split(".")[0]}`)
+  const symbols = watchlists.flatMap((watchlist) =>
+    watchlist.items.map((item) => `ASX:${item.stock.symbol.split(".")[0]}`)
   );
 
   const tickerSymbols = symbols.map((symbol: string) => ({

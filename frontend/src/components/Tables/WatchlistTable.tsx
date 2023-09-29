@@ -39,7 +39,7 @@ function createData(
 
 export default function BasicTable({ watchlists, currentWatchlist }: Props) {
   const watchlistRows: Data[] = watchlists[currentWatchlist].items.map((item) =>
-    createData(item, 22, currentWatchlist, 44, "5%")
+    createData(item.stock.symbol.split(".")[0], 22, currentWatchlist, 44, "5%")
   );
   const [rows, updateRows] = React.useState<Data[]>(watchlistRows);
 
