@@ -1,4 +1,5 @@
 import * as React from "react";
+import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Watchlist } from "redux/slices/user";
+import { Box } from "@mui/material";
 
 interface Data {
   symbol: string;
@@ -47,6 +49,10 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
     updateRows([...watchlistRows]);
   }, [currentWatchlist]);
 
+  const handleClick = (stock: string) => {
+    console.log(stock);
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -60,7 +66,7 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows.map((row, index) => (
             <TableRow
               key={row.symbol}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -72,10 +78,32 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
               <TableCell align="right">{row.high}</TableCell>
               <TableCell align="right">{row.low}</TableCell>
               <TableCell align="right">{row.change}</TableCell>
+              <TableCell align="right">
+                <Box display={"flex"} justifyContent={"flex-end"}>
+                  <Button
+                    id={String(index)}
+                    onClick={() => handleClick(row.symbol)}
+                    sx={{
+                      color: "white",
+                      background: "red",
+                      minWidth: 10,
+                      height: 20,
+                      width: 20,
+                      paddingTop: 1.2,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    ✖
+                  </Button>
+                </Box>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      <Box width={"100%"} height={50} bgcolor={"green"} />
     </TableContainer>
   );
 }
