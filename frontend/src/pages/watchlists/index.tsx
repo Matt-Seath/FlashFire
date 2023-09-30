@@ -5,17 +5,15 @@ import Box from "@mui/material/Box";
 import Layout from "layouts/Layout";
 import EnhancedTable from "components/Tables/WatchlistTable";
 import WatchlistTabs from "components/Tabs/WatchlistTabs";
-import { getUser } from "utils/getUser";
-import { Watchlist } from "redux/slices/user";
+import { getWatchlists } from "utils/utils";
+import { Watchlist } from "redux/slices/types";
 
 Watchlists.getLayout = function getLayout(page: any) {
   return <Layout>{page}</Layout>;
 };
 
 export default function Watchlists() {
-  const {
-    user: { watchlists },
-  } = getUser();
+  const { watchlists }: { watchlists: Watchlist[] } = getWatchlists();
 
   const watchlistNames: string[] = watchlists.map(
     (watchlist: Watchlist) => watchlist.name

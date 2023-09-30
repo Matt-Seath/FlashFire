@@ -5,3 +5,10 @@ export const getUser = () => {
 
   return { user };
 };
+
+export const getWatchlists = () => {
+  const { user } = getUser()
+  const watchlists = user.watchlists
+  
+  return { watchlists };
+};

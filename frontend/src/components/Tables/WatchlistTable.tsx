@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Watchlist } from "redux/slices/user";
+import { Watchlist } from "redux/slices/types";
 import { Box } from "@mui/material";
 
 interface Data {
@@ -89,7 +89,7 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
                       minWidth: 10,
                       height: 20,
                       width: 20,
-                      paddingTop: 1.2,
+                      paddingTop: 1,
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",

@@ -1,30 +1,10 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {loginRequest, logoutRequest, signupRequest} from "../thunk/user";
-import {Request} from "./types";
+import {Request, User} from "./types";
 
 // ----------------------------------------------------------------------
 
-type Stock = {
-    symbol: string;
-    sector: string;
-    longName: string;
-}
 
-type WatchlistItem = {
-    stock: Stock;
-}
-
-export type Watchlist = {
-    id: string;
-    user: number;
-    name: string;
-    items: WatchlistItem[];
-}
-
-export type User = {
-    email: string;
-    watchlists: Watchlist; 
-}
 
 type SignupRequestValidation = {
     emailErrors?: string[];

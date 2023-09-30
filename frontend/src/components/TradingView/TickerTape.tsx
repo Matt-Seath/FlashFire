@@ -1,13 +1,11 @@
 import * as React from "react";
 import { TickerTape } from "widgets/react-ts-tradingview-widgets/dist";
 import Box from "@mui/material/Box";
-import { getUser } from "utils/getUser";
-import { Watchlist } from "redux/slices/user";
+import { getWatchlists } from "utils/utils";
+import { Watchlist } from "redux/slices/types";
 
 export default function TVTickerTape() {
-  const {
-    user: { watchlists },
-  }: { user: { watchlists: Watchlist[] } } = getUser();
+  const { watchlists }: { watchlists: Watchlist[] } = getWatchlists();
 
   const symbols = watchlists.flatMap((watchlist) =>
     watchlist.items.map((item) => `ASX:${item.stock.symbol.split(".")[0]}`)
