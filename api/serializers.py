@@ -33,6 +33,7 @@ class WatchlistItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = WatchlistItem
         fields = [
+            "id",
             "stock",
         ]
 
