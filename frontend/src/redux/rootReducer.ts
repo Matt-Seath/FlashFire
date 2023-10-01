@@ -1,12 +1,12 @@
 import {combineReducers} from '@reduxjs/toolkit'
 import user from "./slices/user";
-import watchlist from './slices/watchlist';
+import watchlists from './slices/watchlists';
 
 // ----------------------------------------------------------------------
 
 const rootReducer = combineReducers({
     user,
-    watchlist,
+    watchlists,
 })
 
 export default rootReducer;

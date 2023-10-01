@@ -1,6 +1,8 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {axiosBackend, axiosNext} from "../../utils/axios";
 import {logoutAction} from "../slices/user";
+import { useDispatch } from "react-redux";
+import { setWatchlists } from "redux/slices/watchlists";
 
 // ----------------------------------------------------------------------
 
@@ -21,9 +23,11 @@ export const loginRequest = createAsyncThunk('user/login',
         try {
             const response = await axiosNext.post('api/user/login', data);
             const {user, access} = response.data;
-
+            const dispatch = useDispatch();
+            dispatch(setWatchlists(user.watchlists))
+            
             axiosBackend.defaults.headers.Authorization = `Bearer ${access}`;
-
+            
             return {user};
         } catch (error) {
             return rejectWithValue(error);
