@@ -10,6 +10,8 @@ import Paper from "@mui/material/Paper";
 import { Watchlist } from "redux/slices/types";
 import { Box } from "@mui/material";
 import { axiosNext } from "utils/axios";
+import { useTypeDispatch } from "redux/store";
+import { setWatchlists } from "redux/slices/watchlists";
 
 interface Data {
   id: number;
@@ -55,6 +57,7 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
     )
   );
   const [rows, updateRows] = React.useState<Data[]>(watchlistRows);
+  const dispatch = useTypeDispatch();
 
   React.useEffect(() => {
     updateRows([...watchlistRows]);
@@ -69,6 +72,9 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
         },
       });
       updateRows((rows) => rows.filter((row) => row.id !== stock));
+      // const newWatchlists = watchlists.filter((row))
+      // dispatch(setWatchlists(newWatchlists))
+
     } catch {
       console.log("nope");
     }
