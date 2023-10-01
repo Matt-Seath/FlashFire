@@ -2,22 +2,22 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Watchlist } from "./types";
 
 interface WatchlistsState {
-  currentWatchlist: Watchlist | null;
+  watchlists: any | null;
 }
 
 const initialState: WatchlistsState = {
-  currentWatchlist: null,
+  watchlists: null,
 };
 
 export const watchlistsSlice = createSlice({
   name: "watchlists",
   initialState,
   reducers: {
-    setWatchlists: (state, action: PayloadAction<Watchlist>) => {
-      state.currentWatchlist = action.payload;
+    setWatchlists: (state, action: PayloadAction<Watchlist[]>) => {
+      state.watchlists = action.payload;
     },
     clearWatchlists: (state) => {
-      state.currentWatchlist = null;
+      state.watchlists = null;
     },
   },
 });

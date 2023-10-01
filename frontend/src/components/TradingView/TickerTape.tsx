@@ -1,14 +1,29 @@
 import * as React from "react";
 import { TickerTape } from "widgets/react-ts-tradingview-widgets/dist";
 import Box from "@mui/material/Box";
-import { getWatchlists } from "utils/utils";
+import { getUser, getWatchlists } from "utils/utils";
 import { Watchlist } from "redux/slices/types";
+import { useTypeDispatch } from "redux/store";
+import { setWatchlists } from "redux/slices/watchlists";
 
 export default function TVTickerTape() {
-  const { watchlists }: { watchlists: Watchlist[] } = getWatchlists();
+  const { user } = getUser();
+  const wl: Watchlist[] = user.watchlists;
+  const dispatch = useTypeDispatch();
+  const { watchlists } = getWatchlists();
+
+  React.useEffect(() => {
+    try {
+      const res = dispatch(setWatchlists(wl));
+      console.log(res);
+    } catch (error) {
+      console.error("not happenin", error);
+    }
+  });
+
+  console.log(watchlists);
 
   if (!watchlists) {
-    console.log(watchlists);
     return null;
   }
 
