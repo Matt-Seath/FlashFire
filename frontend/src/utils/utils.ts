@@ -7,7 +7,8 @@ export const getUser = () => {
 };
 
 export const getWatchlists = () => {
-  const { watchlists } = useTypedSelector((state) => state.watchlists);
+  const { user } = getUser()
+  const watchlists = user.watchlists
   
   return { watchlists };
 };

@@ -1,33 +1,34 @@
 import * as React from "react";
 import { TickerTape } from "widgets/react-ts-tradingview-widgets/dist";
 import Box from "@mui/material/Box";
-import { getUser, getWatchlists } from "utils/utils";
+import { getWatchlists } from "utils/utils";
 import { Watchlist } from "redux/slices/types";
-import { useTypeDispatch } from "redux/store";
+import { useTypeDispatch, useTypedSelector } from "redux/store";
 import { setWatchlists } from "redux/slices/watchlists";
 
 export default function TVTickerTape() {
-  const { user } = getUser();
-  const wl: Watchlist[] = user.watchlists;
   const dispatch = useTypeDispatch();
-  const { watchlists } = getWatchlists();
+  const storedWatchlists: Watchlist[] = useTypedSelector(
+    (state) => state.watchlists.watchlists
+  );
+  const { watchlists }: { watchlists: Watchlist[] } = getWatchlists();
+  const currentWatchlists =
+    storedWatchlists !== null ? storedWatchlists : watchlists;
 
-  React.useEffect(() => {
+  if (!storedWatchlists) {
     try {
-      const res = dispatch(setWatchlists(wl));
-      console.log(res);
+      dispatch(setWatchlists(watchlists));
+      console.log("Updated Watchlist Slice");
     } catch (error) {
-      console.error("not happenin", error);
+      console.error(error);
     }
-  });
+  }
 
-  console.log(watchlists);
-
-  if (!watchlists) {
+  if (!currentWatchlists) {
     return null;
   }
 
-  const symbols = watchlists.flatMap((watchlist) =>
+  const symbols = currentWatchlists.flatMap((watchlist) =>
     watchlist.items.map((item) => `ASX:${item.stock.symbol.split(".")[0]}`)
   );
 
