@@ -29,5 +29,5 @@ export type Watchlist = {
 
 export type User = {
     email: string;
-    watchlists: Watchlist; 
+    watchlists: Watchlist[]; 
 }

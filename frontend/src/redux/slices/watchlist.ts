@@ -1,21 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { Watchlist } from './types';
-import { getWatchlists } from 'utils/utils';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Watchlist } from "./types";
 
-const initialState : Watchlist[] = []
+interface WatchlistState {
+  currentWatchlist: Watchlist | null;
+}
 
-// const watchlistSlice = createSlice({
-//   name: 'watchlist',
-//   initialState,
-//   reducers: {
-//     addToWatchlist: (state, action) => {
-//       state.symbols.push(action.payload);
-//     },
-//     removeFromWatchlist: (state, action) => {
-//       state.symbols = state.symbols.filter(symbol => symbol !== action.payload);
-//     },
-//   },
-// });
+const initialState: WatchlistState = {
+  currentWatchlist: null,
+};
 
-// export const { addToWatchlist, removeFromWatchlist } = watchlistSlice.actions;
-// export default watchlistSlice.reducer;
+export const watchlistSlice = createSlice({
+  name: "watchlist",
+  initialState,
+  reducers: {
+    setWatchlist: (state, action: PayloadAction<Watchlist>) => {
+      state.currentWatchlist = action.payload;
+    },
+    clearWatchlist: (state) => {
+      state.currentWatchlist = null;
+    },
+  },
+});
+
+export const { setWatchlist, clearWatchlist } = watchlistSlice.actions;
+export default watchlistSlice.reducer;

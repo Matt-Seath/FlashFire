@@ -6,6 +6,8 @@ export const getUser = () => {
   return { user };
 };
 
+export const setWatchlist = () => {}
+
 export const getWatchlists = () => {
   const { user } = getUser()
   const watchlists = user.watchlists
