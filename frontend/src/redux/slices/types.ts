@@ -10,13 +10,13 @@ export type Request = {
 }
 
 type Stock = {
-    id: number;
     symbol: string;
     sector: string;
     longName: string;
 }
 
 type WatchlistItem = {
+    id: number;
     stock: Stock;
 }
 

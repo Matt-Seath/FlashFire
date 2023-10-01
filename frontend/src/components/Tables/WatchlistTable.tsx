@@ -9,8 +9,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Watchlist } from "redux/slices/types";
 import { Box } from "@mui/material";
+import { axiosNext } from "utils/axios";
 
 interface Data {
+  id: number;
   symbol: string;
   high: number;
   low: number;
@@ -24,6 +26,7 @@ interface Props {
 }
 
 function createData(
+  id: number,
   symbol: string,
   high: number,
   low: number,
@@ -31,6 +34,7 @@ function createData(
   change: string
 ): Data {
   return {
+    id,
     symbol,
     high,
     low,
@@ -41,7 +45,14 @@ function createData(
 
 export default function BasicTable({ watchlists, currentWatchlist }: Props) {
   const watchlistRows: Data[] = watchlists[currentWatchlist].items.map((item) =>
-    createData(item.stock.symbol.split(".")[0], 22, currentWatchlist, 44, "5%")
+    createData(
+      item.id,
+      item.stock.symbol.split(".")[0],
+      item.id,
+      currentWatchlist,
+      44,
+      "5%"
+    )
   );
   const [rows, updateRows] = React.useState<Data[]>(watchlistRows);
 
@@ -49,8 +60,18 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
     updateRows([...watchlistRows]);
   }, [currentWatchlist]);
 
-  const handleClick = (stock: string) => {
-    console.log(stock);
+  const handleDeleteItem = async (stock: number) => {
+    try {
+      const response = await axiosNext.delete("api/watchlist/removeItem", {
+        params: {
+          watchlist_id: watchlists[currentWatchlist].id,
+          item_id: stock,
+        },
+      });
+      updateRows((rows) => rows.filter((row) => row.id !== stock));
+    } catch {
+      console.log("nope");
+    }
   };
 
   return (
@@ -82,7 +103,7 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
                 <Box display={"flex"} justifyContent={"flex-end"}>
                   <Button
                     id={String(index)}
-                    onClick={() => handleClick(row.symbol)}
+                    onClick={() => handleDeleteItem(row.id)}
                     sx={{
                       color: "white",
                       background: "red",
