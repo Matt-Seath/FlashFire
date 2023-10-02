@@ -24,7 +24,7 @@ export default function Watchlists() {
   const [currentWatchlist, setCurrentWatchlist] = React.useState<number>(0);
 
   return (
-    <Container maxWidth="lg">
+    <Box>
       <Box
         sx={{
           my: 4,
@@ -47,15 +47,8 @@ export default function Watchlists() {
           currentWatchlist={currentWatchlist}
           watchlists={watchlists}
         />
+
       </Box>
-      <Box sx={{ display: "flex", paddingBottom: 10, justifyContent: "right" }}>
-        <Button sx={{ display: "flex-end", color: "#3399ff" }}>
-          Rename watchlist
-        </Button>
-        <Button sx={{ display: "flex-end", color: "#776699" }}>
-          Delete watchlist
-        </Button>
-      </Box>
-    </Container>
+    </Box>
   );
 }

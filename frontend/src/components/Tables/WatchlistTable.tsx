@@ -14,6 +14,7 @@ import { useTypeDispatch } from "redux/store";
 import { setWatchlists } from "redux/slices/watchlists";
 import SearchBar from "components/Navigation/SearchBar";
 import {
+  MarketOverview,
   MarketData,
   MarketDataSymbol,
   MarketDataSymbolsGroup,
@@ -29,7 +30,10 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
     currentWatchlist
   ].items.map((item) => ({
     name: "ASX:" + item.stock.symbol.split(".")[0],
-    displayName: item.stock.symbol.split(".")[0] + " | " + item.stock.long_name,
+    displayName:
+      typeof item.stock.long_name === "string"
+        ? item.stock.symbol.split(".")[0] + " | " + item.stock.long_name
+        : item.stock.symbol.split(".")[0],
   }));
   console.log(watchlists);
   const watchlistData: MarketDataSymbolsGroup[] = [
@@ -120,22 +124,33 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Box height={465}>
+    <Box width={"100%"} height={590} display={"flex"}>
+      <Box width={"70%"}>
         <MarketData
-          height={465}
+          height={534}
           width={"100%"}
           colorTheme="dark"
           symbolsGroups={rows}
           copyrightStyles={undefined}
         />
+        <Box width={"100%"} height={56}>
+          <SearchBar
+            placeHolder="Add stock to Watchlist"
+            onSubmit={handleAddItem}
+          />
+        </Box>
       </Box>
-      <Box width={"100%"} height={56} bgcolor={"#433255"}>
-        <SearchBar
-          placeHolder="Add stock to Watchlist"
-          onSubmit={handleAddItem}
-        />
+      <Box width={"30%"}>
+        <MarketOverview colorTheme="dark" height={590} width={"100%"} />
+        <Box display={"flex"} width={"100%"} bgcolor={"#020409"} justifyContent={"right"}>
+          <Button sx={{ color: "#3399ff", width: "50%" }}>
+            Rename watchlist
+          </Button>
+          <Button sx={{ color: "#aa6699", width: "50%" }}>
+            Delete watchlist
+          </Button>
+        </Box>
       </Box>
-    </TableContainer>
+    </Box>
   );
 }
