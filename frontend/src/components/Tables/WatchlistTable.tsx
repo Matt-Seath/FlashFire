@@ -149,7 +149,7 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
           ))}
         </TableBody>
       </Table>
-      <Box width={"100%"} height={50} bgcolor={"green"} />
+      <Box width={"100%"} height={50} bgcolor={"#3399ff"} />
     </TableContainer>
   );
 }

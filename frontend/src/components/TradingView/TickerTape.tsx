@@ -39,7 +39,11 @@ export default function TVTickerTape() {
 
   return (
     <Box>
-      <TickerTape colorTheme="dark" displayMode="regular"></TickerTape>
+      <TickerTape
+        colorTheme="dark"
+        displayMode="regular"
+        symbols={tickerSymbols}
+      ></TickerTape>
     </Box>
   );
 }

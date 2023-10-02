@@ -7,6 +7,7 @@ import EnhancedTable from "components/Tables/WatchlistTable";
 import WatchlistTabs from "components/Tabs/WatchlistTabs";
 import { Watchlist } from "redux/slices/types";
 import { useTypedSelector } from "redux/store";
+import { Button } from "@mui/material";
 
 Watchlists.getLayout = function getLayout(page: any) {
   return <Layout>{page}</Layout>;
@@ -46,6 +47,14 @@ export default function Watchlists() {
           currentWatchlist={currentWatchlist}
           watchlists={watchlists}
         />
+      </Box>
+      <Box sx={{display:"flex", justifyContent:"right"}}>
+        <Button sx={{display:"flex-end", color: "#3399ff"}}>
+          Rename
+        </Button>
+        <Button sx={{display:"flex-end", color: "orange"}}>
+          Delete
+        </Button>
       </Box>
     </Container>
   );
