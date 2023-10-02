@@ -63,18 +63,37 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
     updateRows([...watchlistRows]);
   }, [currentWatchlist]);
 
+  const removeWatchlistItem = ({
+    watchlistId,
+    itemId,
+  }: {
+    watchlistId: string;
+    itemId: number;
+  }) => {
+    const updatedWatchlists = watchlists.map((watchlist) => {
+      if (watchlist.id === watchlistId) {
+        return {
+          ...watchlist,
+          items: watchlist.items.filter((item) => item.id !== itemId),
+        };
+      }
+      return watchlist;
+    });
+    dispatch(setWatchlists(updatedWatchlists));
+  };
+
   const handleDeleteItem = async (stock: number) => {
+    const watchlistId = watchlists[currentWatchlist].id;
     try {
-      const response = await axiosNext.delete("api/watchlist/removeItem", {
+      await axiosNext.delete("api/watchlist/removeItem", {
         params: {
-          watchlist_id: watchlists[currentWatchlist].id,
+          watchlist_id: watchlistId,
           item_id: stock,
         },
       });
       updateRows((rows) => rows.filter((row) => row.id !== stock));
-      // const newWatchlists = watchlists.filter((row))
-      // dispatch(setWatchlists(newWatchlists))
-
+      console.log(watchlists);
+      removeWatchlistItem({ watchlistId, itemId: stock });
     } catch {
       console.log("nope");
     }
