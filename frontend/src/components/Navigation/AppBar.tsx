@@ -46,6 +46,10 @@ export default function FFAppBar({ open, setOpen }: DrawerProps) {
     setOpen(false);
   };
 
+  const handleSubmit = () => {
+    console.log("hi");
+  };
+
   return (
     <AppBar position="fixed" open={open}>
       <Toolbar>
@@ -71,7 +75,7 @@ export default function FFAppBar({ open, setOpen }: DrawerProps) {
         >
           <MenuIcon />
         </IconButton>
-        <SearchBar />
+        <SearchBar placeHolder="Search ASX: " onSubmit={handleSubmit} />
         <FFProfile />
       </Toolbar>
       <TVTickerTape />

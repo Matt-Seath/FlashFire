@@ -12,6 +12,7 @@ import { Box } from "@mui/material";
 import { axiosNext } from "utils/axios";
 import { useTypeDispatch } from "redux/store";
 import { setWatchlists } from "redux/slices/watchlists";
+import SearchBar from "components/Navigation/SearchBar";
 
 interface Data {
   id: number;
@@ -99,6 +100,10 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
     }
   };
 
+  const handleSubmit = () => {
+    console.log("clicky dflgjd");
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -149,7 +154,12 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
           ))}
         </TableBody>
       </Table>
-      <Box width={"100%"} height={50} bgcolor={"#3399ff"} />
+      <Box width={"100%"} height={56} bgcolor={"#433255"}>
+        <SearchBar
+          placeHolder="Add stock to Watchlist"
+          onSubmit={handleSubmit}
+        />
+      </Box>
     </TableContainer>
   );
 }

@@ -50,10 +50,10 @@ export default function Watchlists() {
       </Box>
       <Box sx={{display:"flex", justifyContent:"right"}}>
         <Button sx={{display:"flex-end", color: "#3399ff"}}>
-          Rename
+          Rename watchlist
         </Button>
-        <Button sx={{display:"flex-end", color: "orange"}}>
-          Delete
+        <Button sx={{display:"flex-end", color: "#776699"}}>
+          Delete watchlist
         </Button>
       </Box>
     </Container>

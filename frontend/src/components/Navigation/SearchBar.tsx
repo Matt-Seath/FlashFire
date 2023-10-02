@@ -45,7 +45,12 @@ interface Stock {
   sector: string | null;
 }
 
-export default function SearchBar() {
+interface Props {
+  placeHolder: string;
+  onSubmit: (symbol: string) => void;
+}
+
+export default function SearchBar({ placeHolder, onSubmit }: Props) {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState<readonly Stock[]>([]);
   const loading = open && options.length === 0;
@@ -115,7 +120,7 @@ export default function SearchBar() {
           renderInput={(params) => (
             <TextField
               {...params}
-              placeholder="Search ASX:"
+              placeholder={placeHolder}
               InputProps={{
                 ...params.InputProps,
                 startAdornment: (
