@@ -6,6 +6,7 @@ from django.db.models import Prefetch
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
+
 from core.models import *
 from .serializers import *
 

@@ -70,7 +70,7 @@ class AddWatchlistItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = WatchlistItem
-        fields = ["stock"]
+        fields = ["stock", "id"]
 
 
 class SimpleUserSerializer(serializers.ModelSerializer):

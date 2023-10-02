@@ -1,5 +1,6 @@
 import React from "react";
 import { ColorTheme, CopyrightStyles, Locales } from "../index";
+
 export interface MarketDataSymbol {
     name: string;
     displayName?: string;

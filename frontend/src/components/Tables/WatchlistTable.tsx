@@ -13,55 +13,39 @@ import { axiosNext } from "utils/axios";
 import { useTypeDispatch } from "redux/store";
 import { setWatchlists } from "redux/slices/watchlists";
 import SearchBar from "components/Navigation/SearchBar";
-
-interface Data {
-  id: number;
-  symbol: string;
-  high: number;
-  low: number;
-  open: number;
-  change: string;
-}
+import {
+  MarketData,
+  MarketDataSymbol,
+  MarketDataSymbolsGroup,
+} from "widgets/react-ts-tradingview-widgets/dist";
 
 interface Props {
   watchlists: Watchlist[];
   currentWatchlist: number;
 }
 
-function createData(
-  id: number,
-  symbol: string,
-  high: number,
-  low: number,
-  open: number,
-  change: string
-): Data {
-  return {
-    id,
-    symbol,
-    high,
-    low,
-    open,
-    change,
-  };
-}
-
 export default function BasicTable({ watchlists, currentWatchlist }: Props) {
-  const watchlistRows: Data[] = watchlists[currentWatchlist].items.map((item) =>
-    createData(
-      item.id,
-      item.stock.symbol.split(".")[0],
-      45,
-      currentWatchlist,
-      44,
-      "5%"
-    )
-  );
-  const [rows, updateRows] = React.useState<Data[]>(watchlistRows);
+  const watchlistItems: MarketDataSymbol[] = watchlists[
+    currentWatchlist
+  ].items.map((item) => ({
+    name: "ASX:" + item.stock.symbol.split(".")[0],
+    displayName: item.stock.symbol.split(".")[0] + " | " + item.stock.long_name,
+  }));
+  console.log(watchlists);
+  const watchlistData: MarketDataSymbolsGroup[] = [
+    {
+      name: watchlists[currentWatchlist].name,
+      originalName: watchlists[currentWatchlist].name,
+      symbols: watchlistItems,
+    },
+  ];
+
+  const [rows, updateRows] =
+    React.useState<MarketDataSymbolsGroup[]>(watchlistData);
   const dispatch = useTypeDispatch();
 
   React.useEffect(() => {
-    updateRows([...watchlistRows]);
+    updateRows([...watchlistData]);
   }, [currentWatchlist, watchlists]);
 
   const removeWatchlistItem = ({
@@ -83,14 +67,17 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
     dispatch(setWatchlists(updatedWatchlists));
   };
 
-  const addWatchlistItem = (watchlistId: string, stock: string) => {
+  const addWatchlistItem = (
+    watchlistId: string,
+    stock: string,
+    itemId: number
+  ) => {
     const newItem: WatchlistItem = {
-      id: 122,
+      id: itemId,
       stock: {
         symbol: stock + ".AX",
       },
     };
-    console.log(newItem);
 
     const updatedWatchlists = watchlists.map((watchlist) => {
       if (watchlist.id === watchlistId) {
@@ -122,11 +109,11 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
   const handleAddItem = async (stock: string) => {
     const watchlistId = watchlists[currentWatchlist].id;
     try {
-      await axiosNext.post(`api/watchlist/addItem`, {
+      const response = await axiosNext.post(`api/watchlist/addItem`, {
         watchlist_id: watchlistId,
         stock: stock + ".AX",
       });
-      addWatchlistItem(watchlistId, stock);
+      addWatchlistItem(watchlistId, stock, response.data);
     } catch {
       console.log("Failed to add:" + stock);
     }
@@ -134,54 +121,15 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>SYMBOL</TableCell>
-            <TableCell align="right">CHANGE (%)</TableCell>
-            <TableCell align="right">PRICE</TableCell>
-            <TableCell align="right">HIGH</TableCell>
-            <TableCell align="right">LOW</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row, index) => (
-            <TableRow
-              key={row.symbol}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.symbol}
-              </TableCell>
-              <TableCell align="right">{row.open}</TableCell>
-              <TableCell align="right">{row.high}</TableCell>
-              <TableCell align="right">{row.low}</TableCell>
-              <TableCell align="right">{row.change}</TableCell>
-              <TableCell align="right">
-                <Box display={"flex"} justifyContent={"flex-end"}>
-                  <Button
-                    id={String(index)}
-                    onClick={() => handleDeleteItem(row.id)}
-                    sx={{
-                      color: "white",
-                      background: "red",
-                      minWidth: 10,
-                      height: 20,
-                      width: 20,
-                      paddingTop: 1,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    ✖
-                  </Button>
-                </Box>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Box height={465}>
+        <MarketData
+          height={465}
+          width={"100%"}
+          colorTheme="dark"
+          symbolsGroups={rows}
+          copyrightStyles={undefined}
+        />
+      </Box>
       <Box width={"100%"} height={56} bgcolor={"#433255"}>
         <SearchBar
           placeHolder="Add stock to Watchlist"

@@ -40,6 +40,7 @@ export default function TVTickerTape() {
   return (
     <Box>
       <TickerTape
+        largeChartUrl="http://localhost:3000/watchlists/"
         colorTheme="dark"
         displayMode="regular"
         symbols={tickerSymbols}

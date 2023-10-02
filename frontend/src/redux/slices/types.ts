@@ -12,7 +12,7 @@ export type Request = {
 type Stock = {
     symbol: string;
     sector?: string;
-    longName?: string;
+    long_name?: string;
 }
 
 export type WatchlistItem = {
