@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Watchlist } from "redux/slices/types";
+import { Watchlist, WatchlistItem } from "redux/slices/types";
 import { Box } from "@mui/material";
 import { axiosNext } from "utils/axios";
 import { useTypeDispatch } from "redux/store";
@@ -51,7 +51,7 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
     createData(
       item.id,
       item.stock.symbol.split(".")[0],
-      item.id,
+      45,
       currentWatchlist,
       44,
       "5%"
@@ -62,7 +62,7 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
 
   React.useEffect(() => {
     updateRows([...watchlistRows]);
-  }, [currentWatchlist]);
+  }, [currentWatchlist, watchlists]);
 
   const removeWatchlistItem = ({
     watchlistId,
@@ -83,6 +83,27 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
     dispatch(setWatchlists(updatedWatchlists));
   };
 
+  const addWatchlistItem = (watchlistId: string, stock: string) => {
+    const newItem: WatchlistItem = {
+      id: 122,
+      stock: {
+        symbol: stock + ".AX",
+      },
+    };
+    console.log(newItem);
+
+    const updatedWatchlists = watchlists.map((watchlist) => {
+      if (watchlist.id === watchlistId) {
+        return {
+          ...watchlist,
+          items: [...watchlist.items, newItem],
+        };
+      }
+      return watchlist;
+    });
+    dispatch(setWatchlists(updatedWatchlists));
+  };
+
   const handleDeleteItem = async (stock: number) => {
     const watchlistId = watchlists[currentWatchlist].id;
     try {
@@ -92,26 +113,22 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
           item_id: stock,
         },
       });
-      updateRows((rows) => rows.filter((row) => row.id !== stock));
-      console.log(watchlists);
       removeWatchlistItem({ watchlistId, itemId: stock });
     } catch {
-      console.log("nope");
+      console.log("Failed to delete:" + stock);
     }
   };
 
-  const handleSubmit = async (symbol: string) => {
+  const handleAddItem = async (stock: string) => {
     const watchlistId = watchlists[currentWatchlist].id;
     try {
       await axiosNext.post(`api/watchlist/addItem`, {
         watchlist_id: watchlistId,
-        stock: symbol + ".AX",
+        stock: stock + ".AX",
       });
-      // updateRows((rows) => rows.filter((row) => row.id !== stock));
-      // console.log(watchlists);
-      // removeWatchlistItem({ watchlistId, itemId: stock });
+      addWatchlistItem(watchlistId, stock);
     } catch {
-      console.log("nope");
+      console.log("Failed to add:" + stock);
     }
   };
 
@@ -168,7 +185,7 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
       <Box width={"100%"} height={56} bgcolor={"#433255"}>
         <SearchBar
           placeHolder="Add stock to Watchlist"
-          onSubmit={handleSubmit}
+          onSubmit={handleAddItem}
         />
       </Box>
     </TableContainer>

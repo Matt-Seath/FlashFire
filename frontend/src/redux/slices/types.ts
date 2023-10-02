@@ -11,11 +11,11 @@ export type Request = {
 
 type Stock = {
     symbol: string;
-    sector: string;
-    longName: string;
+    sector?: string;
+    longName?: string;
 }
 
-type WatchlistItem = {
+export type WatchlistItem = {
     id: number;
     stock: Stock;
 }
