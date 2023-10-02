@@ -54,11 +54,6 @@ export default function SearchBar({ placeHolder, onSubmit }: Props) {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState<readonly Stock[]>([]);
   const loading = open && options.length === 0;
-  const router = useRouter();
-
-  const handleOptionSelection = (option: Stock) => {
-    router.push("/stocks/" + option.symbol);
-  };
 
   React.useEffect(() => {
     let active = true;
@@ -116,7 +111,7 @@ export default function SearchBar({ placeHolder, onSubmit }: Props) {
           getOptionLabel={(option) => option.symbol + " : " + option.long_name}
           options={options}
           loading={loading}
-          onChange={(event, option) => option && handleOptionSelection(option)}
+          onChange={(event, option) => option && onSubmit(option.symbol)}
           renderInput={(params) => (
             <TextField
               {...params}

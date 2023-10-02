@@ -7,14 +7,16 @@ import { axiosBackendWithoutUser } from 'utils/axios';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const {method} = req;
 
-    if (method !== 'DELETE') {
+    if (method !== 'POST') {
         res.status(404).end();
     }
 
-    const { watchlist_id, item_id } = req.query;
+    const {watchlist_id, stock} = req.body
 
     try {
-        const response = await axiosBackendWithoutUser.delete(`api/watchlist/${watchlist_id}/items/${item_id}`);
+        console.log(watchlist_id)
+        const response = await axiosBackendWithoutUser.post(`api/watchlist/${watchlist_id}/items/`, {"stock": stock});
+
         res.status(200).json(response.data);
     } catch (error) {
         res.status(500).end();

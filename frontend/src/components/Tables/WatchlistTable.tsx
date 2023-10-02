@@ -100,8 +100,19 @@ export default function BasicTable({ watchlists, currentWatchlist }: Props) {
     }
   };
 
-  const handleSubmit = () => {
-    console.log("clicky dflgjd");
+  const handleSubmit = async (symbol: string) => {
+    const watchlistId = watchlists[currentWatchlist].id;
+    try {
+      await axiosNext.post(`api/watchlist/addItem`, {
+        watchlist_id: watchlistId,
+        stock: symbol + ".AX",
+      });
+      // updateRows((rows) => rows.filter((row) => row.id !== stock));
+      // console.log(watchlists);
+      // removeWatchlistItem({ watchlistId, itemId: stock });
+    } catch {
+      console.log("nope");
+    }
   };
 
   return (

@@ -8,6 +8,7 @@ import { drawerWidth } from "./Drawer";
 import SearchBar from "./SearchBar";
 import FFProfile from "./Profile";
 import TVTickerTape from "../TradingView/TickerTape";
+import { useRouter } from "next/router";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -46,8 +47,9 @@ export default function FFAppBar({ open, setOpen }: DrawerProps) {
     setOpen(false);
   };
 
-  const handleSubmit = () => {
-    console.log("hi");
+  const router = useRouter();
+  const handleSubmit = (symbol: string) => {
+    router.push("/stocks/" + symbol);
   };
 
   return (
