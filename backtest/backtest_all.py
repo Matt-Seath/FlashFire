@@ -1,7 +1,12 @@
 from tqdm import tqdm
 import contextlib
 import io
-
+from flashfire.settings import (
+    BTA_APPLY_FILTERS,
+    BTA_FILTERS,
+    BTA_ITERATION_LIMIT,
+    BTA_TEST_ALL_STOCKS
+)
 from core.models import StockInfo
 from backtest import reports
 from backtest import backtest_one
@@ -10,22 +15,12 @@ from loggers.coloured_text import Colour, int_colour
 from backtest.strategies.all import validate_strategy
 
 
-TEST_ALL_STOCKS = True
-ITERATION_LIMIT = 600
-APPLY_FILTERS = True
-
-FILTERS = {
-    "current_price__gt": 5,
-    "sector": "Consumer Cyclical"
-}
-
-
 def main(strategy):
 
     validate_strategy(strategy)
-    filters = FILTERS if APPLY_FILTERS else None
+    filters = BTA_FILTERS if BTA_APPLY_FILTERS else None
     stocks = mysql_pls.get_col_list_from_db("symbol", filters)
-    iterations = len(stocks) if TEST_ALL_STOCKS else ITERATION_LIMIT
+    iterations = len(stocks) if BTA_TEST_ALL_STOCKS else BTA_ITERATION_LIMIT
     results = {}
     change_sum = 0
     tested = 0

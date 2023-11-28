@@ -16,6 +16,23 @@ from dotenv import load_dotenv
 from datetime import timedelta
 
 
+#BACKTEST_ALL Settngs
+BTA_TEST_ALL_STOCKS = True
+BTA_ITERATION_LIMIT = 600
+BTA_APPLY_FILTERS = True
+BTA_FILTERS = {
+    "current_price__gt": 5,
+    "sector": "Consumer Cyclical"
+}
+
+#BACKTEST_ONE Settings
+BTO_SQL_DATAFEED = True
+BTO_STARTING_CASH = 10000
+BTO_FROMDATE = [2022, 8, 13]
+BTO_TODATE__ = [2023, 1, 13]
+
+
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
